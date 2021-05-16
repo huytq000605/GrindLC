@@ -1,3 +1,9 @@
+package main
+
+import (
+	"sort"
+)
+
 func rangeSum(nums []int, n int, left int, right int) int {
 	arr := []int{}
 	result := 0
