@@ -1,7 +1,16 @@
 /*
-Signal for a problem about binary search tree is that you can get the range minimum to maximum of answer, find a value that fit condition for an array (experience ...)
+Noted for myself
 
-So when you try to BST, compare the current value you are using to condition, the ">" and "<" is easy to put in, but the "=" is a little tricky to understand.
+Signal for a problem about binary search tree is that you can get the range minimum to maximum of answer, find a value that fit condition for an sorted array
+
+So when you try do BST, compare the current value you are using to condition, the ">" and "<" is easy to put in, but the "=" is a little tricky
+
+Like when question ask you for a minimum index that arr is SORTED BY ASC, arr[index] < 5, if arr[current] <5 YOU MUST SET THE NEXT LOOP IS max = current - 1 BECAUSE current doesnt fit in condition
+
+current = Ceil (max + min) / 2 OR Floor (max+min)/2
+if for loop max = current - 1 then ceil
+min = current + 1 then floor
+
 Example: When the problem asks you for finding min for condition, if the value is fit for the condition, you can keep decrease/increase the max/min to get the real min answer
 
 Example with Find the smallest divisor given a threshold: 
