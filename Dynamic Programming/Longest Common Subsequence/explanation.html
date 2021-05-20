@@ -1,0 +1,42 @@
+<div class="container__K-8V"><div class="action-area__3aY4"><div class="container__3-ij container__3r81"><div title="Upvote" class="vote__3Zp9 vote__3btZ" data-is-voted="false"><svg viewBox="0 0 24 24" width="1em" height="1em" class="icon__1Md2"><path fill-rule="evenodd" d="M7 14l5-5 5 5z"></path></svg></div><div title="Vote count" class="count__I8pP count__GRlR"><span>336</span></div><div title="Downvote" class="vote__3Zp9 vote__3btZ" data-is-voted="false"><svg viewBox="0 0 24 24" width="1em" height="1em" class="icon__1Md2"><path fill-rule="evenodd" d="M7 10l5 5 5-5z"></path></svg></div></div></div><div class="post-area__3YJL"><div class="root__3bcS"><a href="/votrubac" target="_blank"><img alt="votrubac's avatar" class="avatar__7D9c" src="https://assets.leetcode.com/users/votrubac/avatar_1610271695.png"></a><div><div><div class="user-info__2b-x"><span class="name__2jm2"><a href="/votrubac" target="_blank" class="link__Lpjq">votrubac</a></span><span class="reputation___jPr"><svg viewBox="0 0 24 24" width="1em" height="1em" class="icon__1Md2"><path fill-rule="evenodd" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>28764</span></div><div class="post-info__1K06"><p>Last Edit: August 4, 2019 12:24 PM</p><p class="view-count__dBuq">24.8K VIEWS</p></div></div></div></div><div class="content-area__2vnF"><div class="discuss-markdown-container"><p></p><h1>Intuition</h1>
+    <p></p><p>LCS is a well-known problem, and there are similar problems here:</p><p>
+    </p><ul>
+    <li><a href="https://leetcode.com/problems/shortest-common-supersequence/" rel="ugc">1092. Shortest Common Supersequence</a></li>
+    <li><a href="https://leetcode.com/problems/longest-repeating-substring/" rel="ugc">1062. Longest Repeating Substring</a></li>
+    <li><a href="https://leetcode.com/problems/longest-palindromic-subsequence/" rel="ugc">516. Longest Palindromic Subsequence</a></li>
+    </ul>
+    <p></p><p>Bottom-up DP utilizes a matrix <code>m</code> where we track LCS sizes for each combination of <code>i</code> and <code>j</code>.</p><p>
+    </p><ul>
+    <li>If <code>a[i] == b[j]</code>, LCS for i and j would be <code>1</code> plus LCS till the i-1 and j-1 indexes.</li>
+    <li>Otherwise, we will take the largest LCS if we skip a charracter from one of the string (<code>max(m[i - 1][j], m[i][j - 1]</code>).</li>
+    </ul>
+    <p></p><p>This picture shows the populated matrix for <code>"xabccde", "ace"</code> test case.<br>
+    <img src="https://assets.leetcode.com/users/votrubac/image_1564691262.png" alt="image"></p><p>
+    </p><h1>Solution</h1>
+    <pre><code><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">longestCommonSubsequence</span><span class="hljs-params">(<span class="hljs-built_in">string</span> &amp;a, <span class="hljs-built_in">string</span> &amp;b)</span> </span>{
+      <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">short</span>&gt;&gt; m(a.size() + <span class="hljs-number">1</span>, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">short</span>&gt;(b.size() + <span class="hljs-number">1</span>));
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> i = <span class="hljs-number">1</span>; i &lt;= a.size(); ++i)
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> j = <span class="hljs-number">1</span>; j &lt;= b.size(); ++j)
+          <span class="hljs-keyword">if</span> (a[i - <span class="hljs-number">1</span>] == b[j - <span class="hljs-number">1</span>]) m[i][j] = m[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>;
+          <span class="hljs-keyword">else</span> m[i][j] = max(m[i - <span class="hljs-number">1</span>][j], m[i][j - <span class="hljs-number">1</span>]);
+      <span class="hljs-keyword">return</span> m[a.size()][b.size()];
+    }
+    </code></pre>
+    <h2>Complexity Analysis</h2>
+    <p></p><p>Runtime: O(nm), where n and m are the string sizes.<br>
+    Memory: O(nm).</p><p>
+    </p><h1>Memory Optimization</h1>
+    <p></p><p>You may notice that we are only looking one row up in the solution above. So, we just need to store two rows.</p><p>
+    </p><pre><code><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">longestCommonSubsequence</span><span class="hljs-params">(<span class="hljs-built_in">string</span> &amp;a, <span class="hljs-built_in">string</span> &amp;b)</span> </span>{
+      <span class="hljs-keyword">if</span> (a.size() &lt; b.size()) <span class="hljs-keyword">return</span> longestCommonSubsequence(b, a);
+      <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">short</span>&gt;&gt; m(<span class="hljs-number">2</span>, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">short</span>&gt;(b.size() + <span class="hljs-number">1</span>));
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> i = <span class="hljs-number">1</span>; i &lt;= a.size(); ++i)
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> j = <span class="hljs-number">1</span>; j &lt;= b.size(); ++j)
+          <span class="hljs-keyword">if</span> (a[i - <span class="hljs-number">1</span>] == b[j - <span class="hljs-number">1</span>]) m[i % <span class="hljs-number">2</span>][j] = m[(i <span class="hljs-number">-1</span>) % <span class="hljs-number">2</span>][j - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>;
+          <span class="hljs-keyword">else</span> m[i % <span class="hljs-number">2</span>][j] = max(m[(i - <span class="hljs-number">1</span>) % <span class="hljs-number">2</span>][j], m[i % <span class="hljs-number">2</span>][j - <span class="hljs-number">1</span>]);
+      <span class="hljs-keyword">return</span> m[a.size() % <span class="hljs-number">2</span>][b.size()];
+    }
+    </code></pre>
+    <h2>Complexity Analysis</h2>
+    <p></p><p>Runtime: O(nm), where n and m are the string sizes.<br>
+    Memory: O(min(n,m)).</p></div></div><div class="tag-list-container__2cDj"><div class="css-9sdfuf"></div></div></div></div>
