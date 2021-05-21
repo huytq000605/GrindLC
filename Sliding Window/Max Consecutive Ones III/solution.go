@@ -4,21 +4,20 @@ package main
 If the start -> end have k odd number, then there are [first indexOdd - start] sub contiguous array to result
 */
 
-func numberOfSubarrays(nums []int, k int) int {
-	result := 0
-	idxOdd := make([]int, 0)
+func longestOnes(nums []int, k int) int {
 	start := 0
-
+	result := 0
+	idxZero := make([]int, 0)
 	for end := range nums {
-		if nums[end]%2 == 1 {
-			idxOdd = append(idxOdd, end)
-			if len(idxOdd) > k {
-				start = idxOdd[0] + 1
-				idxOdd = idxOdd[1:]
+		if nums[end] == 0 {
+			idxZero = append(idxZero, end)
+			if len(idxZero) > k {
+				start = idxZero[0] + 1
+				idxZero = idxZero[1:]
 			}
 		}
-		if len(idxOdd) == k {
-			result += idxOdd[0] - start + 1
+		if end-start+1 > result {
+			result = end - start + 1
 		}
 	}
 	return result

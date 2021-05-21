@@ -1,21 +1,19 @@
-func longestOnes(nums []int, k int) int {
+func numberOfSubarrays(nums []int, k int) int {
+	result := 0
+	idxOdd := make([]int, 0)
 	start := 0
-	countZero := 0
-	max := 0
-	for end := 0; end < len(nums); end++ {
-		if nums[end] == 0 {
-			countZero++
-		}
-		for countZero > k {
-			if nums[start] == 0 {
-				countZero--
+
+	for end := range nums {
+		if nums[end]%2 == 1 {
+			idxOdd = append(idxOdd, end)
+			if len(idxOdd) > k {
+				start = idxOdd[0] + 1
+				idxOdd = idxOdd[1:]
 			}
-			start++
 		}
-		if max < end-start+1 {
-			max = end - start + 1
+		if len(idxOdd) == k {
+			result += idxOdd[0] - start + 1
 		}
 	}
-	return max
-
+	return result
 }
