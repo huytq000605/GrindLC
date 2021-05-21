@@ -1,5 +1,5 @@
 /*
-Input: a random string
+Input: a random string with only abc
 and a random map like map = {
         'a': 2, 'b': 3, 'c':4
     }
