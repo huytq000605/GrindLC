@@ -3,6 +3,7 @@ let map store condition ( apply for more question)
 if still fit condition then increase
 at this question, for each fit condition, we can get [from end to last] substring
 */
+package main
 
 func numberOfSubstrings(s string) int {
 	idxMap := make(map[byte]int)

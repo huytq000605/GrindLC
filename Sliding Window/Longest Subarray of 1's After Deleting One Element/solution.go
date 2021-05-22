@@ -1,3 +1,5 @@
+package main
+
 func longestSubarray(nums []int) int {
 	max := 0
 	start := 0
