@@ -1,3 +1,5 @@
+package main
+
 func carPooling(trips [][]int, capacity int) bool {
 	currentPeople := []int{}
 	for _, trip := range trips {
