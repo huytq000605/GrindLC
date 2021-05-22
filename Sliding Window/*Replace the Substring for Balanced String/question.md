@@ -24,7 +24,7 @@ Output: 2
 Explanation: We can replace the first "QQ" to "ER". 
 ```
 
-Example 3:
+Example 4:
 ```
 Input: s = "QQQQ"
 Output: 3
