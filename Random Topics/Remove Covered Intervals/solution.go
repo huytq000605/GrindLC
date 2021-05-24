@@ -2,6 +2,11 @@ package main
 
 import "sort"
 
+/*
+Sort increase by interval[0], if == then decrease by interval[1]
+We loop through all intervals, we if interval[0] > max => new cover, if interval[1] > max => expand this cover
+*/
+
 func removeCoveredIntervals(intervals [][]int) int {
 	sort.SliceStable(intervals, func(i, j int) bool {
 		if intervals[i][0] < intervals[j][0] {
