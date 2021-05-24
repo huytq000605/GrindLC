@@ -1,10 +1,14 @@
-/**
- * Definition for singly-linked list.
- * type ListNode struct {
- *     Val int
- *     Next *ListNode
- * }
- */
+package main
+
+// Definition for singly-linked list.
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+/*
+For O(n) Time complexcity and O(1) space, i hold a firstEven and firstOdd node and an index to notice when its a odd node, then i mark the last odd node
+*/
 func oddEvenList(head *ListNode) *ListNode {
 	if head == nil {
 		return head
@@ -17,7 +21,7 @@ func oddEvenList(head *ListNode) *ListNode {
 		if head.Next != nil {
 			next := head.Next
 			head.Next = head.Next.Next
-			if idx%2 == 1 {
+			if idx%2 == 1 { // If current (head) is odd Node, we mark the last odd node
 				if head.Next != nil {
 					lastOdd = head.Next
 				} else {
