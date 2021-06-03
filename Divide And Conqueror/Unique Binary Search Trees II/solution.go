@@ -16,13 +16,13 @@ func generateTrees(n int) []*TreeNode {
 }
 
 func genTree(start int, end int) []*TreeNode {
-	result := make([]*TreeNode, 0)
 	if start > end {
 		return []*TreeNode{nil} // return a nil node to iterate through it later
 	}
 	if start == end {
 		return []*TreeNode{&TreeNode{Val: start}}
 	}
+	result := make([]*TreeNode, 0)
 
 	for i := start; i <= end; i++ {
 		lefts := genTree(start, i-1)
