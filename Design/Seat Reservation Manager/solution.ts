@@ -1,38 +1,86 @@
-// Just a straight solution with no optimized
-// This can be done very fast by using priority queue
 class SeatManager {
-    seats: Array<number>;
-    min: number;
+    minHeap;
     constructor(n: number) {
-        this.seats = Array(n).fill(0)
-        this.min = 0
+        this.minHeap = new MinHeap();
+        for (let i = 1; i <= n; i++) {
+            this.minHeap.push(i);
+        }
     }
 
     reserve(): number {
-        this.seats[this.min] = 1;
-        const seatNumber = this.min + 1
-        for(let i = this.min + 1; i < this.seats.length; i++) {
-            if(!this.seats[i]) {
-                this.min = i;
-                break
-            }
-            if(i == this.seats.length - 1) {
-                this.min = this.seats.length - 1
-            }
-        }
-
-        return seatNumber
+        return this.minHeap.pop();
     }
 
     unreserve(seatNumber: number): void {
-        let index = seatNumber - 1;
-        if(index < this.min) {
-            this.min = index
-        }
-        this.seats[index] = 0
+        this.minHeap.push(seatNumber);
     }
 }
 
+class MinHeap {
+    heap: number[];
+    length: number;
+    constructor() {
+        this.heap = [];
+        this.length = 0;
+    }
+    peek() {
+        return this.heap[0];
+    }
+    push(val: number) {
+        this.heap.push(val);
+        this.length++;
+        this.bubbleUp();
+    }
+    pop() {
+        [this.heap[0], this.heap[this.length - 1]] = [
+            this.heap[this.length - 1],
+            this.heap[0],
+        ];
+        const pop = this.heap.pop();
+        this.length--;
+        this.bubbleDown();
+        return pop;
+    }
+    bubbleUp() {
+        let current = this.length - 1;
+        while (current > 0) {
+            let parent = Math.ceil(current / 2) - 1;
+            if (this.heap[current] < this.heap[parent]) {
+                [this.heap[current], this.heap[parent]] = [
+                    this.heap[parent],
+                    this.heap[current],
+                ];
+                current = parent;
+            } else {
+                return;
+            }
+        }
+    }
+    bubbleDown() {
+        let current = 0;
+        while (true) {
+            let left = current * 2 + 1;
+            if (left >= this.length) return;
+            let right = left + 1;
+            if (right >= this.length) right = left;
+            let compare;
+            if (this.heap[left] < this.heap[right]) {
+                compare = left;
+            } else {
+                compare = right;
+            }
+            if (this.heap[compare] < this.heap[current]) {
+                [this.heap[compare], this.heap[current]] = [
+                    this.heap[current],
+                    this.heap[compare],
+                ];
+                current = compare;
+            } else {
+                return;
+            }
+        }
+    }
+}
 /**
  * Your SeatManager object will be instantiated and called as such:
  * var obj = new SeatManager(n)
