@@ -30,7 +30,7 @@ func (this *Codec) serialize(root *TreeNode) string {
 			result += ","
 			queue = append(queue, current.Left, current.Right)
 		} else {
-			result += "-1,"
+			result += "#,"
 		}
 		queue = queue[1:]
 	}
@@ -41,11 +41,11 @@ func (this *Codec) serialize(root *TreeNode) string {
 func (this *Codec) deserialize(data string) *TreeNode {
 	nodeArrayAsString := strings.Split(data, ",")
 	nodeArray := make([]int, len(nodeArrayAsString))
-	for i := 0; i < len(nodeArray); i++ {
+	for i := 0; i < len(nodeArrayAsString); i++ {
 		nodeArray[i], _ = strconv.Atoi(nodeArrayAsString[i])
 	}
 	var result *TreeNode
-	if len(nodeArray) == 0 || nodeArray[0] == -1 {
+	if len(nodeArrayAsString) == 0 || nodeArrayAsString[0] == "#" {
 		return result
 	}
 	result = &TreeNode{Val: nodeArray[0]}
@@ -53,22 +53,17 @@ func (this *Codec) deserialize(data string) *TreeNode {
 	index := 1
 	for index < len(nodeArray) {
 		current := queue[0]
-		if nodeArray[index] != -1 {
+		if nodeArrayAsString[index] != "#" {
 			current.Left = &TreeNode{Val: nodeArray[index]}
 			queue = append(queue, current.Left)
-		} else {
-			current.Left = nil
 		}
-
 		index++
 		if index == len(nodeArray) {
 			return result
 		}
-		if nodeArray[index] != -1 {
+		if nodeArrayAsString[index] != "#" {
 			current.Right = &TreeNode{Val: nodeArray[index]}
 			queue = append(queue, current.Right)
-		} else {
-			current.Right = nil
 		}
 		index++
 		queue = queue[1:]
