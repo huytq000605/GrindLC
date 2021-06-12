@@ -4,7 +4,7 @@ Signal for a problem about binary search tree is that you can get the range mini
 
 So when you try do BST, compare the current value you are using to condition, the ">" and "<" is easy to put in, but the "=" is a little tricky
 
-Like when question ask you for a minimum index that arr is SORTED BY ASC, arr[index] < 5, if arr[current] <5 YOU MUST SET THE NEXT LOOP IS max = current - 1 BECAUSE current doesnt fit in condition
+Like when question ask you for a minimum index in an arr (SORTED BY ASC) that arr[index] < 5, if arr[current] >= 5 YOU MUST SET THE NEXT LOOP IS max = current - 1 BECAUSE current doesnt fit in condition
 
 
 **IMPORTANT**
