@@ -6,8 +6,11 @@ So when you try do BST, compare the current value you are using to condition, th
 
 Like when question ask you for a minimum index that arr is SORTED BY ASC, arr[index] < 5, if arr[current] <5 YOU MUST SET THE NEXT LOOP IS max = current - 1 BECAUSE current doesnt fit in condition
 
+
+**IMPORTANT**
 ```
 current = Ceil (max + min) / 2 OR Floor (max+min)/2
+MAYBE current = min + (max-min+1)/2 (Ceil) OR min + (max-min)/2 (Floor)
 if for loop max = current - 1 then ceil
 min = current + 1 then floor
 ```
