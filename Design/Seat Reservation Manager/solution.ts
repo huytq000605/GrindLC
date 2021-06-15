@@ -44,7 +44,7 @@ class MinHeap {
     bubbleUp() {
         let current = this.length - 1;
         while (current > 0) {
-            let parent = Math.ceil(current / 2) - 1;
+            let parent = Math.floor((current - 1) / 2);
             if (this.heap[current] < this.heap[parent]) {
                 [this.heap[current], this.heap[parent]] = [
                     this.heap[parent],
