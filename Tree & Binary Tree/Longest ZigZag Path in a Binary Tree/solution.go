@@ -8,24 +8,31 @@ type TreeNode struct {
 }
 
 func longestZigZag(root *TreeNode) int {
-	result := 0
-	dfs(root, true, 1, &result)
-	dfs(root, false, 1, &result)
-	return result
+	left := dfs(root, 0, true)
+	right := dfs(root, 0, false)
+	if left > right {
+		return left - 1
+	} else {
+		return right - 1
+	}
 }
 
-func dfs(node *TreeNode, goLeft bool, height int, result *int) {
-	if node == nil { // When node is nil, then we count the height of the tree
-		if height-2 > *result { // -2 because last node is nil, number of left/right step is number of nodes - 1 => -2
-			*result = height - 2
-		}
-		return
+func dfs(node *TreeNode, current int, goLeft bool) int { // current is number of nodes
+	if node == nil {
+		return current
 	}
+	left := 0
+	right := 0
 	if goLeft {
-		dfs(node.Left, false, height+1, result) // Go the left and + 1 height
-		dfs(node.Left, true, 1, result)         // We make the left as starting point, but different direction from above because it will always get the lower result => we are finding max
+		left = dfs(node.Left, 1+current, false) // go left and increase the node
+		right = dfs(node.Left, 0, true)         // go left and reset, go to other direction ( if go to same direction, its result < the above result)
 	} else {
-		dfs(node.Right, true, height+1, result)
-		dfs(node.Right, false, 1, result)
+		left = dfs(node.Right, 1+current, true)
+		right = dfs(node.Right, 0, false)
+	}
+	if left > right {
+		return left
+	} else {
+		return right
 	}
 }
