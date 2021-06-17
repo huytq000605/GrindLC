@@ -8,7 +8,7 @@ func maxAreaOfIsland(grid [][]int) int {
 	for i := 0; i < len(grid); i++ {
 		for j := 0; j < len(grid[0]); j++ {
 			if grid[i][j] == 1 {
-				current := helper(grid, i, j, seen)
+				current := dfs(grid, i, j, seen)
 				if current > max {
 					max = current
 				}
@@ -19,7 +19,7 @@ func maxAreaOfIsland(grid [][]int) int {
 	return max
 }
 
-func helper(grid [][]int, i int, j int, seen map[string]int) int {
+func dfs(grid [][]int, i int, j int, seen map[string]int) int {
 	if i < 0 || i == len(grid) || j < 0 || j == len(grid[0]) || grid[i][j] == 0 {
 		return 0
 	}
@@ -28,6 +28,6 @@ func helper(grid [][]int, i int, j int, seen map[string]int) int {
 		return 0
 	}
 	seen[key] = 1
-	result := 1 + helper(grid, i+1, j, seen) + helper(grid, i-1, j, seen) + helper(grid, i, j-1, seen) + helper(grid, i, j+1, seen)
+	result := 1 + dfs(grid, i+1, j, seen) + dfs(grid, i-1, j, seen) + dfs(grid, i, j-1, seen) + dfs(grid, i, j+1, seen)
 	return result
 }
