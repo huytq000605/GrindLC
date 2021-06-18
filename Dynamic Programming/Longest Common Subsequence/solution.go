@@ -1,3 +1,7 @@
+/*
+So basically, if 2 string has x is longest common subsequence, so we append string1 a char, append string2 a char. If two characters we append for string1 and string2 was the same => x + 1 is longest common subsequence but if its not, then the the longest common subsequence will be MAX of LCS(string1, new string2) and LCS(new string1, string 2)
+*/
+
 func longestCommonSubsequence(text1 string, text2 string) int {
 	dp := make([][]int, len(text1)+1)
 	for i := range dp {
