@@ -5,7 +5,7 @@ import "strings"
 func maximumBinaryString(binary string) string {
 	leadingOnes := strings.Index(binary, "0")
 	zeros := strings.Count(binary, "0")
-	if leadingOnes == -1 {
+	if zeros == 0 {
 		return binary
 	}
 	result := strings.Repeat("1", len(binary))

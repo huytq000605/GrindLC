@@ -4,29 +4,17 @@ all 0 can transform to 1 except the last one => result
 */
 
 function maximumBinaryString(binary: string): string {
-    let leadingOnes;
-    let zeros = 0;
-    let result = ""
+    let zeroCount = 0
+    let firstOnes = 0
     for(let i = 0; i < binary.length; i++) {
         if(binary[i] === "0") {
-            leadingOnes = i
-            break;
+            zeroCount++
+        } else if (zeroCount === 0) {
+            firstOnes++
         }
     }
-    if(leadingOnes === undefined) return binary;
-    for(let i = leadingOnes; i < binary.length; i++) {
-        if(binary[i] == "0") {
-            zeros++;
-        }
-    }
-    for(let i = 0; i < leadingOnes + zeros - 1; i++) {
-        result += "1";
-    }
-    result += "0"
-    while(result.length < binary.length) {
-        result += "1"
-    }
-    return result
+    if(zeroCount == 0) return binary
+    return Array(firstOnes).fill("1").join("") + Array(zeroCount - 1).fill("1").join("") + "0" + Array(binary.length - zeroCount - firstOnes).fill("1").join("")
 };
     
 
