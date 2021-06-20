@@ -1,3 +1,6 @@
+from typing import Dict, List
+
+
 class Solution:
     def loudAndRich(self, richer: List[List[int]], quiet: List[int]) -> List[int]:
         richerMap = {}
