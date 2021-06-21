@@ -1,3 +1,5 @@
+// This method is easy to understand, Time complexity is O(nlog(26)) => O(n)
+
 function leastInterval(tasks: string[], n: number): number {
     let freq = new Map()
     for(let task of tasks) {
@@ -7,8 +9,8 @@ function leastInterval(tasks: string[], n: number): number {
     let freqHeap = new MaxHeap()
     let cooldownTask = new MinHeap()
     let t = 0
-    for(let [key, value] of freq.entries()) {
-        let heapNode = new HeapNode(key, value, -1)
+    for(let [taskName, remaining] of freq.entries()) {
+        let heapNode = new HeapNode(taskName, remaining, -1)
         freqHeap.push(heapNode)
     }
     while(freqHeap.length > 0 || cooldownTask.length > 0) {
