@@ -1,3 +1,5 @@
+from typing import List, Tuple
+from functools import lru_cache
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         @lru_cache(maxsize = None)
