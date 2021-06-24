@@ -1,3 +1,5 @@
+// O(n) Space but more faster than solution2
+
 function maximumUniqueSubarray(nums: number[]): number {
     let map = new Map()
     let result = 0;
