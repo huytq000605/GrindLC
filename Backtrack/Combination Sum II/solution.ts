@@ -1,6 +1,6 @@
 function combinationSum2(candidates: number[], target: number): number[][] {
     let result = []
-    candidates.sort((a,b) => a-b)
+    candidates.sort((a,b) => a-b) // We sort the candidates first
     helper(candidates, target, 0, [], result)
     return result
 };
@@ -15,6 +15,7 @@ function helper(nums: number[], target: number, index: number, current: number[]
         return;
     }
 
+    // We use this index of nums
 	current.push(nums[index])
     helper(
         nums,
@@ -25,7 +26,7 @@ function helper(nums: number[], target: number, index: number, current: number[]
     );
 	current.pop()
 
-    let nextIdx = index + 1;
+    let nextIdx = index + 1; // We pass all numbers = nums[index]
     while (nums[nextIdx] === nums[index]) {
         nextIdx++;
     }
