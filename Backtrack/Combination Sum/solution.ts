@@ -12,9 +12,9 @@ function helper(nums: number[], target: number, index: number, current: number[]
     if(target < 0 || index === nums.length) {
         return 
     }
-    current.push(nums[index])
+    current.push(nums[index]) // We push the current index of nums to current
     helper(nums, target - nums[index], index, current, result)
     current.pop()
     
-    helper(nums, target, index + 1, current, result)
+    helper(nums, target, index + 1, current, result) // We pass the current index of nums
 }
