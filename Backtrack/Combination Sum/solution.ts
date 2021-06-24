@@ -1,16 +1,20 @@
-/*
-With this question, i use recursion and keep tracking index to dont make same array but different position
-*/
-
-function combinationSum(candidates: number[], target: number, current = [], result = [], idx = 0): number[][]|any {
-    if(target === 0) return result.push(current)
-    for(let i = idx; i < candidates.length; i++) {
-        if(candidates[i] <= target) {
-            const ori = [...current]
-            current.push(candidates[i])
-            combinationSum(candidates, target - candidates[i], current, result, i);
-            current = ori
-        }
-    }
+function combinationSum(candidates: number[], target: number): number[][] {
+    let result = []
+    helper(candidates, target, 0, [], result)
     return result
-};
+}
+
+function helper(nums: number[], target: number, index: number, current: number[], result: number[][]) {
+    if(target === 0) {
+        result.push([...current])
+        return
+    }
+    if(target < 0 || index === nums.length) {
+        return 
+    }
+    current.push(nums[index])
+    helper(nums, target - nums[index], index, current, result)
+    current.pop()
+    
+    helper(nums, target, index + 1, current, result)
+}
