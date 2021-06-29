@@ -15,6 +15,8 @@ Initially, all next pointers are set to NULL.
 
 Example 1:
 
+![](assets/116_sample.png)
+
 ```
 Input: root = [1,2,3,4,5,6,7]
 Output: [1,#,2,3,#,4,5,6,7,#]
