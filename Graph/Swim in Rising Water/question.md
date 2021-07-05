@@ -1,4 +1,4 @@
-# 778. Swim in Rising Water<br> Medium
+# 778. Swim in Rising Water<br> Hard
 
 You are given an n x n integer matrix grid where each value grid[i][j] represents the elevation at that point (i, j).
 
