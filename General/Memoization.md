@@ -1,0 +1,2 @@
+Remember when memoize: The values (not the keys) are saved into the cache are the results from this position to end, dont save the result that have something connected to previous
+If need memoize the previous sum (to the key) , can try to memoized the remainder instead of the sum 
