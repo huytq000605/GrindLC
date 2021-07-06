@@ -1,7 +1,7 @@
 
-# 78. Subsets<br> Medium
+# 90. Subsets II<br> Medium
 
-## Given an integer array nums that may contain duplicates, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order.?
+## Given an integer array nums that may contain duplicates, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order.
 
  
 
@@ -26,6 +26,6 @@ Constraints:
 
 <summary> Related Topics </summary>
 
-* `Backtrack` 
+- `Backtrack` 
 
 </details>
