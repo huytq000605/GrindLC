@@ -5,9 +5,7 @@ function eraseOverlapIntervals(intervals: number[][]): number {
     for(let i = 1; i < intervals.length; i++) {
         if(intervals[i][0] < end) {
             result++
-            if(intervals[i][1] < end) {
-                end = intervals[i][1]
-            }
+            end = Math.min(end, intervals[i][1])
         } else {
             end = intervals[i][1]
         }
