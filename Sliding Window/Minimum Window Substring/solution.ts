@@ -1,44 +1,33 @@
 function minWindow(s: string, t: string): string {
-    let counter = new Map() // counter letter of t
-    for(let i = 0; i < t.length; i++) {
-        counter.set(t[i], ( counter.get(t[i]) || 0 ) + 1)
+    let freq = new Map()
+    let result = [-1, - 1]
+    for(let letter of t) {
+        freq.set(letter, (freq.get(letter) || 0) + 1)
     }
-
-	// start and end position for result
-    let resultStart = 0
-    let resultEnd = s.length
-	
-	// start position for window,
-	// needSatisfy is number of letter need to be satisfied in window,
-	// satisfied is number of letter has been satisfied
     let start = 0
-    let needSatisfy = counter.size;
-    let satisfied = 0
-	
     for(let end = 0; end < s.length; end++) {
-        if(counter.has(s[end])) {
-            counter.set(s[end], counter.get(s[end]) - 1)
-            if(counter.get(s[end]) === 0) { // If reach 0 => letter has been satisfied
-                satisfied++
-            }
+        if(freq.has(s[end])) {
+            freq.set(s[end], freq.get(s[end]) - 1)
         }
-        
-		while(satisfied === needSatisfy) {
-			if(end - start < resultEnd - resultStart) { // Get minimum result
-				resultStart = start
-				resultEnd = end
-			}
-
-			if(counter.has(s[start])) {
-				if(counter.get(s[start]) === 0) break; // We dont wanna break the satisfy letter
-				counter.set(s[start], counter.get(s[start]) + 1)
-			}
-			start++
-		}
-		
-		
-	}
-        
-    if(resultEnd === s.length) return "" // No result found
-    return s.slice(resultStart, resultEnd + 1)
+        while(check(freq)) {
+            if(result[0] === -1 && result[1] === -1 || end - start + 1 < result[1] - result[0] + 1) {
+                result = [start, end]
+            }
+            if(freq.has(s[start])) {
+                freq.set(s[start], freq.get(s[start]) + 1)
+            }
+            start++
+        }
+    }
+    if(result[0] === -1) return ""
+    return s.slice(result[0], result[1] + 1)
 };
+
+function check(freq) {
+    for(let value of freq.values()) {
+        if(value > 0) {
+            return false
+        }
+    }
+    return true
+}
