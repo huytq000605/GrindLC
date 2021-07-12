@@ -1,24 +1,19 @@
 function permute(nums: number[]): number[][] {
-    let freq = new Map()
     let result = []
-    for(let num of nums) {
-        freq.set(num, (freq.get(num) || 0) + 1)
-    }
-    construct([], result, freq, nums.length)
+    helper(nums, 0, [], result)
     return result
 };
 
-function construct(current: number[],result: number[][], freq: Map<number, number>, length: number) {
-    if(current.length == length) {
+function helper(nums: number[], index: number, current: number[], result: number[][]) {
+    if(current.length === nums.length) {
         result.push([...current])
         return
     }
-    for(let [key, value] of freq.entries()) {
-        if(value == 0) continue;
-        current.push(key)
-        freq.set(key, value - 1)
-        construct(current, result, freq, length)
-        freq.set(key, value)
+    for(let i = index; i < nums.length; i++) {
+        current.push(nums[i]);
+        [nums[i], nums[index]] = [nums[index], nums[i]];
+        helper(nums, index + 1, current, result);
+        [nums[i], nums[index]] = [nums[index], nums[i]];
         current.pop()
     }
 }
