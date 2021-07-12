@@ -1,56 +1,32 @@
-# Put question title here<br> Medium
+# 491. Increasing Subsequences<br> Medium
 
-## Detail of question
+Given an integer array nums, return all the different possible increasing subsequences of the given array with at least two elements. You may return the answer in any order.
+
+The given array may contain duplicates, and two equal integers should also be considered a special case of increasing sequence.
 
 Example 1:
 
 ```
-Input:
-Output:
-Explanation:
+Input: nums = [4,6,7,7]
+Output: [[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]]
 ```
 
 Example 2:
 
 ```
-Input:
-Output:
-Explanation:
+Input: nums = [4,4,3,2,1]
+Output: [[4,4]]
 ```
 
 Constraints:
 
--   `Constraint 1`
--   `Constraint 2`
--   `Constraint 3`
+- `1 <= nums.length <= 15`
+- `-100 <= nums[i] <= 100`
 
 <details>
 
 <summary> Related Topics </summary>
 
--   `Topic 1`
--   `Topic 2`
+-   `Backtrack`
 
-</details>
-
-<details>
-
-<summary> Hint 1 </summary>
-Hint 1
-</details>
-<details>
-
-<summary> Hint 2 </summary>
-Hint 2
-</details>
-
-<details>
-<summary> Hint 3 </summary>
-Hint 3
-</details>
-
-<details>
-
-<summary> Hint 4 </summary>
-Hint 4
 </details>
