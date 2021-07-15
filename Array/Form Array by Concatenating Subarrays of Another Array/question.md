@@ -10,30 +10,29 @@ Note that the subarrays are disjoint if and only if there is no index k such tha
 
 Example 1:
 
-```
+<pre>
 Input: groups = [[1,-1,-1],[3,-2,0]], nums = [1,-1,0,1,-1,-1,3,-2,0]
 Output: true
-Explanation: You can choose the 0th subarray as [1,-1,0,1,-1,-1,3,-2,0] and the 1st one as [1,-1,0,1,-1,-1,3,-2,0].
+Explanation: You can choose the 0th subarray as [1,-1,0,<b>1,-1,-1</b>,3,-2,0] and the 1st one as [1,-1,0,1,-1,-1,<b>3,-2,0</b>].
 These subarrays are disjoint as they share no common nums[k] element.
-```
+</pre>
 
 Example 2:
 
-```
+<pre>
 Input: groups = [[10,-2],[1,2,3,4]], nums = [1,2,3,4,10,-2]
 Output: false
-Explanation: Note that choosing the subarrays [1,2,3,4,10,-2] and [1,2,3,4,10,-2] is incorrect because they are not in the same order as in groups.
+Explanation: Note that choosing the subarrays [<b>1,2,3,4</b>,10,-2] and [1,2,3,4,<b>10,-2</b>] is incorrect because they are not in the same order as in groups.
 [10,-2] must come before [1,2,3,4].
-```
+</pre>
 
 Example 3:
-
-```
+<pre>
 Input: groups = [[1,2,3],[3,4]], nums = [7,7,1,2,3,4,7,7]
 Output: false
-Explanation: Note that choosing the subarrays [7,7,1,2,3,4,7,7] and [7,7,1,2,3,4,7,7] is invalid because they are not disjoint.
+Explanation: Note that choosing the subarrays [7,7,<b>1,2,3</b>,4,7,7] and [7,7,1,2,<b>3,4</b>,7,7] is invalid because they are not disjoint.
 They share a common elements nums[4] (0-indexed).
-```
+</pre>
 
 Constraints:
 
