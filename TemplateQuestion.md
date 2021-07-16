@@ -4,19 +4,19 @@
 
 Example 1:
 
-```
+<pre>
 Input:
 Output:
 Explanation:
-```
+</pre>
 
 Example 2:
 
-```
+<pre>
 Input:
 Output:
 Explanation:
-```
+</pre>
 
 Constraints:
 
