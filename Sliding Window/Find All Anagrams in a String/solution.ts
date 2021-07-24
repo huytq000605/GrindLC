@@ -18,7 +18,7 @@ function findAnagrams(s: string, p: string): number[] {
 };
     
 function compare(cmp: number[], alphabet: number[]): boolean {
-    for(let i = 0; i <= 26; i++) {
+    for(let i = 0; i <= 25; i++) {
         if(cmp[i] !== alphabet[i]) return false
     }
     return true
