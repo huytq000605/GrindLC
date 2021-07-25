@@ -21,6 +21,8 @@ Return the 2D array ans containing the paths of the remaining folders after dele
 
 Example 1:
 
+![](assets/lc-dupfolder1.jpg)
+
 <pre>
 Input: paths = [["a"],["c"],["d"],["a","b"],["c","b"],["d","a"]]
 Output: [["d"],["d","a"]]
@@ -30,6 +32,8 @@ folder named "b".
 </pre>
 
 Example 2:
+
+![](assets/lc-dupfolder2.jpg)
 
 <pre>
 Input: paths = [["a"],["c"],["a","b"],["c","b"],["a","b","x"],["a","b","x","y"],["w"],["w","y"]]
@@ -41,6 +45,8 @@ Note that folders "/a" and "/c" are identical after the deletion, but they are n
 
 Example 3:
 
+![](assets/lc-dupfolder3.jpg)
+
 <pre>
 Input: paths = [["a","b"],["c","d"],["c"],["a"]]
 Output: [["c"],["c","d"],["a"],["a","b"]]
@@ -49,6 +55,8 @@ Note that the returned array can be in a different order as the order does not m
 </pre>
 
 Example 4:
+
+![](assets/lc-dupfolder4.jpg)
 
 <pre>
 Input: paths = [["a"],["a","x"],["a","x","y"],["a","z"],["b"],["b","x"],["b","x","y"],["b","z"]]
@@ -61,6 +69,8 @@ folder "z" and the folder "x" described above.
 </pre>
 
 Example 5:
+
+![](assets/lc-dupfolder5.jpg)
 
 <pre>
 Input: paths = [["a"],["a","x"],["a","x","y"],["a","z"],["b"],["b","x"],["b","x","y"],["b","z"],["b","w"]]
