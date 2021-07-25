@@ -31,37 +31,16 @@ Output: [4,1,1,1,0]
 
 Constraints:
 
--   `Constraint 1`
--   `Constraint 2`
--   `Constraint 3`
+- `n == heights.length`
+- `1 <= n <= 10^5`
+- `1 <= heights[i] <= 10^5`
+- `All the values of heights are unique.`
+
 
 <details>
 
 <summary> Related Topics </summary>
 
--   `Topic 1`
--   `Topic 2`
+-   `Stack`
 
-</details>
-
-<details>
-
-<summary> Hint 1 </summary>
-Hint 1
-</details>
-<details>
-
-<summary> Hint 2 </summary>
-Hint 2
-</details>
-
-<details>
-<summary> Hint 3 </summary>
-Hint 3
-</details>
-
-<details>
-
-<summary> Hint 4 </summary>
-Hint 4
 </details>
