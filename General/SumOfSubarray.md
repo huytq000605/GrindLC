@@ -1,0 +1,1 @@
+try to think about prefixsum , cause we can calculate all the sum of subarray in a prefixsum array
