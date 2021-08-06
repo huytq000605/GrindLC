@@ -1,0 +1,1 @@
+Always think about in-order traversal because it will bring a sort traversal
