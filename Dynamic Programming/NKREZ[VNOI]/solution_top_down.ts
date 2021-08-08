@@ -10,9 +10,11 @@ function maxTimes(intervals: number[][]) {
 		const key = `${currentTime}`
 		if(cache.has(key)) return cache.get(key)
 		let result = Number.MIN_SAFE_INTEGER
+		// Try joining each of this time event
 		for(let canAttend of canAttendAt.get(currentTime)) {
 			result = Math.max(result, canAttend[1] - canAttend[0] + helper(canAttend[1]))
 		}
+		// Not joining any of this time event
 		result = Math.max(result, helper(currentTime + 1))
 		cache.set(key, result)
 		return result 
