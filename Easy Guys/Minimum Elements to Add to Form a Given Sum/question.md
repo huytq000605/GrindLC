@@ -9,20 +9,30 @@ Note that abs(x) equals x if x >= 0, and -x otherwise.
 Example 1:
 
 <pre>
-Input: c = 5
-Output: true
-Explanation: 1 * 1 + 2 * 2 = 5
+Input: nums = [1,-1,1], limit = 3, goal = -4
+Output: 2
+Explanation: You can add -2 and -3, then the sum of the array will be 1 - 1 + 1 - 2 - 3 = -4.
+</pre>
+
+Example 2:
+
+<pre>
+Input: nums = [1,-10,9,1], limit = 100, goal = 0
+Output: 1
 </pre>
 
 Constraints:
 
-- `0 <= c <= 2^31 - 1`
+- `1 <= nums.length <= 10^5`
+- `1 <= limit <= 10^6`
+- `-limit <= nums[i] <= limit`
+- `-10^9 <= goal <= 10^9`
 
 <details>
 
 <summary> Related Topics </summary>
 
--   `Two Pointers`
--   `Math`
+-   `Array`
+-   `Greedy`
 
 </details>
