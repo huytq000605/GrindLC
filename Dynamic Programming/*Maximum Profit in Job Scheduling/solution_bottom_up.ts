@@ -1,22 +1,23 @@
 function jobScheduling(startTime: number[], endTime: number[], profit: number[]): number {
-    let job = Array(startTime.length).fill(0).map((e, i) => [startTime[i], endTime[i], profit[i]])
-    let max = Math.max(...endTime)
-    let dp = Array(max + 1).fill(0)
     let endAt = new Map()
-    for(let i = 0; i < job.length; i++) {
-        if(!endAt.has(job[i][1])) endAt.set(job[i][1], [])
-        endAt.get(job[i][1]).push([job[i][0], job[i][2]])
-    }
-    for(let i = 0; i <= max; i++) {
-        if(i > 0) {
-           dp[i] = dp[i-1] 
+    let maxTime = 0
+    for(let i = 0; i < endTime.length; i++) {
+        if(!endAt.has(endTime[i])) {
+            endAt.set(endTime[i], [])
         }
+        endAt.get(endTime[i]).push([startTime[i], profit[i]])
+        maxTime = Math.max(maxTime, endTime[i])
+    }
+    
+    let dp = Array(maxTime + 2).fill(0)
+    for(let i = 0; i <= maxTime + 1; i++) {
+        if(i > 0) dp[i] = dp[i-1]
         if(endAt.has(i)) {
             for(let [start, profit] of endAt.get(i)) {
                 dp[i] = Math.max(dp[i], dp[start] + profit)
             }
         }
+        
     }
-    return dp[max]
-    
+    return dp[dp.length - 1]
 };
