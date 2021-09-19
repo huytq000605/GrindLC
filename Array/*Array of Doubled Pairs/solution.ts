@@ -1,34 +1,27 @@
 function canReorderDoubled(arr: number[]): boolean {
-    arr.sort((a, b) => {
-        if (a < 0 && b < 0) {
-            return b - a;
+    arr.sort((a,b) => {
+        if(a < 0 && b < 0) {
+            return b-a
         } else {
-            return a - b;
+            return a-b
         }
-    });
-    let freq = new Map();
-    for (let i = 0; i < arr.length; i++) {
-        if (!freq.has(arr[i])) {
-            freq.set(arr[i], []);
-        }
-        freq.get(arr[i]).push(i);
+    })
+    
+    let freq = new Map()
+    for(let num of arr) {
+        freq.set(num, (freq.get(num) || 0) + 1)
     }
-    let indexUsed = new Set();
-    for (let i = 0; i < arr.length; i++) {
-        if (indexUsed.has(i)) continue;
-        if (arr[i] === 0) {
-            if (freq.has(0) && freq.get(0).length % 2 === 0) {
-                continue;
-            } else {
-                return false;
-            }
-        } else {
-            if (freq.has(2 * arr[i]) && freq.get(2 * arr[i]).length > 0) {
-                indexUsed.add(freq.get(2 * arr[i]).shift());
-            } else {
-                return false;
-            }
-        }
+    
+    if(freq.has(0)) {
+        if(freq.get(0) % 2 === 1) return false
     }
-    return true;
-}
+    
+    for(let num of arr) {
+        if(freq.get(num) === 0 || num === 0) continue
+        if(!freq.has(num * 2) || freq.get(num * 2) === 0) return false
+        freq.set(num, freq.get(num) - 1)
+        freq.set(num * 2, freq.get(num * 2) - 1)
+    }
+    
+    return true
+};
