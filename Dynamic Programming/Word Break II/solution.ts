@@ -1,25 +1,30 @@
 function wordBreak(s: string, wordDict: string[]): string[] {
-    let map = new Map()
+    let dict = new Set()
     for(let w of wordDict) {
-        map.set(w, true)
+        dict.add(w)
     }
-    let cache = new Map()
-    function helper(str: string): string[] {
-        if(str === "") return [""]
-        if(cache.has(str)) return cache.get(str)
+    let dp = Array(s.length)
+    
+    let dfs = (idx) => {
+        if(idx >= s.length) {
+            return [""]
+        }
+        if(dp[idx] !== undefined) return dp[idx]
         let result = []
-        for(let i = 0; i < str.length; i++) {
-            let start = str.slice(0, i + 1)
-            if(map.has(start)) {
-                let res = helper(str.slice(i + 1))
-                for(let r of res) {
-                    if(r === "") result.push(start)
-                    else result.push(start + " " + r)
+        let str = ""
+        for(let i = idx; i < s.length; i++) {
+            str += s[i]
+            if(dict.has(str)) {
+                let next = dfs(i + 1)
+                for(let s of next) {
+                    if(s !== "") result.push(str + " " + s)
+                    else result.push(str)
                 }
             }
         }
-        cache.set(str, result)
+        dp[idx] = result
         return result
     }
-    return helper(s)
+    
+    return dfs(0)
 };
