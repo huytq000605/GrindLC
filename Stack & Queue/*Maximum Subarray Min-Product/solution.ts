@@ -1,3 +1,4 @@
+// See General/ MinOrMaxSlidingWindow
 function maxSumMinProduct(nums: number[]): number {
     let prefix = Array(nums.length)
     prefix[0] = BigInt(nums[0])
