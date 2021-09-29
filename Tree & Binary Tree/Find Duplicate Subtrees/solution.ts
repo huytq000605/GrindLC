@@ -1,4 +1,3 @@
-
 // Definition for a binary tree node.
 class TreeNode {
     val: number
@@ -10,30 +9,41 @@ class TreeNode {
         this.right = (right===undefined ? null : right)
     }
 }
+/*
+For people who are curious about why in-order doesn't work, here's a simple example:
+TreeA:
+0
+/
+0
+
+TreeB:
+0
+\
+0
+
+They both have same in-order serialization "#0#0#" if we just use "#" to represent null.
+*/
 
 
-function findDuplicateSubtrees(root: TreeNode | null): Array<TreeNode | null> {
-    let result = []
+ function findDuplicateSubtrees(root: TreeNode | null): Array<TreeNode | null> {
     let seen = new Map()
-    postOrder(root, result, seen)
+    let result = []
+    let dfs = (current) => {
+        if(!current) return ""
+        let left = dfs(current.left)
+        let right = dfs(current.right)
+        
+        let tree = `${current.val}#${left}#${right}` // Cannot let the tree string by inorder, can make dupplicate
+        if(seen.has(tree) && seen.get(tree) === false) {
+            seen.set(tree, true)
+            result.push(current)
+        }
+        if(!seen.has(tree)) {
+            seen.set(tree, false)
+        }
+        return tree
+    }
+    dfs(root)
     return result
+    
 };
-
-
-function postOrder(node : TreeNode | null, result, seen): string {
-    if(!node) {
-        return "#"
-    }
-    let left = postOrder(node.left, result, seen)
-    let right = postOrder(node.right, result, seen)
-    const key = `${node.val}-${left}-${right}`
-    if(seen.has(key)) {
-        if(seen.get(key) === false) {
-            result.push(node)
-            seen.set(key, true)
-        }     
-    } else {
-        seen.set(key, false)
-    }
-    return key
-}
