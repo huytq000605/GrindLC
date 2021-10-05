@@ -1,25 +1,18 @@
 function kSmallestPairs(nums1: number[], nums2: number[], k: number): number[][] {
-    let first = [0, 0, nums1[0], nums2[0]]
-    let result = []
     let minHeap = new MinHeap((a,b) => {
-        let sum1 = a[2] + a[3]
-        let sum2 = b[2] + b[3]
-        if(sum1 > sum2) return 1
-        if(sum1 === sum2) return 0
+        if(a[0] + a[1] > b[0] + b[1]) return 1
+        if(a[0] + a[1] === b[0] + b[1]) return 0
         return -1
     })
-    minHeap.push(first)
-    let seen = new Set()
+    for(let i = 0; i < nums1.length; i++) {
+        minHeap.push([nums1[i], nums2[0], 0])
+    }
+    let result = []
     while(result.length < k && minHeap.length) {
-        let [i, j, u, v] = minHeap.pop()
-        result.push([u, v])
-        if(i < nums1.length - 1 && !seen.has(`${i + 1},${j}`)) {
-            minHeap.push([i + 1, j, nums1[i + 1], nums2[j]])
-            seen.add(`${i + 1},${j}`)
-        }
-        if(j < nums2.length -1 && !seen.has(`${i},${j + 1}`)) {
-            minHeap.push([i, j + 1, nums1[i], nums2[j + 1]])
-            seen.add(`${i},${j + 1}`)
+        let [num1, num2, idx2] = minHeap.pop()
+        result.push([num1, num2])
+        if(idx2 < nums2.length - 1) {
+            minHeap.push([num1, nums2[idx2 + 1], idx2 + 1])
         }
     }
     return result
