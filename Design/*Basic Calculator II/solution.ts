@@ -5,49 +5,37 @@ function calculate(s: string): number {
         if(s[i] === " ") continue
         if(s[i] === "+" || s[i] === "-" || s[i] === "*" || s[i] === "/") {
             arr.push(Number(current))
-            arr.push(s[i])
             current = ""
+            arr.push(s[i])
         } else {
             current += s[i]
         }
     }
-    arr.push(Number(current))
-	// preprocess input, only have number and + - * /	
-    let remaining = []
-    let negative = false
+    if(current !== "") arr.push(Number(current))
+    let stack = []
     for(let i = 0; i < arr.length; i++) {
-        if(arr[i] === "-") {
-            negative = true
-            continue
-        }
-        if(arr[i] === "+") continue
+        if(arr[i] === "+" || arr[i] === "-") continue
         if(arr[i] === "*") {
-            let pop = remaining.pop()
-            let result = arr[i+1] * pop
+            let bePushed = stack.pop() * arr[i+1]
             i++
-            remaining.push(result)
+            stack.push(bePushed)
         } else if(arr[i] === "/") {
-            let pop = remaining.pop()
-            let swap = false
-            if(pop < 0) { 
-                swap = true
-                pop = -pop
-            }
-            let result = Math.floor(pop / arr[i+1])
+            let divide = stack.pop()
+            let bePushed
+            if(divide > 0) bePushed = Math.floor(divide / arr[i+1])
+            else bePushed = Math.ceil(divide/ arr[i+1])
             i++
-            if(swap) result = -result
-            remaining.push(result)
+            stack.push(bePushed)
         } else {
-            if(negative) remaining.push(-arr[i])
-            else remaining.push(arr[i])
-            negative = false
+            if(i > 0 && arr[i-1] === "-") {
+                stack.push(-arr[i])
+            } else {
+                stack.push(arr[i])
+            }
         }
+        
     }
-    
-    
     let result = 0
-    for(let num of remaining) {
-        result += num
-    }
+    for(let num of stack) result += num
     return result
 };
