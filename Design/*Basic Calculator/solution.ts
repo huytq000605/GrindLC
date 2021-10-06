@@ -16,6 +16,7 @@ function calculateNoBracket(s: string): number {
     let arr = []
     let negative = false
     let current = ""
+    // Preprocess, delete all " " and if meet negative number then add negative number
     for(let i = 0; i < s.length; i++) {
         if(s[i] === " ") continue
         if(s[i] === "+" || s[i] === "-" || s[i] === "*" || s[i] === "/") {
@@ -40,38 +41,28 @@ function calculateNoBracket(s: string): number {
     } else {
         arr.push(Number(current))
     }
+
     let remaining = []
-    negative = false
     for(let i = 0; i < arr.length; i++) {
-        if(arr[i] === "-") {
-            negative = true
-            continue
-        }
-        if(arr[i] === "+") continue
+        if(arr[i] === "+" || arr[i] === "-") continue
         if(arr[i] === "*") {
             let pop = remaining.pop()
             let result = arr[i+1] * pop
             i++
             remaining.push(result)
         } else if(arr[i] === "/") {
-            let pop = remaining.pop()
-            let swap = false
-            if(pop < 0) {
-                swap = true
-                pop = -pop
-            }
-            let result = Math.floor(pop / arr[i+1])
+            let divide = remaining.pop()
+            let result
+            if (divide > 0) result = Math.floor(divide / arr[i + 1])
+            else result = Math.ceil(divide / arr[i + 1])
             i++
-            if(swap) result = -result
             remaining.push(result)
         } else {
-            if(negative) remaining.push(-arr[i])
+            if(arr[i-1] === "-") remaining.push(-arr[i])
             else remaining.push(arr[i])
             negative = false
         }
     }
-    
-    
     let result = 0
     for(let num of remaining) {
         result += num
