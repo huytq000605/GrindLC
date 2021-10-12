@@ -1,4 +1,3 @@
-
 // Definition for a binary tree node.
 class TreeNode {
     val: number
@@ -12,26 +11,18 @@ class TreeNode {
 }
 
 
- function pathSum(root: TreeNode | null, targetSum: number): number[][] {
+function pathSum(root: TreeNode | null, targetSum: number): number[][] {
     let result = []
-    function dfs(node: TreeNode | null, currentSum: number, current: number[]) {
-        if(!node) {
-            return
+    let dfs = (node, sum, path) => {
+        if(!node) return
+        sum += node.val
+        path.push(node.val)
+        if(!node.left && !node.right && sum === targetSum) {
+            result.push([...path])
         }
-        currentSum += node.val
-        current.push(node.val)
-        if(currentSum === targetSum && !node.left && !node.right) {
-            result.push([...current])
-            return
-        }
-        if(node.left) {
-            dfs(node.left, currentSum, current)
-            current.pop()
-        }
-        if(node.right) {
-            dfs(node.right, currentSum, current)
-            current.pop()
-        }
+        dfs(node.left, sum, path)
+        dfs(node.right, sum, path)
+        path.pop()
     }
     dfs(root, 0, [])
     return result
