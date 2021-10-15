@@ -1,25 +1,18 @@
 function maxProfit(prices: number[]): number {
-    let cache = new Map()
-    function helper(index: number, buy: boolean, cooldown: boolean) {
-        if(index === prices.length) return 0
-        const key = `${index}-${buy}-${cooldown}`
-        if(cache.has(key)) return cache.get(key)
-        if(!buy) {
-            let passThis = helper(index + 1, false, false)
-            if(cooldown) {
-                cache.set(key, passThis)
-            } else {
-                let buyThis = -prices[index] + helper(index, true, false)
-                cache.set(key, Math.max(buyThis, passThis))
-            }
+    let dp = Array(prices.length).fill(0).map(() => Array(2).fill(0).map(() => Array(2)))
+    let dfs = (idx: number, cooldown: number, bought: number) => {
+        if(idx >= prices.length) return 0
+        if(dp[idx][cooldown][bought]) return dp[idx][cooldown][bought]
+        let result: number
+        if(cooldown === 1) {
+            result = dfs(idx + 1, 0, 0) // We cannot do anything
+        } else if(bought === 0) {
+            result = Math.max(dfs(idx + 1, 0, 1) - prices[idx], dfs(idx + 1, 0, 0)) // We buy or dont do anything
+        } else {
+            result = Math.max(dfs(idx + 1, 1, 0) + prices[idx], dfs(idx + 1, 0, 1)) // We sell or hold then pass
         }
-        if(buy) {
-            let sellThis = prices[index] + helper(index + 1, false, true)
-            let passThis = helper(index + 1, true, false)
-            cache.set(key, Math.max(sellThis, passThis))
-        }
-        return cache.get(key)
+        dp[idx][cooldown][bought] = result
+        return result
     }
-    return helper(0, false, false)
-}
-
+    return dfs(0, 0, 0)
+};
