@@ -1,18 +1,15 @@
 function minimumTotal(triangle: number[][]): number {
-    let dp = Array(triangle.length).fill(0).map((_, index) => Array(index + 1).fill(0))
-    dp[0][0] = triangle[0][0]
-    let row = 1
-    while(row < dp.length) {
-        for(let i = 0; i < dp[row].length; i++) {
-            let left
-            let right
-            if(i - 1 < 0 || i - 1 >= dp[row - 1].length) left = Number.MAX_SAFE_INTEGER
-            else left = dp[row-1][i-1]
-            if(i < 0 || i >= dp[row - 1].length) right = Number.MAX_SAFE_INTEGER
-            else right = dp[row-1][i]
-            dp[row][i] = Math.min(left, right) + triangle[row][i] 
+    let previousRow = triangle[0]
+    for(let row = 1; row < triangle.length; row++) {
+        let currentRow = Array(triangle[row].length)
+        for(let col = 0; col < triangle[row].length; col++) {
+            let up = col >= previousRow.length ? Number.MAX_SAFE_INTEGER : previousRow[col]
+            let left = col - 1 < 0 ? Number.MAX_SAFE_INTEGER : previousRow[col - 1]
+            currentRow[col] = Math.min(up, left) + triangle[row][col]
         }
-        row++
+        previousRow = currentRow
     }
-    return Math.min(...dp[row - 1])
+    
+    return Math.min(...previousRow)
+    
 };
