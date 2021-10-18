@@ -1,40 +1,27 @@
 function decodeString(s: string): string {
-    let stack = []
-    let result = s
-    for(let i = 0; i < result.length; i++) {
-        if(result[i] == "[") {
-            stack.push(i)
-            continue;
-        }
-        if(result[i] == "]") {
-            let start = stack.pop()
-            let [num, numLength] = getNumber(result, start)
-            let str = result.slice(start + 1, i)
-            let finalStr = str
-            for(let i = 0; i < num - 1; i++) {
-                finalStr += str
+    let result = ""
+    let dfs = (idx: number, str: string, stack: number[]) => {
+        for(let i = idx; i < str.length; i++) {
+            if(str[i] === "[") {
+                stack.push(i)   
+            } else if(str[i] === "]") {
+                let open = stack.pop()
+                let startNumber = 0
+                for(let i = open - 1; i >= 0; i--) {
+                    if(str[i] >= "0" && str[i] <= "9") {
+                        startNumber = i
+                    } else {
+                        break
+                    }
+                }
+                let repeat = Number(str.slice(startNumber, open))
+                let replace = str.slice(open + 1, i).repeat(repeat)
+                str = str.slice(0, startNumber) + replace + str.slice(i + 1)
+                return dfs(startNumber + replace.length, str, stack)
             }
-            result = result.slice(0, start - numLength) + finalStr + result.slice(i + 1)
-            i = i - (i - start  + 1) - numLength
         }
+        result = str
     }
+    dfs(0, s, [])
     return result
 };
-
-function getNumber(s, open) {
-    let numStack = []
-    console.log(s, open)
-    for(let i = open - 1; i >= 0; i --) {
-        if(/[0-9]/.test(s[i])) {
-            numStack.push(s[i])
-        } else {
-            break
-        }
-    }
-    let numString = ""
-    let numLength = numStack.length
-    while(numStack.length) {
-        numString += numStack.pop()
-    }
-    return [Number(numString), numLength]
-}
