@@ -20,6 +20,7 @@ function findCheapestPrice(n: number, flights: number[][], src: number, dst: num
     while(minHeap.length) {
         let [current, currentDist, currentStop] = minHeap.pop()
         if(currentStop > stops[current]) continue
+        // We don't update when we push because that prunes the shorest path we can
         stops[current] = currentStop // Update stops
         if(current === dst) {
             return currentDist
