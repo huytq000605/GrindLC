@@ -22,19 +22,20 @@ function countPaths(n: number, roads: number[][]): number {
     
     while(minHeap.length) {
         let [current, currentDist] = minHeap.pop()
-         if(current === n - 1) {
-             return ways[current]
+        if(current === n - 1) {
+            return ways[current]
         }
         for(let [connect, dist] of graph.get(current)) {       
             let newDist = currentDist + dist
             if(distance[connect] >= newDist) {
-                distance[connect] = newDist
-                if(ways[connect] !== 0) {
-                    ways[connect] = (ways[connect] + ways[current]) % MOD 
-                    continue
-                }  
-                ways[connect] = ways[current]
-                minHeap.push([connect, newDist])
+                if(distance[connect] === newDist) {
+                    ways[connect] += ways[current]
+                    ways[connect] = ways[connect] % MOD
+                } else {
+                    distance[connect] = newDist
+                    ways[connect] = ways[current]
+                    minHeap.push([connect, newDist])
+                } 
             }
         }
     }
