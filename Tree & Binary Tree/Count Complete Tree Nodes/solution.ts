@@ -1,4 +1,3 @@
-
 // Definition for a binary tree node.
 class TreeNode {
     val: number
@@ -14,18 +13,17 @@ class TreeNode {
 
  function countNodes(root: TreeNode | null): number {
     if(!root) return 0
-    let height = getHeight(root)
-    if(height === 1) {
-        return 1
-    }
-    if(getHeight(root.right) === height - 1) {
-        return 1 + (1 << (height - 1)) - 1 + countNodes(root.right)
+    let leftLevel = getHeight(root.left)
+    let rightLevel = getHeight(root.right)
+    if(leftLevel > rightLevel) {
+        return countNodes(root.left) + (1 << rightLevel)
     } else {
-        return 1 + countNodes(root.left) + (1 << (height - 2)) - 1
+        return (1 << rightLevel) + countNodes(root.right)
     }
+    
 };
 
-function getHeight(node: TreeNode) {
-    if(!node) return 0
-    return 1 + getHeight(node.left)
+function getHeight(root) {
+    if(!root) return 0
+    return getHeight(root.left) + 1
 }
