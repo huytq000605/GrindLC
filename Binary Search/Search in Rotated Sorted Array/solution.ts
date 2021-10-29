@@ -1,3 +1,4 @@
+// Find the first min element, then have two sorted arrays
 function search(nums: number[], target: number): number {
     let first = 0
     if(nums[first] > nums[nums.length - 1]) {
