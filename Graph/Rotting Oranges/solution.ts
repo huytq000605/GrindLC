@@ -1,37 +1,35 @@
 function orangesRotting(grid: number[][]): number {
-    let fresh = 0
-    let queue = []
-    const dirs = [[0,1], [1,0], [-1, 0], [0, -1]]
+    let deque = []
+    let deque1 = []
+    let totalFresh = 0
+    let result = 0
+    
     for(let i = 0; i < grid.length; i++) {
         for(let j = 0; j < grid[0].length; j++) {
-            if(grid[i][j] === 2) {
-                queue.push([i, j, 0])
-            }
-            if(grid[i][j] === 1) {
-                fresh++
-            }
+            if(grid[i][j] === 1) totalFresh++
+            if(grid[i][j] === 2) deque.push([i, j])
         }
     }
-    if(fresh === 0) return 0
     
-    while(queue.length > 0) {
-        let [i, j, depth] = queue.shift()
-        if(grid[i][j] === 1) {
-            fresh--
-            if(fresh === 0) {
-                return depth
-            }
-            grid[i][j] = 2 
-        }
+    const dirs = [[0,1], [1,0], [0, -1], [-1, 0]]
+    while(deque.length) {
+        let [i, j] = deque.shift()
         for(let dir of dirs) {
-            let r = i + dir[0]
-            let c = j + dir[1]
-            if(r < 0 || r === grid.length || c < 0 || c === grid[0].length || grid[r][c] !== 1) {
-                continue
-            }
-            queue.push([r, c, depth + 1])
+            let newRow = i + dir[0]
+            let newCol = j + dir[1]
+            if(newRow < 0 || newRow >= grid.length || newCol < 0 || newCol >= grid[0].length || grid[newRow][newCol] !== 1) continue
+            totalFresh--
+            grid[newRow][newCol] = 2
+            deque1.push([newRow, newCol])
         }
+        if(!deque.length) {
+            if(!deque1.length) break
+            result++
+            [deque, deque1] = [deque1, deque]
+        }
+        
     }
     
-    return -1
+    if(totalFresh !== 0) return -1
+    return result
 };
