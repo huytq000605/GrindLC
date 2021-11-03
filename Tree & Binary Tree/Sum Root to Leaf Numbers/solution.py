@@ -7,22 +7,19 @@ class TreeNode:
 
 class Solution:
     def sumNumbers(self, root: TreeNode) -> int:
-        numbers = []
-        def getNum(node: TreeNode, current: str):
+        result = 0
+        def getNum(node: TreeNode, current: int):
             if node == None:
                 return
-            current += str(node.val)
+            current += node.val
             if node.left == None and node.right == None:
-                numbers.append(int(current))
+                result += current
                 return
             getNum(node.left, current)
             getNum(node.right, current)
         
-        getNum(root, "")
-        sum = 0
-        for num in numbers:
-            sum += num
-        return sum
+        getNum(root, 0)
+        return result
         
                 
         

@@ -1,4 +1,3 @@
-
 // Definition for a binary tree node.
 class TreeNode {
     val: number
@@ -12,29 +11,17 @@ class TreeNode {
 }
 
 
- function sumNumbers(root: TreeNode | null): number {
-    if(!root) {
-        return 0
-    }
-    if(root.val === 0) {
-        return sumNumbers(root.left) + sumNumbers(root.right)
-    }
-    let numbers = []
-    let sum = 0
-    helper(root, "", numbers)
-    for(let num of numbers) {
-        sum += num
-    }
-    return sum
-};
-
-function helper(node: TreeNode | null, current: string, numbers: Array<number>) {
-	if(!node) return
-    current += node.val
-    if(!node.left && !node.right) {
-        numbers.push(Number(current))
-        return
-    }
-	helper(node.left, current, numbers);
-	helper(node.right, current, numbers);
-}
+function sumNumbers(root: TreeNode | null): number {
+    let result = 0;
+    let dfs = (node: TreeNode | null, current: number) => {
+        if (!node) return;
+        current = current * 10 + node.val;
+        if (!node.left && !node.right) result += current;
+        else {
+            dfs(node.left, current);
+            dfs(node.right, current);
+        }
+    };
+    dfs(root, 0);
+    return result;
+ };
