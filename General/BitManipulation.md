@@ -9,3 +9,22 @@
 ### Set n bit: **mask = mask | (1 << (n * position))**
 
 ### Unset n bit: **mask = mask & ~(1 << (n * position))**
+
+### Get most left bit:
+``` typescript
+for(let i = 31; i >= 0; i--) {
+	if(mask & (1 << i) !== 0) {
+		return i
+	}
+}
+```
+
+
+### Get most right bit:
+``` typescript
+for(let i = 0; i < 32; i++) {
+	if(mask & (1 << i) !== 0) {
+		return i
+	}
+}
+```
