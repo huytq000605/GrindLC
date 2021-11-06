@@ -10,7 +10,7 @@
 
 ### Unset n bit: **mask = mask & ~(1 << (n * position))**
 
-### Get most left bit:
+### Get most left bit (Most Significant Bit):
 ``` typescript
 for(let i = 31; i >= 0; i--) {
 	if(mask & (1 << i) !== 0) {
@@ -20,7 +20,7 @@ for(let i = 31; i >= 0; i--) {
 ```
 
 
-### Get most right bit:
+### Get most right bit (Least Significant Bit):
 ``` typescript
 for(let i = 0; i < 32; i++) {
 	if(mask & (1 << i) !== 0) {
