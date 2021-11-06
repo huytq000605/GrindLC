@@ -1,20 +1,15 @@
+// LIKE 312, 1547
 function minScoreTriangulation(values: number[]): number {
-    let map = new Map()
-    return helper(values, 0, values.length -1, map)
+    let dp = Array(values.length).fill(0).map(() => Array(values.length))
+    let dfs = (start: number, end: number) => {
+        if(start + 1 === end) return 0
+        if(dp[start][end] !== undefined) return dp[start][end]
+        let result = Number.MAX_SAFE_INTEGER
+        for(let i = start + 1; i < end; i++) {
+            result = Math.min(result, values[start] * values[end] * values[i] + dfs(start, i) + dfs(i, end))
+        }
+        dp[start][end] = result
+        return result
+    }
+    return dfs(0, values.length - 1)
 };
-
-function helper(nums: number[], start: number, end: number, map: Map<string, number>): number {
-    const key = `${start}-${end}`
-    if(map.has(key)) {
-        return map.get(key)
-    }
-    if(end - start + 1 < 3) {
-        return 0
-    }
-    let result = Number.MAX_SAFE_INTEGER
-    for(let i = start + 1; i < end; i++) {
-        result = Math.min(result, nums[start]*nums[end]*nums[i] + helper(nums, start, i, map) + helper(nums, i, end, map))
-    }
-    map.set(key, result)
-    return result
-}
