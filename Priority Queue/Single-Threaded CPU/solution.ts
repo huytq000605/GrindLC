@@ -20,10 +20,7 @@ function getOrder(tasks: number[][]): number[] {
         }
         if(!queue.length && i < tasks.length) {
             time = tasks[i][0]
-        }
-        while(i < tasks.length && time >= tasks[i][0]) {
-            queue.push(tasks[i])
-            i++
+            continue
         }
         let [_, consume, task] = queue.pop()
         time += consume
