@@ -14,10 +14,9 @@ function isMatch(s: string, p: string): boolean {
         if(p[idx2] === "?") {
             result = dfs(idx1 + 1, idx2 + 1)
         } else if(p[idx2] === "*") {
-            for(let i = 0; i < s.length - idx1 + 1; i++) {
-                if(dfs(idx1 + i, idx2 + 1)) return true
-            }
-            result = false
+            result = dfs(idx1, idx2 + 1)
+            if(result) return true
+            result = dfs(idx1 + 1, idx2)
         } else if(s[idx1] === p[idx2]) {
             result = dfs(idx1 + 1, idx2 + 1)
         } else {
