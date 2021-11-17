@@ -19,8 +19,6 @@ class Solution:
                 result = max(result, sum([values[value] for value in passed]))
             if node in graph:
                 for [nextNode, timeTake] in graph[node]:
-                    if nextNode != 0 and time + timeTake * 2 > maxTime:
-                        continue
                     if time + timeTake > maxTime:
                         continue
                     alreadyPassed = False

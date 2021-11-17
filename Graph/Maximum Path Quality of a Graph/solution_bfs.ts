@@ -20,9 +20,6 @@ function maximalPathQuality(values: number[], edges: number[][], maxTime: number
         }
         if(graph.has(node)) {
             for(let [nextNode, timeTake] of graph.get(node)) {
-                if(nextNode !== 0 && time + timeTake * 2 > maxTime) {
-                    continue
-                }
                 if(time + timeTake > maxTime) continue
                 queue.push([nextNode, time + timeTake, new Set(set)])
             }

@@ -12,8 +12,6 @@ class Solution:
             if node == 0:
                 result = max(result, sum([values[value] for value in passed]))
             for [nextNode, timeTake] in graph[node]:
-                if nextNode != 0 and time + timeTake * 2 > maxTime:
-                    continue
                 if time + timeTake > maxTime:
                     continue
                 bfs.append([nextNode, time + timeTake, set.copy(passed)])
