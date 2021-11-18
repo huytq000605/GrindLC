@@ -1,34 +1,38 @@
 class Solution:
     def palindromePairs(self, words: List[str]) -> List[List[int]]:
-        wordDict = dict()
-        result = []
+        wordDict = {}
         for i in range(len(words)):
             wordDict[words[i]] = i 
+        result = []
         
-        def isPalindrome(word):
+        def isPalindrome(s):
             left = 0
-            right = len(word) - 1
+            right = len(s) - 1
             while left < right:
-                if word[left] != word[right]: return False
+                if s[left] != s[right]: return False
                 left += 1
                 right -= 1
             return True
         
         for i in range(len(words)):
             word = words[i]
-            for cut in range(1, len(word) + 1):
-                first = word[0:cut]
-                second = word[cut:]
-                if isPalindrome(second):
-                    reverseFirst = first[::-1]
-                    if reverseFirst in wordDict and wordDict[reverseFirst] != i:
-                        result.append([i, wordDict[reverseFirst]])
+            for j in range(0, len(word)):
                 
+                first = word[:j]
+                second = word[j:]
+                
+
                 if isPalindrome(first):
-                    reverseSecond = second[::-1]
-                    if reverseSecond in wordDict and wordDict[reverseSecond] != i:
-                        result.append([wordDict[reverseSecond], i])
-                        if reverseSecond == "":
-                            result.append([i, wordDict[reverseSecond]])
-        
+                    revSecond = str(second[::-1])
+                    if revSecond in wordDict and wordDict[revSecond] != i:
+                        result.append([wordDict[revSecond], i])
+                
+                if isPalindrome(second):
+                    revFirst = str(first[::-1])
+                    if revFirst in wordDict and wordDict[revFirst] != i:
+                        result.append([i, wordDict[revFirst]])
+                        if revFirst == "": # Case ["a", ""]
+                            result.append([wordDict[revFirst], i])
+                        
+                        
         return result
