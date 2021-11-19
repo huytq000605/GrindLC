@@ -13,16 +13,18 @@ class TreeNode {
 
 
 function subtreeWithAllDeepest(root: TreeNode | null): TreeNode | null {
-    return helper(root, 0)[0]
+    return dfs(root)[0]
 };
 
-function helper(root: TreeNode, level: number) {
-    if(!root.left && !root.right) return [root,level]
-    if(!root.left) return helper(root.right, level + 1)
-    if(!root.right) return helper(root.left, level + 1)
-    const r1 = helper(root.left, level + 1);
-    const r2 = helper(root.right, level + 1);
-    if(r1[1] > r2[1]) return r1
-    else if(r1[1] < r2[1]) return r2
-    else return [root, r1[1]]
+function dfs(root: TreeNode): [TreeNode | null, number] {
+    if(!root) return [null, 0]
+    const [left, leftLevel] = dfs(root.left);
+    const [right, rightLevel] = dfs(root.right);
+    if(leftLevel > rightLevel) {
+        return [left, leftLevel + 1]
+    } else if(leftLevel < rightLevel) {
+        return [right, rightLevel + 1]
+    } else {
+        return [root, leftLevel + 1]
+    }
 }
