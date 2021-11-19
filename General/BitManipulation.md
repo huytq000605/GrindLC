@@ -29,6 +29,12 @@ for(let i = 0; i < 32; i++) {
 }
 ```
 
+### Unset the right most 1 bit:
+``` python
+	mask &= (mask - 1)
+
+```
+
 ### Get all subset of mask (finding all mask that have all set bit in given mask):
 ``` python
 	givenMask
