@@ -3,7 +3,7 @@
 ## Be Group Interview Question
 
 Given array contains n element from 0 to n-1. Starting from index zero, keeping dropping the next one from array, and start it again from the dropped's next one.
-
+Return the last remain element
 
 Example 1:
 
