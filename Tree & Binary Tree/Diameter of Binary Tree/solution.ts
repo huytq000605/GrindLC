@@ -12,12 +12,15 @@
  * }
  */
 
- function constructFromPrePost(preorder: number[], postorder: number[]): TreeNode | null {
-    if(!preorder.length) return null
-    let root = new TreeNode(preorder[0])
-    if(preorder.length === 1) return root
-    let leftNodes = postorder.indexOf(preorder[1]) + 1
-    root.left = constructFromPrePost(preorder.slice(1, 1 + leftNodes), postorder.slice(0, leftNodes))
-    root.right = constructFromPrePost(preorder.slice(1 + leftNodes), postorder.slice(leftNodes, postorder.length - 1))
-    return root
+ function diameterOfBinaryTree(root: TreeNode | null): number {
+    let result = 0
+    let maxDepth = (node) => {
+        if(!node) return 0
+        let left = maxDepth(node.left)
+        let right = maxDepth(node.right)
+        result = Math.max(result, left + right)
+        return Math.max(left, right) + 1
+    }
+    maxDepth(root)
+    return result
 };
