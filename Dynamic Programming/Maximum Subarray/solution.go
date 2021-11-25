@@ -4,22 +4,20 @@ package main
 Kadane's algorithm.
 */
 
+import "math"
+
 func maxSubArray(nums []int) int {
-	dp := make([]int, len(nums))
-	dp[0] = nums[0]
-	for i := 1; i < len(nums); i++ {
-		res := dp[i-1] + nums[i]
-		if res > nums[i] {
-			dp[i] = res
+	max := math.MinInt32
+	curr := math.MinInt32
+	for _, num := range nums {
+		if curr+num <= num {
+			curr = num
 		} else {
-			dp[i] = nums[i]
+			curr += num
+		}
+		if curr > max {
+			max = curr
 		}
 	}
-	result := dp[0]
-	for i := 1; i < len(dp); i++ {
-		if dp[i] > result {
-			result = dp[i]
-		}
-	}
-	return result
+	return max
 }
