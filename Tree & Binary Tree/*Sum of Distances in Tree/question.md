@@ -1,4 +1,4 @@
-# 834. Sum of Distances in Tree<br> Medium
+# 834. Sum of Distances in Tree<br> Hard
 
 There is an undirected connected tree with n nodes labeled from 0 to n - 1 and n - 1 edges.
 
