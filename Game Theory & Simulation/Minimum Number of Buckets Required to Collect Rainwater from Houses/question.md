@@ -1,0 +1,43 @@
+# 2086. Minimum Number of Buckets Required to Collect Rainwater from Houses<br> Medium
+
+You are given a 0-indexed string street. Each character in street is either 'H' representing a house or '.' representing an empty space.
+
+You can place buckets on the empty spaces to collect rainwater that falls from the adjacent houses. The rainwater from a house at index i is collected if a bucket is placed at index i - 1 and/or index i + 1. A single bucket, if placed adjacent to two houses, can collect the rainwater from both houses.
+
+Return the minimum number of buckets needed so that for every house, there is at least one bucket collecting rainwater from it, or -1 if it is impossible.
+
+Example 1:
+
+<pre>
+Input: street = "H..H"
+Output: 2
+Explanation:
+We can put buckets at index 1 and index 2.
+"H..H" -> "HBBH" ('B' denotes where a bucket is placed).
+The house at index 0 has a bucket to its right, and the house at index 3 has a bucket to its left.
+Thus, for every house, there is at least one bucket collecting rainwater from it.
+</pre>
+
+Example 2:
+
+<pre>
+Input: street = ".HHH."
+Output: -1
+Explanation:
+There is no empty space to place a bucket to collect the rainwater from the house at index 2.
+Thus, it is impossible to collect the rainwater from all the houses.
+</pre>
+
+Constraints:
+
+- `1 <= street.length <= 10^5`
+- `street[i] is either 'H' or '.'.`
+
+<details>
+
+<summary> Related Topics </summary>
+
+-   `Array`
+-   `Simulation`
+
+</details>
