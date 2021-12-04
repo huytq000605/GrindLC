@@ -1,4 +1,4 @@
-# Put question title here<br> Medium
+# Put question title here<br> Hard
 
 ## Detail of question
 
