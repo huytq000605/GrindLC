@@ -30,7 +30,18 @@ Output: [1,1]
 
 Constraints:
 
+- `1 <= n <= 3 * 10^4`
+- `edges.length == n - 1`
+- `edges[i].length == 2`
+- `0 <= ai, bi < n`
+- `ai != bi`
+- `The given input represents a valid tree.`
+
+<details>
+
+<summary> Related Topics </summary>
+
 -   `Tree`
 -   `DFS`
 
-<details>
+</details>

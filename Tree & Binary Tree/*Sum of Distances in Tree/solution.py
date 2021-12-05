@@ -5,11 +5,11 @@ class Solution:
             graph[edge1].append(edge2)
             graph[edge2].append(edge1)
         
-        result = [0 for i in range(n)]
-        sumNodesDownward = [0 for i in range(n)]
-        numNodesDownward = [0 for i in range(n)]
-    
+        result = [0] * n
+        noOfNodes = [0] * n
+
         def dfs(node, parent):
+            nonlocal noOfNodes
             # return numOfNodes, sumDistance
             numOfNodes = 1
             sumDistance = 0
@@ -19,9 +19,8 @@ class Solution:
                 numNodes, sumNodes = dfs(child, node)
                 numOfNodes += numNodes
                 sumDistance += sumNodes + numNodes
+            noOfNodes[node] = numOfNodes
             
-            sumNodesDownward[node] = sumDistance
-            numNodesDownward[node] = numOfNodes
             return numOfNodes, sumDistance
         dfs(0, -1)
         
