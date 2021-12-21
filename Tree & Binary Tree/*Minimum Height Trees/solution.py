@@ -1,32 +1,27 @@
-from collections import *
-from typing import *
-
 class Solution:
     def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
         graph = [set() for i in range(n)]
-        for node1, node2 in edges:
-            graph[node1].add(node2)
-            graph[node2].add(node1)
+        for u, v in edges:
+            graph[u].add(v)
+            graph[v].add(u)
         
-        queue = deque()
+        leafs = []
         seen = set()
         
-        for i in range (n):
+        for i in range(n):
             if len(graph[i]) <= 1:
                 seen.add(i)
-                queue.append(i)
+                leafs.append(i)
         
-        while n - len(seen) + len(queue) > 2:
-            nextQueue = deque()
-            while queue:
-                node = queue.popleft()
-                for nextNode in graph[node]:
-                    if nextNode in seen: continue
-                    graph[nextNode].remove(node)
-                    if len(graph[nextNode]) == 1:
-                        seen.add(nextNode)
-                        nextQueue.append(nextNode)
-            queue = nextQueue
+        while n - len(seen) + len(leafs) > 2:
+            nextLeafs = []
+            while leafs:
+                leaf = leafs.pop()
+                for adj in graph[leaf]:
+                    graph[adj].remove(leaf)
+                    if len(graph[adj]) == 1:
+                        seen.add(adj)
+                        nextLeafs.append(adj)
+            leafs = nextLeafs
         
-        return queue
-                
+        return leafs
