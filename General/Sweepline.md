@@ -1,4 +1,5 @@
-Corporate Flight Bookings problem (In Array)
+# Sweepline
+- Corporate Flight Bookings problem (In Array)
 When there are array of range booking [start, end, value]
 we need *value* more seats on start-th day but dont need for end-th + 1 day
 we accumulate these changes => result
@@ -27,3 +28,8 @@ If we do this for all the bookings, and then apply the cumulative sum, we get th
 The only tricky part is paying attention to the 0-indexed result array because we added 1 for padding to mark the end of the range.
 
 So we return only the first n elements.
+
+# 2D Array
+- Apply the same technique above, if we want to set from [i][j] to [i+H][j+W]
+- we set array[i][j] += 1, array[i][j+W] -= 1, array[i+H][j] -= 1, array[i+H][j+W] += 1
+- Calculate prefix sum in 2D Array
