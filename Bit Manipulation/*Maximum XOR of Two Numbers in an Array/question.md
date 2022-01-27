@@ -1,4 +1,4 @@
-# 1707. Maximum XOR With an Element From Array<br> Medium
+# 421. Maximum XOR With an Element From Array<br> Medium
 
 Given an integer array nums, return the maximum result of nums[i] XOR nums[j], where 0 <= i <= j < n.
 
