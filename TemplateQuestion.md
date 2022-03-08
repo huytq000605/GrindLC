@@ -34,12 +34,11 @@ Constraints:
 </details>
 
 <details>
-
 <summary> Hint 1 </summary>
 Hint 1
 </details>
-<details>
 
+<details>
 <summary> Hint 2 </summary>
 Hint 2
 </details>
@@ -50,7 +49,6 @@ Hint 3
 </details>
 
 <details>
-
 <summary> Hint 4 </summary>
 Hint 4
 </details>
