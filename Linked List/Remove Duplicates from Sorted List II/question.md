@@ -1,31 +1,39 @@
+
 # 82. Remove Duplicates from Sorted List II<br> Medium
 
-## Given the head of a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list. Return the linked list sorted as well.
+<p>Given the <code>head</code> of a sorted linked list, <em>delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list</em>. Return <em>the linked list <strong>sorted</strong> as well</em>.</p>
 
-Example 1:
-
+<p>&nbsp;</p>
+<p><strong>Example 1:</strong></p>
+<img alt="" src="./assets/image1.jpg" style="width: 500px; height: 142px;" />
 <pre>
-Input: head = [1,2,3,3,4,4,5]
-Output: [1,2,5]
+<strong>Input:</strong> head = [1,2,3,3,4,4,5]
+<strong>Output:</strong> [1,2,5]
 </pre>
 
-Example 2:
-
+<p><strong>Example 2:</strong></p>
+<img alt="" src="./assets/image2.jpg" style="width: 500px; height: 205px;" />
 <pre>
-Input: head = [1,1,1,2,3]
-Output: [2,3]
+<strong>Input:</strong> head = [1,1,1,2,3]
+<strong>Output:</strong> [2,3]
 </pre>
 
-Constraints:
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
 
-- `The number of nodes in the list is in the range [0, 300].`
-- `-100 <= Node.val <= 100`
-- `The list is guaranteed to be sorted in ascending order.`
+<ul>
+	<li>The number of nodes in the list is in the range <code>[0, 300]</code>.</li>
+	<li><code>-100 &lt;= Node.val &lt;= 100</code></li>
+	<li>The list is guaranteed to be <strong>sorted</strong> in ascending order.</li>
+</ul>
+
 
 <details>
 
 <summary> Related Topics </summary>
 
--   `Linked List`
+-	`Linked List`
+-	`Two Pointers`
 
 </details>
+
