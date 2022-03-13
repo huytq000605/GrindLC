@@ -1,4 +1,4 @@
-# Distinct Subsequences<br> Medium
+# 115. Distinct Subsequences<br> Hard
 
 Given two strings s and t, return the number of distinct subsequences of s which equals t.
 
