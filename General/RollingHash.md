@@ -35,3 +35,9 @@ ana -> ban + a - b = (689 * 26) + 0 - 26 * 26 * 26 * b = 338 ( the current b had
    - hash %= MOD
 3. Plus with new letter
    - hash += newLetterCharCode
+
+## Prefix Rolling Hash
+- We can quickly find rolling hash from [left, right] by precalculate hashs[i] by:
+- hashs[i] = ((hashs[i-1] * BASE) + arr[i] - 'a' + 1) % MOD
+- powers[i] = (powers[i-1] * BASE) % MOD
+- calculate(left, right) = (hashs[right] - hashs[left] * powers[right - left] % MOD + MOD) % MOD
