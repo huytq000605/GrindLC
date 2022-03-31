@@ -1,6 +1,5 @@
 class Solution:
     def splitArray(self, nums: List[int], m: int) -> int:
-        
         def valid(value):
             group = 0
             curr = 0
