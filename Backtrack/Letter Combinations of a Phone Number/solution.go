@@ -6,14 +6,14 @@ func letterCombinations(digits string) []string {
 	}
 	result := make([]string, 0)
 	digitToLetter := make(map[byte][]string)
-	digitToLetter["2"[0]] = []string{"a", "b", "c"}
-	digitToLetter["3"[0]] = []string{"d", "e", "f"}
-	digitToLetter["4"[0]] = []string{"g", "h", "i"}
-	digitToLetter["5"[0]] = []string{"j", "k", "l"}
-	digitToLetter["6"[0]] = []string{"m", "n", "o"}
-	digitToLetter["7"[0]] = []string{"p", "q", "r", "s"}
-	digitToLetter["8"[0]] = []string{"t", "u", "v"}
-	digitToLetter["9"[0]] = []string{"w", "x", "y", "z"}
+	digitToLetter['2'] = []string{"a", "b", "c"}
+	digitToLetter['3'] = []string{"d", "e", "f"}
+	digitToLetter['4'] = []string{"g", "h", "i"}
+	digitToLetter['5'] = []string{"j", "k", "l"}
+	digitToLetter['6'] = []string{"m", "n", "o"}
+	digitToLetter['7'] = []string{"p", "q", "r", "s"}
+	digitToLetter['8'] = []string{"t", "u", "v"}
+	digitToLetter['9'] = []string{"w", "x", "y", "z"}
 	buildString(digits, 0, digitToLetter, "", &result)
 	return result
 }
