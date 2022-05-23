@@ -6,24 +6,24 @@
 #         self.right = right
 class Solution:
     def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
-        if root == None:
-            return None
-        if root.val == key:
-            if root.left == None:
-                root = root.right
-                return root
-            if root.right == None:
-                root = root.left
-                return root
-            
-            replace = root.right
-            while replace.left != None:
-                replace = replace.left
-            root.val = replace.val
-            root.right = self.deleteNode(root.right, replace.val)
-        else:
-            if root.val < key:
-                root.right = self.deleteNode(root.right, key)
+        def dfs(node):
+            nonlocal key
+            if not node:
+                return
+            if node.val == key:
+                left = node.left
+                right = node.right
+                if not left or not right:
+                    return left or right
+                replace = right
+                while right.left:
+                    right = right.left
+                right.left = left
+                return replace
             else:
-                root.left = self.deleteNode(root.left, key)
-        return root
+                if node.val > key:
+                    node.left = dfs(node.left)
+                else:
+                    node.right = dfs(node.right)
+                return node
+        return dfs(root)
