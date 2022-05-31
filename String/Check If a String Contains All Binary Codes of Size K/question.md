@@ -1,47 +1,62 @@
+
 # 1461. Check If a String Contains All Binary Codes of Size K<br> Medium
 
-## Given a binary string s and an integer k. Return true if every binary code of length k is a substring of s. Otherwise, return false.
+<p>Given a binary string <code>s</code> and an integer <code>k</code>, return <code>true</code> <em>if every binary code of length</em> <code>k</code> <em>is a substring of</em> <code>s</code>. Otherwise, return <code>false</code>.</p>
 
+<p>&nbsp;</p>
+<p><strong>Example 1:</strong></p>
 
+<pre>
+<strong>Input:</strong> s = &quot;00110110&quot;, k = 2
+<strong>Output:</strong> true
+<strong>Explanation:</strong> The binary codes of length 2 are &quot;00&quot;, &quot;01&quot;, &quot;10&quot; and &quot;11&quot;. They can be all found as substrings at indices 0, 1, 3 and 2 respectively.
+</pre>
 
-Example 1:
+<p><strong>Example 2:</strong></p>
 
-```
-Input: s = "00110110", k = 2
-Output: true
-Explanation: The binary codes of length 2 are "00", "01", "10" and "11". They can be all found as substrings at indicies 0, 1, 3 and 2 respectively.:
-```
+<pre>
+<strong>Input:</strong> s = &quot;0110&quot;, k = 1
+<strong>Output:</strong> true
+<strong>Explanation:</strong> The binary codes of length 1 are &quot;0&quot; and &quot;1&quot;, it is clear that both exist as a substring. 
+</pre>
 
-Example 2:
+<p><strong>Example 3:</strong></p>
 
-```
-Input: s = "00110", k = 2
-Output: true:
-```
+<pre>
+<strong>Input:</strong> s = &quot;0110&quot;, k = 2
+<strong>Output:</strong> false
+<strong>Explanation:</strong> The binary code &quot;00&quot; is of length 2 and does not exist in the array.
+</pre>
 
-Constraints:
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
 
-- `1 <= s.length <= 5 * 105`
-- `s[i] is either '0' or '1'.`
-- `1 <= k <= 20`
+<ul>
+	<li><code>1 &lt;= s.length &lt;= 5 * 10<sup>5</sup></code></li>
+	<li><code>s[i]</code> is either <code>&#39;0&#39;</code> or <code>&#39;1&#39;</code>.</li>
+	<li><code>1 &lt;= k &lt;= 20</code></li>
+</ul>
 
 
 <details>
 
 <summary> Related Topics </summary>
 
--   `Bit wise`
--   `String`
+-	`Hash Table`
+-	`String`
+-	`Bit Manipulation`
+-	`Rolling Hash`
+-	`Hash Function`
 
 </details>
 
-<details>
 
+<details>
 <summary> Hint 1 </summary>
 We need only to check all sub-strings of length k.
 </details>
-<details>
 
+<details>
 <summary> Hint 2 </summary>
 The number of distinct sub-strings should be exactly 2^k.
 </details>

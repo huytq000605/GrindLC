@@ -1,14 +1,28 @@
 package main
 
+import "strconv"
+
 func hasAllCodes(s string, k int) bool {
-	theBinaryCodesOfLengthK := 1
-	for i := 0; i < k; i++ {
-		theBinaryCodesOfLengthK = theBinaryCodesOfLengthK << 1
+	n := len(s)
+	if n < k {
+		return false
 	}
-	binaryMap := make(map[string]bool)
-	for i := 0; i < len(s)-k+1; i++ {
-		binaryMap[s[i:i+k]] = true
-		if len(binaryMap) == theBinaryCodesOfLengthK {
+	goal := 1 << k
+	binary := 0
+	seen := make(map[int]struct{})
+	for i := 0; i < k; i++ {
+		binary <<= 1
+		last_bit, _ := strconv.Atoi(string(s[i]))
+		binary |= last_bit
+	}
+	seen[binary] = struct{}{}
+	for i := k; i < n; i++ {
+		binary <<= 1
+		binary &^= goal
+		last_bit, _ := strconv.Atoi(string(s[i]))
+		binary |= last_bit
+		seen[binary] = struct{}{}
+		if len(seen) == goal {
 			return true
 		}
 	}
