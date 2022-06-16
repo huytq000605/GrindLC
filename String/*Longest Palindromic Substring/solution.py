@@ -2,19 +2,19 @@ class Solution:
     def longestPalindrome(self, s: str) -> str:
         n = len(s)
         result = ""
-        
-        def extend(i, j):
-            while i >= 0 and j < n and s[i] == s[j]:
-                i -= 1
-                j += 1
-            return s[i+1:j]
-    
-        for i in range(n):
-            st = extend(i, i + 1)
-            if len(st) > len(result):
-                result = st
-            st = extend(i, i)
-            if len(st) > len(result):
-                result = st
+        def extend(start, end):
+            while start >= 0 and end < n and s[start] == s[end]:
+                start -= 1
+                end += 1
+            return start + 1, end - 1
 
+        for i in range(n):
+            start, end = extend(i, i)
+            if end - start + 1 > len(result):
+                result = s[start:end+1]
+
+            start, end = extend(i, i + 1)
+            if end - start + 1 > len(result):
+                result = s[start:end+1]
         return result
+
