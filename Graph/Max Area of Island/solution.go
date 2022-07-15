@@ -1,33 +1,37 @@
 package main
 
-import "fmt"
-
 func maxAreaOfIsland(grid [][]int) int {
-	seen := make(map[string]int)
-	max := 0
-	for i := 0; i < len(grid); i++ {
-		for j := 0; j < len(grid[0]); j++ {
-			if grid[i][j] == 1 {
-				current := dfs(grid, i, j, seen)
-				if current > max {
-					max = current
-				}
-			}
+    m, n := len(grid), len(grid[0])
+    type dir [2]int
+    dirs := [4]dir{dir{0, 1}, dir{1, 0}, dir{-1, 0}, dir{0, -1}}
+    result := 0
 
-		}
-	}
-	return max
+    var dfs func(int, int) int
+    dfs = func(r, c int) int {
+        result := 1
+        for _, d := range dirs {
+            dr, dc := d[0], d[1]
+            nr, nc := r + dr, c + dc
+            if nr < 0 || nc < 0 || nr >= m || nc >= n || grid[nr][nc] == 0 {
+                continue
+            }
+            grid[nr][nc] = 0
+            result += dfs(nr, nc)
+        }
+        return result
+    }
+
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if grid[i][j] == 1 {
+                grid[i][j] = 0
+                ret := dfs(i, j)
+                if ret > result {
+                    result = ret 
+                }
+            }
+        }
+    }
+    return result
 }
 
-func dfs(grid [][]int, i int, j int, seen map[string]int) int {
-	if i < 0 || i == len(grid) || j < 0 || j == len(grid[0]) || grid[i][j] == 0 {
-		return 0
-	}
-	key := fmt.Sprintf("%v-%v", i, j)
-	if _, ok := seen[key]; ok {
-		return 0
-	}
-	seen[key] = 1
-	result := 1 + dfs(grid, i+1, j, seen) + dfs(grid, i-1, j, seen) + dfs(grid, i, j-1, seen) + dfs(grid, i, j+1, seen)
-	return result
-}
