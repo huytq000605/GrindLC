@@ -15,7 +15,6 @@ class Solution:
                     prefix[i][j] = prefix[i][j-1]
                 prefix[i][j] += dp[i][j]
         return dp[-1][-1]
-                
     # dfs(n, k) = dfs(n-1, k) + dfs(n-1, k-1) + dfs(n-1, k-2) + ... dfs(n-1, 0)
     # dfs(n-1, k) = dfs(n-2, k) + dfs(n-2, k-1) + ... dfs(n-2, k-(n-1))
     # => dp[i][k] = sum(dp[i-1][l] for l in [k-i-1, k])
