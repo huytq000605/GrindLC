@@ -1,16 +1,13 @@
 class Solution:
     def consecutiveNumbersSum(self, n: int) -> int:
-        # a numbers
-        # base*a + (a + 1) * a // 2
-        i = 2
-        result = 0
-        while True:
-            plus = (i+1) * i // 2
-            base = n-plus
-            if base < 0:
-                break
-            if base % i == 0:
+        # n = (x+1) + (x+2) + (x+3) + ... (x+k)
+        # n = kx + k*(k+1)/2
+        k = 2
+        # n itself is a result in this question
+        result = 1
+        while n - k*(k+1)//2 >= 0:
+            remaining = n - k*(k+1)//2
+            if remaining % k == 0:
                 result += 1
-            i += 1
-            
-        return result + 1
+            k += 1
+        return result
