@@ -1,30 +1,26 @@
-from typing import List
-
 class Solution:
     def wordSubsets(self, words1: List[str], words2: List[str]) -> List[str]:
-        finalFreq = {}
-        
+        freq = [0 for i in range(26)]
         for word in words2:
-            freq = {}
-            for l in word:
-                if freq.get(l) == None: freq[l] = 0
-                freq[l] += 1
-            for key, value in freq.items():
-                if finalFreq.get(key) == None: finalFreq[key] = value
-                else: finalFreq[key] = max(finalFreq[key], value)
-        
+            current = [0 for i in range(26)]
+            for c in word:
+                idx = ord(c) - ord('a')
+                current[idx] += 1
+                freq[idx] = max(freq[idx], current[idx])
+
+        def is_universal(word):
+            nonlocal freq
+            current = [0 for i in range(26)]
+            for c in word: 
+                current[ord(c) - ord('a')] += 1
+            for i in range(26):
+                if freq[i] > current[i]:
+                    return False
+            return True
+
         result = []
-        
         for word in words1:
-            freq = dict(finalFreq)
-            for l in word:
-                if freq.get(l) == None: continue
-                if freq.get(l) == 1:
-                    freq.pop(l)
-                    continue
-                if freq.get(l) > 1:
-                    freq[l] = freq[l] - 1
-            if len(freq) == 0:
+            if is_universal(word):
                 result.append(word)
-            
+
         return result
