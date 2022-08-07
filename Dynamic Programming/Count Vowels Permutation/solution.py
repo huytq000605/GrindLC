@@ -1,23 +1,20 @@
 class Solution:
     def countVowelPermutation(self, n: int) -> int:
-        rules = {
+        can_follow = {
             'a': 'e',
             'e': 'ai',
-            'i': 'ueoa',
-            'o': 'iu',
+            'i': 'aeou',
+            'o': 'ui',
             'u': 'a',
-            '': 'ueoai'
+            ' ': 'ueoai'
         }
-        MOD = 1e9 + 7
-        
-        @lru_cache(None)
-        def dfs(idx, prev):
-            if idx >= n:
+        MOD = 10**9 + 7
+        @cache
+        def count(i, prev):
+            if i >= n:
                 return 1
             result = 0
-            for l in rules[prev]:
-                result += dfs(idx + 1, l)
-                result = int(result % MOD)
-            return result
-            
-        return dfs(0, '')
+            for letter in can_follow[prev]:
+                result += count(i + 1, letter)
+            return result % MOD
+        return count(0, ' ')
