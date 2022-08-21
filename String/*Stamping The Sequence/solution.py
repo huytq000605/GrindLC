@@ -1,26 +1,26 @@
 class Solution:
     def movesToStamp(self, stamp: str, target: str) -> List[int]:
-        t, s = list(target), list(stamp)
+        stamp, target = list(stamp), list(target)
+        t, s = len(target), len(stamp)
         result = []
-        n, m = len(t), len(s)
-
-        def check(i):
+        def reverse(start):
             changed = False
-            for j in range(m):
-                if t[i + j] == '?': continue
-                if t[i + j] != s[j]: return False
+            for i in range(s):
+                if target[i + start] == "?": continue
+                if stamp[i] != target[i + start]: return False
                 changed = True
             if changed:
-                t[i:i + m] = ['?'] * m
-                result.append(i)
+                target[start:start+s] = ['?' for i in range(start, start + s)]
+                result.append(start)
             return changed
-
+        
         changed = True
         while changed:
             changed = False
-            for i in range(n - m + 1):
-                changed |= check(i)
-        for l in t:
-            if l != "?":
-                return []
-        return result[::-1]
+            for i in range(t - s + 1):
+                changed |= reverse(i)
+
+        if False in [letter == "?" for letter in target]:
+            return []
+        return reversed(result)
+        
