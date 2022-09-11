@@ -1,20 +1,16 @@
 class Solution:
     def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
-        people = []
-        for i in range(n):
-            people.append((efficiency[i], speed[i]))
-
-        people.sort(reverse = True)
-        heap = []
-        total = 0
+        # sum(speed) + min(efficency)
+        MOD = 10**9 + 7
+        engineers = [(speed[i], efficiency[i]) for i in range(n)]
+        engineers.sort(key = lambda engineer: -engineer[1])
+        pq = []
+        total_speed = 0
         result = 0
-        
-        for i in range(n):
-            eff, sp = people[i]
-            heappush(heap, sp)
-            total += sp
-            while len(heap) > k:
-                total -= heappop(heap)
-            result = max(result, total * eff)
-        
-        return result % (10**9 + 7)
+        for s, e in engineers:
+            heappush(pq, s)
+            total_speed += s
+            if len(pq) > k:
+                total_speed -= heappop(pq)
+            result = max(result, total_speed * e)
+        return result % MOD
