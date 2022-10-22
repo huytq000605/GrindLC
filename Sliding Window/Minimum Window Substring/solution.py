@@ -1,40 +1,22 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        counter = {}
-        for letter in t:
-            if counter.get(letter) == None:
-                counter[letter] = 0
-            counter[letter] += 1
-            
-        needSatisfy = len(counter)
-        
-        numOfSatisfy = 0
-        
-        startResult = 0
-        endResult = len(s)
-        
+        required = defaultdict(int)
+        for c in t:
+            required[c] += 1
+        result = ""
         start = 0
-        
-        for end, letter in enumerate(s):
-            if counter.get(letter) != None:
-                counter[letter] -= 1
-                if counter[letter] == 0:
-                    numOfSatisfy += 1
-            
-            while numOfSatisfy == needSatisfy:
-                if end - start < endResult - startResult:
-                    startResult = start
-                    endResult = end
-                    
-                if counter.get(s[start]) != None:
-                    if counter[s[start]] == 0:
-                        break
-                    else:
-                        counter[s[start]] += 1
+        n = len(s)
+        def check():
+            for v in required.values():
+                if v > 0:
+                    return False
+            return True
+        for i, c in enumerate(s):
+            required[s[i]] -= 1
+            while start < len(s) and required[s[start]] < 0:
+                required[s[start]] += 1
                 start += 1
-                
-
-        if endResult == len(s):
-            return ""
-        
-        return s[startResult:endResult + 1]
+            if check() and (len(result) == 0 or len(result) > (i - start + 1)):
+                result = s[start:i+1]
+            
+        return result
