@@ -1,24 +1,14 @@
-from typing import *
-from collections import Counter
-
 class Solution:
     def longestPalindrome(self, words: List[str]) -> int:
-        lookup = Counter()
-        for word in words:
-            lookup[word] += 1
-        bonus = 0
         result = 0
-        for word in lookup.keys():
-            if lookup[word] == 0:
-                continue
-            rev = word[::-1]
-            if rev == word:
-                if lookup[word] % 2 == 1:
-                    bonus = 2
-                result += (lookup[word] // 2)*4
-            elif rev != word and rev in lookup:
-                plus = min(lookup[rev], lookup[word])
-                result += plus * 4
-                lookup[rev] = 0
-                lookup[word] = 0
-        return result + bonus
+        odd_palindrome = 0
+        counter = Counter(words)
+        for word, freq in counter.items():
+            reverse = word[::-1]
+            if word == reverse:
+                result += len(word) * (freq // 2) * 2
+                odd_palindrome = max(odd_palindrome, len(word) * (freq % 2))
+            elif reverse in counter:
+                result += min(freq, counter[reverse]) * len(word) * 2
+                counter[word] = 0        
+        return result + odd_palindrome
