@@ -1,41 +1,34 @@
-class Solution:
-    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
-        def add_to_trie(trie, word):
-            current = trie
-            for l in word:
-                if l not in current:
-                    current[l] = {}
-                current = current[l]
-            current["is_word"] = True
-            current["word"] = word
-        
-        trie = {}
-        for word in words:
-            add_to_trie(trie, word)
+class Solution(object):
+    def findWords(self, board, words):
         m, n = len(board), len(board[0])
-        dirs = [(0,1), (1,0), (-1, 0), (0, -1)]
+        trie = dict()
         result = []
-        def dfs(r, c, current):
-            nonlocal result
-            if "is_word" in current and current["is_word"] == True:
-                current["is_word"] = False
-                result.append(current["word"])
-            for d in dirs:
-                nr, nc = r + d[0], c + d[1]
-                if nr < 0 or nr >= m or nc < 0 or nc >= n or board[nr][nc] == "#" or board[nr][nc] not in current:
-                    continue
-               letter = board[nr][nc]
-                board[nr][nc] = "#"
-                dfs(nr, nc, current[letter])
-                board[nr][nc] = letter
-        
-        for i in range(m):
-            for j in range(n):
-                letter = board[i][j]
-                if letter in trie:
-                    board[i][j] = "#"
-                    dfs(i, j, trie[letter])
-                    board[i][j] = letter
+        ds = [(0, 1), (1, 0), (-1, 0), (0, -1)]
+        for word in words:
+            cur = trie
+            for c in word:
+                if c not in cur:
+                    cur[c] = dict()
+                cur = cur[c]
+            cur["word"] = word
+
+        def dfs(r, c, cur):
+            if r < 0 or r >= m or c < 0 or c >= n or board[r][c] not in cur:
+                return
+            letter = board[r][c]
+            cur = cur[letter]
+            board[r][c] = "#"
+            if "word" in cur:
+                result.append(cur["word"])
+                del cur["word"]
+            for dr, dc in ds:
+                nr, nc = r + dr, c + dc
+                dfs(nr, nc, cur)
+            board[r][c] = letter
+            
+        for r in range(m):
+            for c in range(n):
+                dfs(r, c, trie)
+        return result
                     
         
-        return result
