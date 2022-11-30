@@ -1,39 +1,37 @@
 class Solution:
     def calculate(self, s: str) -> int:
+        n = len(s)
+
         def dfs(idx):
-            stack = []
-            current = 0
+            nonlocal s, n
             sign = "+"
+            cur = 0
+            stack = []
             
-            def updateStack():
-                nonlocal sign
-                nonlocal current
-                nonlocal stack
+            def update_stack():
+                nonlocal sign, cur, stack
                 if sign == "+":
-                    stack.append(current)
+                    stack.append(cur)
                 elif sign == "-":
-                    stack.append(-current)
-                elif sign == "*":
-                    stack.append(stack.pop() * current)
+                    stack.append(-cur)
+                elif sign == "/":
+                    stack.append(stack.pop() // cur)
                 else:
-                    stack.append(stack.pop() // current)
-            
-            while idx < len(s):
+                    stack.append(stack.pop() * cur)
+                
+            while idx < n:
                 if s[idx].isdigit():
-                    current = current * 10 + int(s[idx])
+                    cur = cur * 10 + int(s[idx])
                 elif s[idx] == "(":
-                    num, nextIdx = dfs(idx + 1)
-                    current = num
-                    idx = nextIdx
+                    cur, idx = dfs(idx + 1)
                 elif s[idx] == ")":
-                    updateStack()
+                    update_stack()
                     return sum(stack), idx
                 elif s[idx] in "+-*/":
-                    updateStack()
-                    current = 0
-                    sign = s[idx]
+                    update_stack()
+                    cur, sign = 0, s[idx]
                 idx += 1
-            updateStack()
+                
+            update_stack()
             return sum(stack)
         return dfs(0)
-                    
