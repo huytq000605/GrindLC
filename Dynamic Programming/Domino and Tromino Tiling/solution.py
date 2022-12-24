@@ -2,23 +2,21 @@ class Solution:
     def numTilings(self, n: int) -> int:
         MOD = 10**9 + 7
         @cache
-        def dfs(col1, col2):
-            if col1 > n or col2 > n:
-                return 0
-            if col1 == n and col2 == n:
+        def dfs(i, j):
+            print(i, j)
+            if i == n and j == n:
                 return 1
-            
-            result = 0
-            if col1 > col2:
-                result += dfs(col1, col2 + 2)
-                if col1 - col2 == 1:
-                    result += dfs(col1 + 1, col2 + 2)
-            elif col1 < col2:
-                result += dfs(col1 + 2, col2)
-                if col1 - col2 == -1:
-                    result += dfs(col1 + 2, col2 + 1)
-            else:
-                result += dfs(col1 + 1, col2 + 1) + dfs(col1 + 2, col2 + 1) + dfs(col1 + 1, col2 + 2) + dfs(col1 + 2, col2)
-            return result % MOD
+            if i > n or j > n:
+                return 0
+            if j > i:
+                return dfs(j, i)
+            res = 0
+            if i - j == 1:
+                res += dfs(i + 1, j + 2)
+            if i == j:
+                res += dfs(i+1, j+1)
+                res += dfs(i+2, j+1)
+                res += dfs(i+1, j+2)
+            res += dfs(i, j+2)
+            return res % MOD
         return dfs(0, 0)
-                
