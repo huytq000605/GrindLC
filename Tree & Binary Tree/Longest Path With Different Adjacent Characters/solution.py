@@ -1,25 +1,25 @@
 class Solution:
     def longestPath(self, parent: List[int], s: str) -> int:
-        tree = defaultdict(set)
-        for node, parent in enumerate(parent):
-            if node == 0:
-                continue
-            tree[parent].add(node)
-        ans = 0
-        def dfs(node):
-            nonlocal ans
-            arr = []
-            result = 1
-            for subtree in tree[node]:
-                path = dfs(subtree)
-                ans = max(ans, path)
-                if s[node] != s[subtree]:
-                    heappush(arr, path)
-                    result = max(result, path + 1)
-                    if len(arr) > 2:
-                        heappop(arr)
-            if len(arr) == 2:
-                ans = max(ans, sum(arr) + 1)
-            return result
-        single_tree = dfs(0)
-        return max(single_tree, ans)
+        n = len(parent)
+        graph = [[] for i in range(n)]
+        for u in range(1, n):
+            graph[parent[u]].append(u)
+            graph[u].append(parent[u])
+        
+        result = 1
+        def dfs(u, p):
+            nonlocal result
+            longest_path = 1
+            pq = []
+            for v in graph[u]:
+                if v == p: continue
+                path = dfs(v, u)
+                if s[u] != s[v]:
+                    longest_path = max(longest_path, 1 + path)
+                    heappush(pq, path)
+                    if len(pq) > 2:
+                        heappop(pq)
+                result = max(result, sum(pq) + 1)
+            return longest_path
+        dfs(0, -1)
+        return result
