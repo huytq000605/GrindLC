@@ -2,13 +2,14 @@ class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
         result = []
         n = len(s)
-        ip = [s[0]]
+        ip = []
         def dfs(i):
             if i >= n:
                 if len(ip) == 4:
                     result.append(".".join(ip))
                 return
-            nxt = int(ip[-1]) * 10 + int(s[i])
+            if ip: nxt = int(ip[-1]) * 10 + int(s[i])
+            else: nxt = 256
             if nxt < 256 and ip[-1] != "0":
                 ip[-1] = str(nxt)
                 dfs(i+1)
@@ -17,6 +18,6 @@ class Solution:
                 ip.append(s[i])
                 dfs(i+1)
                 ip.pop()
-        dfs(1)
+        dfs(0)
         return result
                 
