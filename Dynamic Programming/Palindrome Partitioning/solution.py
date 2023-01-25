@@ -1,25 +1,23 @@
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
-        n = len(s)
-        @cache
-        def is_palindrome(start, end):
-            if start >= end:
-                return True
-            if s[start] != s[end]:
-                return False
-            return is_palindrome(start + 1, end - 1)
-        
+        def is_palindrome(i, j):
+            while i < j:
+                if s[i] != s[j]: return False
+                i += 1
+                j -= 1
+            return True
+
         result = []
-        current = []
-        def dfs(idx):
-            nonlocal result, current
-            if idx >= n:
-                result.append([*current])
-                return
-            for i in range(idx, n):
-                if is_palindrome(idx, i):
-                    current.append(s[idx:i+1])
-                    dfs(i + 1)
-                    current.pop()
+        partition = []
+        n = len(s)
+        def dfs(i):
+            if i >= n:
+                result.append([*partition])
+            for j in range(i, n):
+                if is_palindrome(i, j):
+                    partition.append(s[i:j+1])
+                    dfs(j+1)
+                    partition.pop()
         dfs(0)
         return result
+            
