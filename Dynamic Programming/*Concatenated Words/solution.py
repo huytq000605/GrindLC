@@ -1,21 +1,14 @@
 class Solution:
     def findAllConcatenatedWordsInADict(self, words: List[str]) -> List[str]:
-        wordDict = set()
-        for word in words: wordDict.add(word)
+        words = set(words)
         
-        @lru_cache(None)
-        def canForm(word):
-            for i in range(1, len(word)):
-                first = word[:i]
-                second = word[i:]
-                if first in wordDict and (second in wordDict or canForm(second)):
-                    wordDict.add(second)
+        @cache
+        def can_form(word):
+            for i in range(len(word)):
+                pref = word[:i]
+                suff = word[i:]
+                if pref in words and (suff in words or can_form(suff)):
                     return True
-            
             return False
-        result = []
-        for word in words: 
-            if canForm(word): 
-                result.append(word)
-                
-        return result
+        
+        return [word for word in words if can_form(word)]
