@@ -1,28 +1,28 @@
 class Solution:
-    def criticalConnections(self, n: int, connections: List[List[int]]) -> List[List[int]]:
-        graph = [[] for i in range(n)]
-        result = set(map(tuple, map(sorted, connections)))
-
-        for u, v in connections:
+    def criticalConnections(self, n: int, edges: List[List[int]]) -> List[List[int]]:
+        graph = [[] for _ in range(n)]
+        for u, v in edges:
             graph[u].append(v)
             graph[v].append(u)
         
-        rank = [(-2) for i in range(n)]
+        idxs = [-1 for _ in range(n)]
+        lowest = [-1 for _ in range(n)]
+        i = 0
+        result = []
         
-        def dfs(u, depth):
-            nonlocal rank
-            if rank[u] >= 0:
-                return rank[u]
-            rank[u] = depth
-            min_depth = depth
+        def dfs(u, parent):
+            nonlocal i, idxs, lowest, result
+            idxs[u] = i
+            lowest[u] = i
+            i += 1
             for v in graph[u]:
-                if depth == rank[v] + 1:
-                    continue
-                back_depth = dfs(v, depth + 1)
-                if back_depth <= depth:
-                    result.discard(tuple(sorted([u, v])))
-                min_depth = min(min_depth, back_depth)
-            return min_depth
+                if v == parent: continue
+                if idxs[v] == -1:
+                    dfs(v, u)
+                lowest[u] = min(lowest[u], lowest[v])
+                if idxs[u] < lowest[v]:
+                    result.append((u, v))
         
-        dfs(0, 0)
+        dfs(0, -1)
         return result
+            
