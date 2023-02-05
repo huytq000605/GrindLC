@@ -1,27 +1,20 @@
 class Solution:
     def findAnagrams(self, s: str, p: str) -> List[int]:
-        k = len(p)
-        current_letters = [0 for i in range(26)]
-        target_letters = [0 for i in range(26)]
-        result = []
-        
-        def idx_letter(l):
-            return ord(l) - ord("a")
+        m = len(p)
+        count = [0 for _ in range(26)]
+        for c in p:
+            count[ord(c) - ord('a')] += 1
         
         def is_anagram():
-            for i in range(26):
-                if current_letters[i] != target_letters[i]:
-                    return False
+            for freq in count:
+                if freq != 0: return False
             return True
         
-        for l in p:
-            target_letters[idx_letter(l)] += 1
-        
-        for i in range(len(s)):
-            if i >= k:
-                current_letters[idx_letter(s[i - k])] -= 1
-            current_letters[idx_letter(s[i])] += 1
-            
-            if i >= k-1 and is_anagram():
-                result.append(i - k + 1)
+        result = []
+        for i, c in enumerate(s):
+            if i >= m:
+                count[ord(s[i-m]) - ord('a')] += 1
+            count[ord(c) - ord('a')] -= 1
+            if is_anagram():
+                result.append(i - m + 1)
         return result
