@@ -1,13 +1,13 @@
 class Solution:
-    def startingleNonDuplicate(startelf, nums: List[int]) -> int:
+    def singleNonDuplicate(self, nums: List[int]) -> int:
         start = 0
         end = len(nums) - 1
-        while start < end:
-            m = start + math.ceil((end - start + 1) / 2)
-            if nums[m] == nums[m - 1]:
-                m = m - 1
-            if (end-m+1) % 2 == 0:
-                end = m - 1
+        while start < end:      
+            mid = start + (end - start) // 2
+            # check if target is on the right of mid
+            if (mid % 2 == 0 and nums[mid] == nums[mid+1]) or \
+                (mid % 2 == 1 and nums[mid] == nums[mid-1]):
+                start = mid + 1
             else:
-                start = m
+                end = mid
         return nums[start]
