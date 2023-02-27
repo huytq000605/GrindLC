@@ -1,3 +1,4 @@
+"""
 # Definition for a QuadTree node.
 class Node:
     def __init__(self, val, isLeaf, topLeft, topRight, bottomLeft, bottomRight):
@@ -7,19 +8,27 @@ class Node:
         self.topRight = topRight
         self.bottomLeft = bottomLeft
         self.bottomRight = bottomRight
+"""
 
 class Solution:
     def construct(self, grid: List[List[int]]) -> 'Node':
-        def build(sR, eR, sC, eC):
-            if sR == eR:
-                return Node(grid[sR][sC], True, None, None, None, None)
-            mR = sR + (eR - sR) // 2
-            mC = sC + (eC - sC) // 2
-            value = grid[sR][sC]
-            for i in range(sR, eR + 1):
-                for j in range(sC, eC + 1):
-                    if grid[i][j] != value:
-                        return Node(grid[sR][sC], False, build(sR, mR, sC, mC), build(sR, mR, mC + 1, eC) , build(mR + 1, eR, sC, mC), build(mR+1,eR, mC + 1, eC))
-            return Node(grid[sR][sC], True, None, None, None, None)
-        return build(0, len(grid) - 1, 0, len(grid) - 1)
-                        
+        def value(r1, r2, c1, c2):
+            val = grid[r1][c1]
+            for r in range(r1, r2+1):
+                for c in range(c1, c2+1):
+                    if grid[r][c] != val:
+                        return -1
+            return val
+                    
+        def build(r1, r2, c1, c2):
+            val = value(r1, r2, c1, c2)
+            if val != -1:
+                return Node(val, True, None, None, None, None)
+            mr = r1 + (r2 - r1) // 2
+            mc = c1 + (c2 - c1) // 2
+            return Node(1, False,\
+                       build(r1, mr, c1, mc), build(r1, mr, mc+1, c2), \
+                       build(mr+1, r2, c1, mc), build(mr+1, r2, mc+1, c2) \
+                       )
+        return build(0, len(grid) - 1, 0, len(grid[0]) - 1)
+                    
