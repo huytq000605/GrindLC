@@ -1,33 +1,21 @@
 class Solution:
     def compress(self, chars: List[str]) -> int:
-        currentLetter = chars[0]
-        currentFreq = 0
-        idx = 0
-        result = 0
-        for l in chars:
-            if l != currentLetter:
-                chars[idx] = currentLetter
-                idx += 1
-                result += 1
-                if currentFreq > 1:
-                    digits = str(currentFreq)
-                    for d in digits:
-                        chars[idx] = d
-                        idx += 1
-                        result += 1
-                currentLetter = l
-                currentFreq = 1
-            else:
-                currentFreq += 1
-        
-        chars[idx] = currentLetter
-        idx += 1
-        result += 1
-        if currentFreq > 1:
-            digits = str(currentFreq)
-            for d in digits:
-                chars[idx] = d
-                idx += 1
-                result += 1
+        letter, freq = "", 0
+        i = 0
+        def update():
+            nonlocal i, letter, freq
+            chars[i] = letter
+            i += 1
+            if freq > 1:
+                for f in str(freq):
+                    chars[i] = f
+                    i += 1
+            freq = 0
             
-        return result
+        for c in chars:
+            if c != letter and freq > 0:
+                update()       
+            letter = c
+            freq += 1
+        update()
+        return i
