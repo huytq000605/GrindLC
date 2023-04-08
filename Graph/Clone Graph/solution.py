@@ -8,17 +8,15 @@ class Node:
 
 class Solution:
     def cloneGraph(self, node: 'Node') -> 'Node':
-        mapping = dict()
-        def build(node):
-            if node in mapping:
-                return mapping[node]
-            if not node:
-                return None
-            root = Node(node.val)
-            mapping[node] = root
+        if not node: return None
+        mapping = [None for _ in range(101)]
+        def dfs(node):
+            if mapping[node.val]: return mapping[node.val]
+            clone_node = Node(node.val, [])
+            mapping[node.val] = clone_node
             if node.neighbors:
-                root.neighbors = []
-                for adj in node.neighbors:
-                    root.neighbors.append(build(adj))
-            return root
-        return build(node)
+                clone_node.neighbors = []
+                for v in node.neighbors:
+                    clone_node.neighbors.append(dfs(v))
+            return clone_node
+        return dfs(node)
