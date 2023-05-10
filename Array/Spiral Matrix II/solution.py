@@ -1,24 +1,24 @@
 class Solution:
     def generateMatrix(self, n: int) -> List[List[int]]:
-        result = [[0 for i in range(n)] for j in range(n)]
-        start, end = 0, n-1
-        num = 1
-        while start <= end:
-            for i in range(start, end + 1):
-                result[start][i] = num
-                num += 1
-            
-            for i in range(start + 1, end + 1):
-                result[i][end] = num
-                num += 1
-            
-            for i in range(end - 1, start - 1, -1):
-                result[end][i] = num
-                num += 1
-            
-            for i in range(end - 1, start, -1):
-                result[i][start] = num
-                num += 1
-            start += 1
-            end -= 1
+        mnr, mnc = 0, 0
+        mxr, mxc = n-1, n-1
+        result = [[0 for _ in range(n)] for _ in range(n)]
+        i = 1
+        while i <= n*n:
+            for c in range(mnc, mxc+1):
+                result[mnr][c] = i
+                i += 1
+            mnr += 1
+            for r in range(mnr, mxr+1):
+                result[r][mxc] = i
+                i += 1
+            mxc -= 1
+            for c in range(mxc, mnc-1, -1):
+                result[mxr][c] = i
+                i += 1
+            mxr -= 1
+            for r in range(mxr, mnr-1, -1):
+                result[r][mnc] = i
+                i += 1
+            mnc += 1
         return result
