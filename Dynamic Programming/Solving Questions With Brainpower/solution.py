@@ -1,10 +1,9 @@
 class Solution:
     def mostPoints(self, questions: List[List[int]]) -> int:
         @cache
-        def dfs(idx):
-            if idx >= len(questions):
+        def dfs(i):
+            if i >= len(questions):
                 return 0
-            solve = questions[idx][0] + dfs(idx + questions[idx][1] + 1)
-            skip = dfs(idx + 1)
-            return max(solve, skip)
+            p, b = questions[i]
+            return max(p + dfs(i+b+1), dfs(i+1))
         return dfs(0)
