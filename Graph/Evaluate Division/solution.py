@@ -1,29 +1,23 @@
 class Solution:
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
-        graph = defaultdict(list)
-        for (u, v), value in zip(equations, values):
-            graph[u].append((v, value))
-            graph[v].append((u, 1/value))
-            
-        result = [-1 for i in range(len(queries))]
+        graph = defaultdict(dict)
+        for i, eq in enumerate(equations):
+            a, b = eq
+            v = values[i]
+            graph[b][a] = v
+            graph[a][b] = 1/v
+
+        def dfs(a, b, seen):
+            if a == b: return 1
+            for c, v in graph[b].items():
+                if c in seen: continue
+                seen.add(c)
+                a_div_c = dfs(a, c, seen)
+                if a_div_c != -1: return a_div_c * v
+            return -1
         
-        def dfs(u, target, seen):
-            if u == target:
-                return 1, True
-            for v, value in graph[u]:
-                if v in seen:
-                    continue
-                seen.add(v)
-                ans, ok = dfs(v, target, seen)
-                if ok:
-                    return value * ans, True
-            return 0, False
-            
-        
-        for i, (u, v) in enumerate(queries):
-            if u not in graph or v not in graph:
-                continue
-            ans, ok = dfs(u, v, set([u]))
-            if ok:
-                result[i] = ans
+        result = [-1 for _ in range(len(queries))]
+        for i, (a, b) in enumerate(queries):
+            if a not in graph or b not in graph: continue
+            result[i] = dfs(a, b, set([b]))
         return result
