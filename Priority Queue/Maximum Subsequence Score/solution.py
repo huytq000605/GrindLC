@@ -1,16 +1,16 @@
 class Solution:
     def maxScore(self, nums1: List[int], nums2: List[int], k: int) -> int:
         n = len(nums1)
-        nums = sorted([(nums2[i], nums1[i]) for i in range(n)], reverse = True)
-        result = 0
-        s = 0
+        nums = [(-nums2[i], nums1[i]) for i in range(n)]
+        nums.sort()
         pq = []
-        for i in range(n):
-            mn, num = nums[i]
+        s = 0
+        result = 0
+        for mul, num in nums:
             heappush(pq, num)
             s += num
             if len(pq) > k:
                 s -= heappop(pq)
             if len(pq) == k:
-                result = max(result, s * mn)
+                result = max(result, -mul * s)
         return result

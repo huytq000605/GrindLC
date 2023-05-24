@@ -53,7 +53,10 @@ Choosing index 2 is optimal: nums1[2] * nums2[2] = 3 * 10 = 30 is the maximum po
 
 <summary> Related Topics </summary>
 
-
+-	`Array`
+-	`Greedy`
+-	`Sorting`
+-	`Heap (Priority Queue)`
 
 </details>
 
