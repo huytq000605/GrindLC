@@ -1,5 +1,7 @@
 # Combinations and Permutation
 
+To calculate these, look for #ModularInverse.md
+
 ## Combination
 ### nCk
 ### n! / (k! * (n-k)!)
