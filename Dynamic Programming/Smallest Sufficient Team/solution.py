@@ -1,32 +1,30 @@
 class Solution:
     def smallestSufficientTeam(self, req_skills: List[str], people: List[List[str]]) -> List[int]:
-        n = len(req_skills)
-        skill_to_idx = dict()
-        for idx, skill in enumerate(req_skills):
-            skill_to_idx[skill] = idx
-        
+        mapping = dict()
+        for i, skill in enumerate(req_skills):
+            mapping[skill] = i
+        masks = [0 for _ in range(len(people))]
+        for i, p in enumerate(people):
+            for skill in p:
+               masks[i] |= (1 << mapping[skill])
+
         @cache
-        def dfs(i, mask):
-            if i >= len(people):
-                if mask == (1<<n) - 1:
-                    return 0
-                return len(people)
-            else:
-                size = dfs(i + 1, mask)
-                for skill in people[i]:
-                    idx = skill_to_idx[skill]
-                    mask |= (1<<idx)
-                size = min(size, dfs(i+1, mask) + 1)
-                return size
-            
-        smallest_size = dfs(0, 0)
+        def dfs(p, mask):
+            if mask == (1 << len(mapping)) - 1:
+                return 0
+            if p >= len(people):
+                return math.inf
+            take = 1 + dfs(p+1, mask | masks[p])
+            skip = dfs(p + 1, mask)
+            return min(take, skip)
+
         result = []
         mask = 0
-        
-        for i, skills in enumerate(people):
-            if len(result) + dfs(i + 1, mask) != smallest_size:
-                for skill in skills:
-                    mask |= (1 << skill_to_idx[skill])
-                result.append(i)
-        
+        for p in range(len(people)):
+            if 1 + dfs(p+1, mask | masks[p]) <= dfs(p+1, mask):
+                result.append(p)
+                mask |= masks[p]
         return result
+
+
+        
