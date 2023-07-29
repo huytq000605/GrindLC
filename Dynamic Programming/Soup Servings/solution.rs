@@ -16,8 +16,8 @@ impl Solution {
                 return 0.0
             }
             
-            if memo.contains_key(&(a, b)) {
-                return *memo.get(&(a, b)).unwrap()
+            if let Some(&v) = memo.get(&(a, b)) {
+                return v
             }
             let result = 0.25 * (dfs(a-100, b, memo) + dfs(a-75, b-25, memo) + dfs(a-50, b-50, memo) + dfs(a-25, b-75, memo));
             memo.insert((a, b), result);
