@@ -1,53 +1,54 @@
 class Solution:
-    def sortItems(self, n: int, m: int, group: List[int], before_items: List[List[int]]) -> List[int]:
-        item_group = [-1 for i in range(n)]
-        groups = defaultdict(set) # All items in each group
-        before_groups = defaultdict(list) # All groups appear before group[key]
-        before_items_same_group = defaultdict(dict) # first key is group, second key is item, value is all values appear before item
-        
-        for item, group in enumerate(group):
-            if group == -1:
-                group = m
+    def sortItems(self, n: int, m: int, group: List[int], beforeItems: List[List[int]]) -> List[int]:
+        groups = [[] for _ in range(m)]
+        for u, g in enumerate(group):
+            if g == -1:
+                group[u] = m
                 m += 1
-            item_group[item] = group
-        
-        for item, befores in enumerate(before_items):
-            group = item_group[item]
-            for before in befores:
-                before_group = item_group[before]
-                if group != before_group:
-                    before_groups[group].append(before_group)
-                else: 
-                    if item not in before_items_same_group[group]:
-                        before_items_same_group[group][item] = []
-                    before_items_same_group[group][item].append(before)
-                        
-        def topo(graph, nodes, result):
-            seen = dict()
-            def dfs(node):
-                nonlocal result
-                if node in seen and seen[node]:
-                    return True
-                if node in seen and not seen[node]:
+                groups.append([u])
+            else:
+                groups[g].append(u)
+
+        before_group = [set() for _ in range(m)]
+        before_same_group = [[] for _ in range(n)]
+        for u, vs in enumerate(beforeItems):
+            ug = group[u]
+            for v in vs:
+                vg = group[v]
+                if ug != vg:
+                    before_group[ug].add(vg)
+                else:
+                    before_same_group[u].append(v)
+                    
+        def topo(nodes, graph):
+            # state == 1: in progress, state = 2: done
+            states = defaultdict(int)
+            result = []
+            def dfs(u):
+                if states[u] == 1:
                     return False
-                seen[node] = False
-                if node in graph:
-                    for next_node in graph[node]:
-                        if not dfs(next_node):
-                            return False
-                seen[node] = True
-                result.append(node)
+                if states[u] == 2:
+                    return True
+                states[u] = 1
+                for v in graph[u]:
+                    if not dfs(v):
+                        return False
+                states[u] = 2
+                result.append(u)
                 return True
-            for node in nodes:
-                if not dfs(node):
-                    return []
-            return result
+            for u in nodes:
+                if states[u] == 0:
+                    if not dfs(u): return [], False
+            return result, True
         
-        topo_group = topo(before_groups, [i for i in range(m)], [])
-        if len(topo_group) == 0:
-            return []
+        order_group, valid = topo([i for i in range(m)], before_group)
+        if not valid: return []
         result = []
-        for group in topo_group:
-            if len(topo(before_items_same_group[group], groups[group], result)) == 0:
-                return []
+        for g in order_group:
+            order_item, valid = topo(groups[g], before_same_group)
+            if not valid: return []
+            result.extend(order_item)
+                
         return result
+        
+            
