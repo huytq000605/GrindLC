@@ -1,43 +1,49 @@
 class Solution:
     def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
         result = []
-        current = []
-        current_length = 0
-        
-        def push_to_result():
-            nonlocal current, current_length, result
-            spaces = maxWidth - current_length
-            words = len(current)
-            if words == 1:
-                result.append(current[0] + " " * (maxWidth - len(current[0])) )
-                return
-            each_space = spaces // (words - 1)
-            first_bonus = spaces % (words-1)
-            s = ""
-            for idx, word in enumerate(current):
-                if idx > 0:
-                    s += " " * (each_space)
-                    if idx <= first_bonus:
-                        s += " "
-                s += word
-            result.append(s)
-            
-        for word in words:
-            total_length = current_length + len(current) - 1
-            if len(current) == 0 or total_length + 1 + len(word) <= maxWidth:
-                current.append(word)
-                current_length += len(word)
+        start = 0
+        i = 0
+        length = 0
+        while i < len(words):
+            word = words[i]
+            # first word
+            if not length:
+                length = len(word)
+                i += 1
+            # if still can append
+            elif length + len(word) + (i - start) <= maxWidth:
+                length += len(word)
+                i += 1
+            # cannot append words[i], append new line
             else:
-                push_to_result()
-                current = [word]
-                current_length = len(word)
-        last_s = ""
-        for idx, word in enumerate(current):
-            if idx > 0:
-                last_s += " "
-            last_s += word
-        last_s += " " * (maxWidth - len(last_s))
-        result.append(last_s)
-            
-        
+                number_of_words = i - start
+                spaces = maxWidth - length
+                line = ""
+                if number_of_words == 1:
+                    line = words[start] + " " * (maxWidth - len(words[start]))
+                else:
+                    each = spaces // (number_of_words-1)
+                    remaining = spaces - each * (number_of_words-1)
+                    for idx in range(start, i):
+                        if idx != start:
+                            line += " " * each
+                            if remaining: 
+                                line += " "
+                                remaining -= 1
+                        line += words[idx]
+
+                # append line
+                result.append(line)
+                # assign start and reset length
+                start = i
+                length = 0
+        # last line
+        line = ""
+        for idx in range(start, len(words)):
+            if idx != start:
+                line += " "
+            line += words[idx]
+        line += " " * (maxWidth - len(line))
+        result.append(line)
         return result
+            
