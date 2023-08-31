@@ -1,6 +1,7 @@
 class Solution:
     def minTaps(self, n: int, ranges: List[int]) -> int:
-				# dp[i] for minTaps for first i ranges
+        # Needs to cover the whole range
+        # dp[i] = number of taps to cover all the garden from i backward
         dp = [0] + [math.inf for i in range(n)]
         for i, r in enumerate(ranges):
             left, right = max(0, i - r), min(n, i + r)
