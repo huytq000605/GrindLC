@@ -6,14 +6,11 @@ class Solution:
         
         for u in graph.keys():
             graph[u].sort(reverse = True)
-        
-        path = []
+            
+        result = []
         def dfs(u):
-            if u in graph:
-                while graph[u]:
-                    v = graph[u].pop()
-                    dfs(v)
-            path.append(u)
-        
+            while graph[u]:
+                dfs(graph[u].pop())
+            result.append(u)
         dfs("JFK")
-        return path[::-1]
+        return result[::-1]
