@@ -1,16 +1,15 @@
 class Solution:
-    def fullBloomFlowers(self, flowers: List[List[int]], persons: List[int]) -> List[int]:
+    def fullBloomFlowers(self, flowers: List[List[int]], people: List[int]) -> List[int]:
         flowers.sort()
-        persons = sorted([(p, i) for i, p in enumerate(persons)])
-        heap = []
-        result = [0 for i in range(len(persons))]
-        i = 0
-        for start, j in persons:
-            while i < len(flowers) and flowers[i][0] <= start:
-                heappush(heap, flowers[i][1])
-                i += 1
-
-            while heap and heap[0] < start:
-                heappop(heap)
-            result[j] = len(heap)
+        result = [0 for _ in range(len(people))]
+        f = 0
+        people = sorted([(p, i) for i, p in enumerate(people)])
+        pq = []
+        for p, i in people:
+            while f < len(flowers) and flowers[f][0] <= p:
+                heappush(pq, flowers[f][1])
+                f += 1
+            while pq and pq[0] < p:
+                heappop(pq)
+            result[i] = len(pq)
         return result
