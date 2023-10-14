@@ -2,11 +2,11 @@ class Solution:
     def paintWalls(self, cost: List[int], time: List[int]) -> int:
         n = len(cost)
         @cache
-        def dfs(i, remaining):
-            if remaining <= 0: return 0
-            if i >= n: return math.inf
-            return min(cost[i] + dfs(i+1, remaining - time[i] - 1), dfs(i+1, remaining))
-        return dfs(0, n)
-            
+        def dfs(i, busy):
+            if i >= n:
+                if busy < 0: return math.inf
+                return 0
+            return min(dfs(i+1, busy-1), cost[i] + dfs(i+1, min(n, busy + time[i])))
+        return dfs(0, 0)
             
         
