@@ -1,16 +1,15 @@
 class Solution:
     def minimumTime(self, n: int, relations: List[List[int]], time: List[int]) -> int:
-        requiredPrev = [[] for i in range(n)]
-        for rel in relations:
-            requiredPrev[rel[1] - 1].append(rel[0] - 1)
-        @lru_cache(None)
-        def learn(course):
-            result = time[course]
-            bonus = 0
-            for required in requiredPrev[course]:
-                bonus = max(bonus, learn(required))
-            return result + bonus
-        minimumTime = 0
-        for course in range(n):
-            minimumTime = max(minimumTime, learn(course))
-        return minimumTime
+        depends = [[] for _ in range(n)]
+        for u, v in relations:
+            u, v = u-1, v-1
+            depends[v].append(u)
+        
+        @cache
+        def dfs(u):
+            result = time[u]
+            if depends[u]:
+                result += max([dfs(v) for v in depends[u]])
+            return result
+    
+        return max([dfs(u) for u in range(n)])
