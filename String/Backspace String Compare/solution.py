@@ -1,21 +1,24 @@
 class Solution:
     def backspaceCompare(self, s: str, t: str) -> bool:
-        i, j = len(s) - 1, len(t) - 1
+        i, j = len(s)-1, len(t)-1
+        bs, bt = 0, 0
         while True:
-            back = 0
-            while i >= 0 and (back > 0 or s[i] == "#"):
+            while i >= 0:
                 if s[i] == "#":
-                    back += 1
+                    bs += 1
+                elif bs:
+                    bs -= 1
                 else:
-                    back -= 1
+                    break
                 i -= 1
             
-            back = 0
-            while j >= 0 and (back > 0 or t[j] == "#"):
+            while j >= 0:
                 if t[j] == "#":
-                    back += 1
+                    bt += 1
+                elif bt:
+                    bt -= 1
                 else:
-                    back -= 1
+                    break
                 j -= 1
             if i >= 0 and j >= 0:
                 if s[i] != t[j]:
@@ -24,5 +27,5 @@ class Solution:
                 j -= 1
             else:
                 break
-        
-        return i < 0 and j < 0
+        return i == -1 and j == -1
+                
