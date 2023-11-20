@@ -1,14 +1,16 @@
 class Solution:
     def garbageCollection(self, garbage: List[str], travel: List[int]) -> int:
-        garbage = list(map(Counter, garbage))
-        result = 0
-        for g in "PGM":
-            t = 0
-            for idx, house in enumerate(garbage):
-                if house[g] > 0:
-                    result += t
-                    result += house[g]
-                    t = 0
-                if idx < len(travel):
-                    t += travel[idx]
+        total = defaultdict(int)
+        for s in garbage:
+            for g in s:
+                total[g] += 1
+        result = sum(total.values())
+        for i, s in enumerate(garbage):
+            if i > 0:
+                result += len(total) * travel[i-1]
+            for g in s:
+                total[g] -= 1
+                if total[g] == 0:
+                    total.pop(g)
         return result
+
