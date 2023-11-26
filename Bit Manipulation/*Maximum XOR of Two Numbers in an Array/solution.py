@@ -1,23 +1,17 @@
 class Solution:
     def findMaximumXOR(self, nums: List[int]) -> int:
-        result = 0
+        max_xor = 0
         n = len(nums)
-				# current masks for all nums
-        masks = [0 for i in range(n)]
-        for i in range(31, -1, -1):
-						# update masks for all nums
-            for j in range(n):
-                masks[j] |= nums[j] & (1 << i)
-            
-						# can be next result
-            nextResult = result | (1 << i)
-
-						# If have 2 mask xor with each other = nextResult then result = nextResult
-            seen = set()
-            for mask in masks:
-                if mask ^ nextResult in seen:
-                    result = nextResult
+        for bit in range(31, -1, -1):
+            # target prefix based on ongoing max_xor (set `bit`)
+            target = (max_xor >> bit) | 1
+            prefixes = set()
+            # get prefix of all nums
+            for num in nums:
+                pref = num >> bit
+                prefixes.add(pref)
+            for pref in prefixes:
+                if pref ^ target in prefixes:
+                    max_xor |= (1 << bit)
                     break
-                seen.add(mask)
-        return result
-                
+        return max_xor
