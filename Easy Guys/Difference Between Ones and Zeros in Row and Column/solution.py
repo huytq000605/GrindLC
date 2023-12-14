@@ -8,8 +8,6 @@ class Solution:
                 if grid[r][c] == 1:
                     onesRow[r] += 1
                     onesCol[c] += 1
-        result = [[0 for j in range(n)] for i in range(m)]
-        for r in range(m):
-            for c in range(n):
-                result[r][c] = onesRow[r] + onesCol[c] - ((n - onesRow[r]) + (m - onesCol[c]))
+        result = [[onesRow[r] + onesCol[c] - (n - onesRow[r]) - (m - onesCol[c]) for c in range(n)] for r in range(m)]
         return result
+
