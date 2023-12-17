@@ -1,26 +1,31 @@
-from sortedcontainers import SortedList
-
 class FoodRatings:
 
     def __init__(self, foods: List[str], cuisines: List[str], ratings: List[int]):
-        self.cuisine_convert = defaultdict(SortedList)
-        self.food_convert = dict()
+        self.pqs = defaultdict(list)
+        self.ratings = dict()
+        self.food_to_cuisine = dict()
         n = len(foods)
         for i in range(n):
             food = foods[i]
             cuisine = cuisines[i]
             rating = ratings[i]
-            self.food_convert[food] = (cuisine, rating)
-            self.cuisine_convert[cuisine].add((-rating, food))
+            heappush(self.pqs[cuisine], (-rating, food))
+            self.ratings[food] = rating
+            self.food_to_cuisine[food] = cuisine
+
 
     def changeRating(self, food: str, newRating: int) -> None:
-        cuisine, rating = self.food_convert[food]
-        self.cuisine_convert[cuisine].remove((-rating, food))
-        self.food_convert[food] = (cuisine, newRating)
-        self.cuisine_convert[cuisine].add((-newRating, food))
+        self.ratings[food] = newRating
+        cuisine = self.food_to_cuisine[food]
+        heappush(self.pqs[cuisine], (-newRating, food))
 
     def highestRated(self, cuisine: str) -> str:
-        return self.cuisine_convert[cuisine][0][1]
+        while True:
+            rating, food = self.pqs[cuisine][0]
+            if -rating != self.ratings[food]:
+                heappop(self.pqs[cuisine])
+                continue
+            return food
 
 
 # Your FoodRatings object will be instantiated and called as such:
