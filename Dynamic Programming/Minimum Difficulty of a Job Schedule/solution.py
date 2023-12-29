@@ -1,27 +1,18 @@
 class Solution:
-    def minDifficulty(self, diffs: List[int], d: int) -> int:
-        n = len(diffs)
-
-        @cache
-        def dfs(i, d):
-            if i >= n:
-                if d == 0:
-                    return 0
-                return math.inf
-            
-            if d == 0:
-                return math.inf
-            
-            result = math.inf
-            max_diff = 0
-            while n-i-1 >= d-1 and i < n:
-                max_diff = max(diffs[i], max_diff)
-                i += 1
-                result = min(result, max_diff + dfs(i, d-1))
-            return result
-
-        result = dfs(0, d)
-        if result == math.inf:
+    def minDifficulty(self, ds: List[int], d: int) -> int:
+        if len(ds) < d:
             return -1
-        return result
-        
+        @cache
+        def dfs(job, day):
+            if job >= len(ds) and day >= d:
+                return 0
+            if job >= len(ds): return math.inf
+            if day >= d: return math.inf
+            mx = 0
+            result = math.inf
+            # doing from day to d
+            for end_job in range(job, len(ds)): 
+                mx = max(mx, ds[end_job])
+                result = min(result, dfs(end_job + 1, day + 1) + mx)
+            return result
+        return dfs(0, 0)
