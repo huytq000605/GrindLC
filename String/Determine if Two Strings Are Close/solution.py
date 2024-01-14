@@ -1,15 +1,14 @@
 class Solution:
     def closeStrings(self, word1: str, word2: str) -> bool:
-        counter1, counter2 = Counter(word1), Counter(word2)
-        if len(counter1) != len(counter2):
+        if len(word1) != len(word2):
             return False
-        for c in counter1.keys():
-            if c not in counter2:
+        counter = Counter(word1)
+        counter2 = Counter(word2)
+        for c in counter.keys():
+            if c not in counter2: return False
+        freq_counter = Counter(counter.values())
+        for freq in counter2.values():
+            freq_counter[freq] -= 1
+            if freq_counter[freq] < 0:
                 return False
-            
-        counter_counter1 = Counter(counter1.values())
-        for c, f in counter2.items():
-            if counter_counter1[f] <= 0:
-                return False
-            counter_counter1[f] -= 1
         return True
