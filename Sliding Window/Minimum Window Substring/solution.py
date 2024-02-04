@@ -1,22 +1,14 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        required = defaultdict(int)
-        for c in t:
-            required[c] += 1
-        result = ""
+        require = Counter(t)
         start = 0
-        n = len(s)
-        def check():
-            for v in required.values():
-                if v > 0:
-                    return False
-            return True
+        result = (-1, -1)
         for i, c in enumerate(s):
-            required[s[i]] -= 1
-            while start < len(s) and required[s[start]] < 0:
-                required[s[start]] += 1
+            require[c] -= 1
+            while start < len(s) and require[s[start]] < 0:
+                require[s[start]] += 1
                 start += 1
-            if check() and (len(result) == 0 or len(result) > (i - start + 1)):
-                result = s[start:i+1]
-            
-        return result
+            if all([require[c] <= 0 for c in require.keys()]):
+                if result[1] == -1 or (i-start+1) < (result[1] - result[0] + 1):
+                    result = (start, i+1)
+        return s[result[0]:result[1]]
