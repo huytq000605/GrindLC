@@ -7,15 +7,16 @@
 class Solution:
     def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
         result = 0
-        # If not infected, return the depth of the subtree
-        # If it's infected, return the depth from the infected node
+        # Do past-order trarversal
+        # if subtree is infected, return distance between node to infected node
+        # if not infected, return max depth of the subtree
         def dfs(node):
             nonlocal result
             if not node:
-                return 0, False  
+                return 0, False
             left, left_infected = dfs(node.left)
             right, right_infected = dfs(node.right)
-
+            
             if node.val == start:
                 result = max(result, left, right)
                 return 0, True
@@ -30,3 +31,5 @@ class Solution:
                 return max(left, right) + 1, False
         dfs(root)
         return result
+
+

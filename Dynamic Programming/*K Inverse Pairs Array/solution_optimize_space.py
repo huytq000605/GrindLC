@@ -1,25 +1,22 @@
 class Solution:
     def kInversePairs(self, n: int, k: int) -> int:
-        # dfs(n, k) = dfs(n-1, k) + dfs(n-1, k-1) + ... + dfs(n-1, k-(n-1))
-        # dfs(n-1, k) = dfs(n-2, k) + dfs(n-2, k-1) + ... dfs(n-2, k-(n-1-1))
-        # => dp[i][k] = sum(dp[i-1][l] for l in [k-i+1, k])
-
-        # dp[k] is dp[i][k] with i in for loop
-        # prefix[l] is sum(dp[i-1][l] for l in [k-i+1, k])
-        dp = [0 for i in range(k+1)]
-        # dp[0][0] = 1
-        dp[0] = 1
-        prefix = [1 for i in range(k+1)]
         MOD = 10**9 + 7
-        for i in range(1, n+1):
-            new_prefix = [0 for i in range(k+1)]
-            for j in range(0, k+1):
-                if j >= i:
-                    dp[j] = (prefix[j] - prefix[j-i]) % MOD
-                else:
-                    dp[j] = prefix[j] % MOD
-                if j > 0:
-                    new_prefix[j] = new_prefix[j-1]
-                new_prefix[j] += dp[j]
-            prefix = new_prefix
-        return dp[-1]
+        # we always try to put number in descending order
+        # dfs(n, k) = dfs(n-1, k) + dfs(n-1, k-1) + ... dfs(n-1, k - (n-1))
+        # dp[m][k] = sum(dp[m-1][l] for l in range(k-(m-1), k+1))
+        # dp[m][k] = number of arrays to put numbers from [m, n] into array to have k inverse pairs
+        dp = [0 for _ in range(k+1)]
+        dp[0] = 1
+        for num in range(n, 0, -1):
+            next_dp = [0 for _ in range(k+1)]
+            # k+2 for last element for access [-1] to be 0 (quick hack for prefix sum)
+            prefix_dp = [0 for _ in range(k+2)]
+            for j in range(k+1):
+                if j > 0: prefix_dp[j] = prefix_dp[j-1]
+                prefix_dp[j] += dp[j]
+            for pairs in range(k+1):
+                next_dp[pairs] = (prefix_dp[pairs] - prefix_dp[max(0, pairs-(num-1)) - 1]) % MOD
+            dp = next_dp
+        return dp[k] % MOD
+
+

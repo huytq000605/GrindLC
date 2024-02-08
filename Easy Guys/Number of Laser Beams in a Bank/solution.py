@@ -1,14 +1,10 @@
 class Solution:
     def numberOfBeams(self, bank: List[str]) -> int:
-        m, n = len(bank), len(bank[0])
-        prev = 0
         result = 0
-        for row in range(m):
-            devices = 0
-            for col in range(n):
-                if bank[row][col] == "1": devices += 1
-            result += devices * prev
-            if devices > 0:
-                prev = devices
-        
+        prev_row = 0
+        for row in bank:
+            bit_set = row.count("1")
+            result += prev_row * bit_set
+            if bit_set != 0:
+                prev_row = bit_set
         return result
