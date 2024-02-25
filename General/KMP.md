@@ -1,6 +1,8 @@
 # KMP
 
-## How to calculate Longest Proper Prefix (LPS) of the Substring
+## Idea: whenever we find a mismatch, we try to look if the current suffix is a also a prefix, we move back to previous prefix and keep doing until there is a match or there is no suffix anymore
+
+## How to calculate Longest Prefix Suffix (LPS) of the Substring
 ``` python
 def lps(s):
     n = len(s)
