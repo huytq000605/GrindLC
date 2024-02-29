@@ -1,37 +1,22 @@
-from collections import deque
 # Definition for a binary tree node.
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 class Solution:
-    def isEvenOddTree(self, root: TreeNode) -> bool:
-        previousLevel = 0
-        previousValue = 0
-        queue = deque([[root, 0]])
-        while len(queue) > 0:
-            [currentNode, currentLevel] = queue.popleft()
-            if currentLevel != previousLevel:
-                previousLevel = currentLevel
-                previousValue = 0
-            
-            if currentLevel % 2 == 0:
-                isEvenLevel = True
-            else: isEvenLevel = False
-                
-            if isEvenLevel:
-                if currentNode.val % 2 == 0:
-                    return False
-                if previousValue != 0 and currentNode.val <= previousValue:
-                    return False
-            else:
-                if currentNode.val % 2 == 1:
-                    return False
-                if previousValue != 0 and currentNode.val >= previousValue:
-                    return False
-            
-            if currentNode.left != None: queue.append([currentNode.left, currentLevel + 1])
-            if currentNode.right != None: queue.append([currentNode.right, currentLevel + 1])
-            previousValue = currentNode.val
+    def isEvenOddTree(self, root: Optional[TreeNode]) -> bool:
+        level = 0
+        dq = deque([root])
+        while dq:
+            prev = 0
+            for _ in range(len(dq)):
+                u = dq.popleft()
+                if level & 1 == u.val & 1: return False
+                if level & 1 and prev != 0 and prev <= u.val: return False
+                if not level & 1 and prev >= u.val: return False
+                prev = u.val
+                if u.left: dq.append(u.left)
+                if u.right: dq.append(u.right)
+            level += 1
         return True
