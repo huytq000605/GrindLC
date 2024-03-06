@@ -19,12 +19,12 @@ class Solution:
         # a = from head to start of cycle
         # b = from start of cycle to meet point
         # s1 = a + b
-        # s2 = 2 * (a + b)
-        # s2 - s1 = k * cycle
+        # s2 = 2 * (a + b) = a + b + k * cycle
         # a + b = k * cycle
-        # => if slow go more a, slow it will come to the start of cycle
+        # => if slow go more a steps, slow will comeback to start of cycle
+        # the same applies for head
         while slow != head:
             head = head.next
             slow = slow.next
-        return head
+        return slow
         
