@@ -1,50 +1,49 @@
-import collections
-
-class UnionFind:
-    def __init__(self):
-        self.p = dict()
-        self.people = collections.defaultdict(set)
-        self.r = dict()
+class UF:
+    def __init__(self, n):
+        self.p = [i for i in range(n)]
+        self.r = [1 for _ in range(n)]
     
-    def find(self, x):
-        if x not in self.p:
-            self.p[x] = x
-            self.people[x] = set([x])
-            self.r[x] = 1
-        if x != self.p[x]:
-            self.p[x] = self.find(self.p[x])
-        return self.p[x]
+    def find(self, u):
+        if self.p[u] != u:
+            self.p[u] = self.find(self.p[u])
+        return self.p[u]
     
-    def union(self, x, y):
-        x_p, y_p = self.find(x), self.find(y)
-        if x_p != y_p:
-            if self.r[x_p] < self.r[y_p]:
-                x_p, y_p = y_p, x_p
-            self.r[x_p] += self.r[y_p]
-            self.p[y_p] = self.p[x_p]
-            self.people[x_p].update(self.people[y_p])
+    def union(self, u, v):
+        u, v = self.find(u), self.find(v)
+        if u == v: return
+        if self.r[u] < self.r[v]:
+            u, v = v, u
+        self.r[u] += self.r[v]
+        self.p[v] = u
+    
+    def knew(self, u):
+        return self.find(u) == self.find(0)
+    
+    def reset(self, u):
+        self.p[u] = u
 
 class Solution:
     def findAllPeople(self, n: int, meetings: List[List[int]], firstPerson: int) -> List[int]:
-        meetings.sort(key = lambda meeting: meeting[2])
-        result = set()
-        result.add(0)
-        result.add(firstPerson)
-            
+        meetings.sort(key = lambda m: m[2])
+        uf = UF(n)
+        uf.union(0, firstPerson)
+        
         i = 0
         while i < len(meetings):
-            time = meetings[i][2]
-            uf = UnionFind()
-            knowSecret = set()
-            while i < len(meetings) and meetings[i][2] == time:
-                p1, p2, t = meetings[i]
-                uf.union(p1, p2)
+            t = meetings[i][2]
+            people = []
+            while i < len(meetings) and meetings[i][2] == t:
+                u, v, _ = meetings[i]
+                uf.union(u, v)
+                people.append(u)
+                people.append(v)
                 i += 1
-            for person in uf.people.keys():
-                if person in result:
-                    knowSecret.update(uf.people[uf.find(person)])
-                        
-            result.update(knowSecret)
             
-        return result
+            for p in people:
+                if not uf.knew(p):
+                    uf.reset(p)
         
+        result = []
+        for u in range(n):
+            if uf.knew(u): result.append(u)
+        return result
