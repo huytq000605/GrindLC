@@ -18,9 +18,12 @@ class Solution:
             return None
         # a = from head to start of cycle
         # b = from start of cycle to meet point
-        # s1 = a + b
-        # s2 = 2 * (a + b) = a + b + k * cycle
-        # a + b = k * cycle
+        # s1 = a + b + k1 * cycle
+        # s2 = a + b + k2 * cycle
+        # s2 = 2 * s1 = 2 * (a + b + k1 * cycle)
+        # => 2 * (a + b + k1 * cycle) = a + b + k2 * cycle 
+        # => a + b = (k2 - 2*k1) * cycle
+        # => a + b = k * cycle
         # => if slow go more a steps, slow will comeback to start of cycle
         # the same applies for head
         while slow != head:
