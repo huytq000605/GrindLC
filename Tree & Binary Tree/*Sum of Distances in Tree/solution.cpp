@@ -23,8 +23,7 @@ public:
             return dfs_ref(u, p, dfs_ref);
         };
         
-        std::function<void(int, int)> dfs2;
-        dfs2 = [&](int u, int p) {
+        auto dfs2 = [&](int u, int p) {
             auto dfs_ref = [&](int u, int p, auto &dfs_ref) -> void {
                 for(auto & v: graph[u]) {
                     if(v == p) continue;
