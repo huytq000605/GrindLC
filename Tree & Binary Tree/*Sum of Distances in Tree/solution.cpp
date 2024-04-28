@@ -10,24 +10,29 @@ public:
             graph[v].push_back(u);
         }
 
-        std::function<pair<int, int>(int, int)> dfs;
-        dfs = [&](int u, int p) -> pair<int, int> {
-            for(int & v: graph[u]) {
-                if(v == p) continue;
-                auto [ds, ns] = dfs(v, u);
-                distances[u] += ds + ns;
-                childs[u] += ns;
-            }
-            return {distances[u], childs[u] + 1};
+        auto dfs = [&](int u, int p) -> pair<int, int> {
+            auto dfs_ref = [&](int u, int p, auto &dfs_ref) -> pair<int, int> {
+                for(int & v: graph[u]) {
+                    if(v == p) continue;
+                    auto [ds, ns] = dfs_ref(v, u, dfs_ref);
+                    distances[u] += ds + ns;
+                    childs[u] += ns;
+                }
+                return {distances[u], childs[u] + 1};
+            };
+            return dfs_ref(u, p, dfs_ref);
         };
         
         std::function<void(int, int)> dfs2;
         dfs2 = [&](int u, int p) {
-            for(auto & v: graph[u]) {
-                if(v == p) continue;
-                distances[v] += distances[u] - distances[v] - childs[v] + (n - childs[v] - 2);
-                dfs2(v, u);
-            }
+            auto dfs_ref = [&](int u, int p, auto &dfs_ref) -> void {
+                for(auto & v: graph[u]) {
+                    if(v == p) continue;
+                    distances[v] += distances[u] - distances[v] - childs[v] + (n - childs[v] - 2);
+                    dfs_ref(v, u, dfs_ref);
+                }
+            };
+            dfs_ref(u, p, dfs_ref);
         };
 
         dfs(0, -1);
