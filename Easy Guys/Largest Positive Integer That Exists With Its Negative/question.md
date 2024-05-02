@@ -46,6 +46,8 @@
 
 -	`Array`
 -	`Hash Table`
+-	`Two Pointers`
+-	`Sorting`
 
 </details>
 
