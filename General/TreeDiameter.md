@@ -1,6 +1,20 @@
 # Tree Diameter
+## To find maximum distance between any 2 nodes in in a graph
+- Keep track global variable diameter
+- Do post order traversal, each dfs call returns the longest path from parent to child.
+- During DFS call
+    - Keep track of the longest path from node to a child, called it longest_path, init to be 0
+    - During the loop through each child
+        - dfs(v, u) = path
+        - diamater = max(diamater, longest_path + path)
+        - longest_path = max(longest_path, path)
+    - Return longest_path + 1
+- Return diamater
 
-## To find maximum distance between any 2 nodes in in tree
+
+# Graph Diameter
+
+## To find maximum distance between any 2 nodes in in a graph
 
 - **DFS way**
 
