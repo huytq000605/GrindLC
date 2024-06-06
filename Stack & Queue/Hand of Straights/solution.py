@@ -1,5 +1,7 @@
 import collections
 
+# Technically, this solution is still O(NlogN + N + N)
+# Because of the constraint, so each element will be walk through at most once in the for loop, and once in the while loop
 class Solution:
     def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
         freq = collections.Counter()
