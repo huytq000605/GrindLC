@@ -1,17 +1,15 @@
 class Solution:
     def missingElement(self, nums: List[int], k: int) -> int:
         n = len(nums)
-        diff = nums[-1] - nums[0] - 1 - (n-2)
-        if diff < k:
-            return nums[-1] + k - diff
         start = 0
-        end = len(nums) - 1
+        end = len(nums)
         while start < end:
             mid = start + (end - start) // 2
-            diff = (nums[mid] - nums[0] - 1) - (mid - 1)
-            if diff < k:
+            if (nums[mid] - nums[0] + 1) - (mid + 1) < k:
                 start = mid + 1
             else:
                 end = mid
-        diff = (nums[start-1] - nums[0] - 1) - (start-1 - 1)
-        return nums[start-1] + k - diff
+        # arr[start-1] has (arr[start-1] - arr[0] + 1) - (start-1 + 1) missing numbers
+        # find the (k - (arr[start-1] - arr[0] + 1) + start) missing numbers between start-1 and start
+        # => k + arr[0] - 1 + start
+        return k + nums[0] - 1 + start  
