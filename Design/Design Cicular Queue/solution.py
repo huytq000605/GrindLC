@@ -1,43 +1,35 @@
-class Node:
-    def __init__(self, val):
-        self.val = val
-        self.next = None
-
 class MyCircularQueue:
 
     def __init__(self, k: int):
-        self.len = 0
         self.cap = k
-        self.head = Node(-1)
-        self.tail = self.head
+        self.arr = [0 for _ in range(k)]
+        self.head = 0
+        self.tail = -1
+        self.len = 0
 
     def enQueue(self, value: int) -> bool:
-        if self.len == self.cap:
-            return False
-        self.tail.next = Node(value)
-        self.tail = self.tail.next
+        if self.len == self.cap: return False
+        self.tail = (self.tail + 1) % self.cap
+        self.arr[self.tail] = value
         self.len += 1
         return True
 
     def deQueue(self) -> bool:
-        if not self.head.next:
-            return False
-        if self.head.next == self.tail:
-            self.tail = self.head
-        self.head.next = self.head.next.next
+        if self.len == 0: return False
+        self.head = (self.head + 1) % self.cap
         self.len -= 1
         return True
 
     def Front(self) -> int:
-        if not self.head.next:
-            return -1
-        return self.head.next.val
+        if self.len == 0: return -1
+        return self.arr[self.head]
 
     def Rear(self) -> int:
-        return self.tail.val
+        if self.len == 0: return -1
+        return self.arr[self.tail]
 
     def isEmpty(self) -> bool:
-        return self.head.next == None
+        return self.len == 0
 
     def isFull(self) -> bool:
         return self.len == self.cap

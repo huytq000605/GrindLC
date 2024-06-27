@@ -6,15 +6,15 @@ class Solution:
             graph[u].append(v)
             graph[v].append(u)
         
-        def bfs(u):
-            dq = deque([(u, -1, 0)])
-            while dq:
-                u, p, s = dq.popleft()
-                for v in graph[u]:
-                    if v == p: continue
-                    dq.append((v, u, s+1))
-            return u, s
-        
-        u, _ = bfs(0)
-        _, result = bfs(u)
+        result = 0
+        def dfs(u, p, depth):
+            nonlocal result
+            max_depth = 0
+            for v in graph[u]:
+                if v == p: continue
+                v_depth = dfs(v, u, depth + 1)
+                result = max(result, v_depth + max_depth)
+                max_depth = max(max_depth, v_depth)
+            return max_depth + 1
+        dfs(0, -1, 0)
         return result
