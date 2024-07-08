@@ -4,7 +4,7 @@ class Solution:
         # we always try to put number in descending order
         # dfs(n, k) = dfs(n-1, k) + dfs(n-1, k-1) + ... dfs(n-1, k - (n-1))
         # dp[m][k] = sum(dp[m-1][l] for l in range(k-(m-1), k+1))
-        # dp[m][k] = number of arrays to put numbers from [m, n] into array to have k inverse pairs
+        # dp[m][k] = number of arrays size m into array to have k inverse pairs
         dp = [0 for _ in range(k+1)]
         dp[0] = 1
         for num in range(n, 0, -1):
