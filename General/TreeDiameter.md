@@ -11,6 +11,11 @@
     - Return longest_path + 1
 - Return diamater
 
+## Relation between minimum height of the trees (We can choose the root):
+- Diameter is d, so the shorest tree would be (d+1)//2
+- If we want to find the tree, need to choose the center node in diameter path as the root. If we choose another node, it shows that it doesn't balance out the path to all nodes so max(path) > (d+1)//2
+
+
 
 # Graph Diameter
 
