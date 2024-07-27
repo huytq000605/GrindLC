@@ -2,13 +2,14 @@ class Solution {
 public:
     int specialArray(vector<int>& nums) {
         sort(nums.rbegin(), nums.rend());
+        int n = nums.size();
         int i = 0;
-        while(i < nums.size() && nums[i] >= i+1) {
-            i++;
+        for(int x = n; x >= 0; x--) {
+            while(i < n && nums[i] >= x) {
+                i++;
+            }
+            if(i == x) return x;
         }
-        // There are i nums >= i;
-        // If nums[i] >= i => (i+1) nums >= i, not satisfy
-        if(i < nums.size() && nums[i] >= i) return -1;
-        return i;
+        return -1;
     }
-};
+};class Solution {
