@@ -1,29 +1,43 @@
-class Solution {
-static constexpr array<pair<int, int>, 4> ds = {{ {0,1}, {1,0}, {0, -1}, {-1, 0} }};
-public:
-    int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
-        int m = grid2.size(), n = grid2[0].size();
-        int i1 = 0, i2 = 0, result = 0;
-        auto dfs = [&](int r, int c, auto dfs_ref) -> void {
-            grid2[r][c] = 0;
-            ++i2;
-            i1 += grid1[r][c] == 1;
-            for(auto [dr, dc]: ds) {
-                int nr = r + dr, nc = c + dc;
-                if(nr < 0 || nr >= m || nc < 0 || nc >= n) continue;
-                if(!grid2[nr][nc]) continue;
-                dfs_ref(nr, nc, dfs_ref);
-            }
-        };
-        for(int r = 0; r < m; r++) {
-            for(int c = 0; c < n; c++) {
-                if(grid2[r][c]) {
-                    dfs(r, c, dfs);
-                    if(i1 == i2) ++result;
-                    i1 = i2 = 0;
-                }
-            }
+class UF {
+    public:
+    unordered_map<int, int> p;
+    unordered_map<int, int> r;
+
+    int find(int u) {
+        if(p.find(u) == p.end()) p[u] = u;
+        if(u != p[u]) {
+            p[u] = find(p[u]);
         }
-        return result;
+
+        return p[u];
+    }
+
+    void uni(int u, int v) {
+        u = find(u);
+        v = find(v);
+        if(u == v) return;
+        if(r[u]< r[v]) {
+            swap(u, v);
+        }
+        r[u] += r[v];
+        p[v] = u;
+    }
+};
+
+class Solution {
+    static constexpr int OFFSET = 10001;
+
+public:
+    int removeStones(vector<vector<int>>& stones) {
+        auto uf = UF{};
+        for(auto stone: stones) {
+            int r = stone[0], c = stone[1];
+            uf.uni(r, c + OFFSET);
+        }
+        int islands = 0;
+        for(auto [u, p]: uf.p) {
+            if(u == p) islands++;
+        }
+        return stones.size() - islands;
     }
 };
