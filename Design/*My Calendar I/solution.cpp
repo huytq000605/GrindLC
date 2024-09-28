@@ -2,7 +2,7 @@ class SegmentTree {
 public:
     SegmentTree *left, *right;
     int start, end, val, lazy;
-    SegmentTree(int s, int e, int v=0, int lazy = 0) {
+    SegmentTree(int s, int e, int v=0, int l = 0) {
         start = s;
         end = e;
         val = v;
@@ -20,8 +20,8 @@ public:
     void update(int s, int e, int v) {
         if(e < start || s > end) return;
         if(s <= start && e >= end) {
-            val = v;
-            lazy = 1;
+            val += v;
+            lazy += v;
             return;
         };
         down();
@@ -34,13 +34,15 @@ public:
         if(start != end) {
             if(left == nullptr) {
                 int mid = start + (end - start) / 2;
-                left = new SegmentTree(start, mid, val);
-                right = new SegmentTree(mid+1, end, val);
+                left = new SegmentTree(start, mid, val, lazy);
+                right = new SegmentTree(mid+1, end, val, lazy);
+            } else {
+                left->val += lazy;
+                right->val += lazy;
+                left->lazy += lazy; 
+                right->lazy += lazy; 
             }
-            if(lazy) {
-                left->val = right->val = left->lazy = right->lazy = lazy;
-                lazy = 0;
-            }
+            lazy = 0;
         }
     }
 };
@@ -53,7 +55,7 @@ SegmentTree *st;
     }
     
     bool book(int start, int end) {
-        if(st->query(start, end-1)) {
+        if(st->query(start, end-1) == 1) {
             return false;
         }
         st->update(start, end-1, 1);
@@ -66,3 +68,4 @@ SegmentTree *st;
  * MyCalendar* obj = new MyCalendar();
  * bool param_1 = obj->book(start,end);
  */
+
