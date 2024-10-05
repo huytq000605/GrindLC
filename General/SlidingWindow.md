@@ -26,3 +26,12 @@ Calculate for each element
 In Stack/Queue:
 - Maximum Subarray Min-Product
 - Largest Rectangle in Histogram
+
+# Find how many subarray having exactly X elements and at least Y elements
+
+## Approach
+- Write a function to calculate how many subarrays having at least X elements and Y elements
+- Now to find exact elements using f(x) - f(x+1)
+
+## Example:
+- Count of Substrings Containing Every Vowel and K Consonants II
