@@ -1,8 +1,7 @@
-long long dp[1001][1001] = {}, comb[1001][1001] = {};
 class Solution {
 private:
     static constexpr int MOD = 1000000007;
-    
+    static inline long long dp[1001][1001] = {}, comb[1001][1001] = {};
     void init() {
         dp[0][0] = comb[0][0] = 1;
         for(int i = 1; i <= 1000; ++i) {
