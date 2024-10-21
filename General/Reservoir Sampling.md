@@ -9,3 +9,13 @@
   - Start from k+1, generate a random number m from 0 to current n
   - If m < k => replace reservoir[m] with stream[k+1]
 
+``` python3
+fn reservoir(nums, k):
+    n = len(nums)
+    result = [0 for _ in range(k)]
+    for i in range(n):
+        r = randint(0, i+1)
+        if r < k:
+            result[r] = nums[i]
+    return result
+```
