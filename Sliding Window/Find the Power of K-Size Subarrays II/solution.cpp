@@ -1,15 +1,16 @@
 class Solution {
 public:
     vector<int> resultsArray(vector<int>& nums, int k) {
-        deque<int> window;
-        vector<int> result(nums.size() - k + 1, -1);
-        for(int i = 0, j = 0; i < nums.size(); ++i) {
-            if(!window.empty() && window.back() + 1 != nums[i]) {
-                window.clear();
+        int n = nums.size();
+        vector<int> result(n-k+1, -1);
+        int consecutive{0};
+        for(int i{0}; i < n; ++i) {
+            if(i == 0 || nums[i] == nums[i-1] + 1) {
+                consecutive++;
+            } else {
+                consecutive = 1;
             }
-            window.emplace_back(nums[i]);
-            if(window.size() > k) window.pop_front();
-            if(window.size() == k) result[i-k+1] = window.back();
+            if(i >= k -1 && consecutive >= k) result[i-k+1] = nums[i];
         }
         return result;
     }
