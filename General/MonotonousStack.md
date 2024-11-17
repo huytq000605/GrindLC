@@ -14,8 +14,10 @@ for(int i = 0; i < A.size(); i++){
 ```
 
 ## What can monotonous increase stack do?
-1. **Find the previous/next less/greater element of each element in a vector with O(n) time:**
-2. **Find both previous and next less/greater element of each element**
+1. **Return the max/min elements in some sliding window**
+2. Example:
+    - **Find the previous/next less/greater element of each element in a vector with O(n) time:**
+    - **Find both previous and next less/greater element of each element**
 ``` python
   stack = []
   arr 
