@@ -9,16 +9,7 @@ Like when question ask you for a minimum index in an arr (SORTED BY ASC) that ar
 
 **IMPORTANT**
 ```
-current = Ceil (max + min) / 2 OR Floor (max+min)/2
-MAYBE current = min + (max-min+1)/2 (Ceil) OR min + (max-min)/2 (Floor)
-if for loop max = current - 1 then ceil
-min = current + 1 then floor
-
-
-~~~
-Same meaning as above
-
-As a rule of thumb, use m = l + (r-l)//2 with l = m + 1 and r = m, and use m = r - (r-l)//2 with l = m and r = m - 1. This can prevent m from stucking at r (or l) after the updating step.
+As a rule of thumb, use m = l + (r-l)/ 2 with l = m + 1 and r = m, and use m = l + (r-l+1)/2 with l = m and r = m - 1. This can prevent m from stucking at r (or l) after the updating step.
 ```
 
 Example: When the problem asks you for finding min for condition, if the value is fit for the condition, you can keep decrease/increase the max/min to get the real min answer
@@ -29,3 +20,20 @@ Example with Find the smallest divisor given a threshold:
 
 
 THE FINAL ANSWER SHOULD BE WHEN MIN = MAX 
+
+# Precision Binary Search
+```
+double lo = initial_lo; // Set initial lower bound
+double hi = initial_hi; // Set initial upper bound
+double eps = 1e-5;      // Tolerance level
+
+while (hi - lo > eps) {
+    double mid = (lo + hi) / 2.0;
+    if (condition(mid)) {
+        lo = mid; // or adjust hi based on your condition
+    } else {
+        hi = mid;
+    }
+}
+double answer = (lo + hi) / 2.0;
+```
