@@ -1,13 +1,10 @@
 class Solution:
     def minimumRecolors(self, blocks: str, k: int) -> int:
-        cur = 0
-        longest = 0
-        n = len(blocks)
-        for i in range(n):
+        black = 0
+        result = k
+        for i in range(len(blocks)):
             if i >= k:
-                if blocks[i-k] == "B":
-                    cur -= 1
-            if blocks[i] == "B":
-                cur += 1
-            longest = max(longest, cur)
-        return max(0, k - longest)
+                black -= (blocks[i-k] == 'B')
+            black += blocks[i] == 'B'
+            result = min(result, k - black)
+        return result
