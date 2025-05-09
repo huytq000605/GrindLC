@@ -1,23 +1,17 @@
 class Solution:
-def countBalancedPermutations(self, num: str) -> int:
-    MOD = 10**9 + 7
-    counter = Counter([int(d) for d in num])
-    @cache
-    def dfs(d, odd, even, diff):
-        if(d == 10): return diff == 0
-        result = 0
-        count = counter[d]
-        if not count: return dfs(d+1, odd, even, diff)
-        for o in range(min(count, odd) + 1):
-            e = count - o
-            if(e > even): continue
-            result += dfs(d+1, odd - o, even - e, diff + o*d - e*d) * comb(odd, o) * comb(even, e)
-            result %= MOD
-        return result
-    odd = len(num) // 2
-    even = odd + len(num) % 2
-    result = dfs(0, odd, even, 0)
-    return result
-    
-        
-        
+    def countBalancedPermutations(self, num: str) -> int:
+        counter = [0 for _ in range(10)]
+        MOD = 10**9+7
+        for d in num: counter[int(d)] += 1
+        @cache
+        def dfs(d, odd, even, diff):
+            if d == 10: return diff == 0
+            result = 0
+            for e in range(0, min(even, counter[d]) + 1):
+                o = counter[d] - e
+                if o > odd: continue
+                result += dfs(d+1, odd - o, even -  e, diff + (e-o) * d) * comb(even, e) * comb(odd, o)
+                result %= MOD
+            return result
+        dfs.cache_clear()
+        return dfs(0, len(num)//2, (len(num)+1)//2, 0)
