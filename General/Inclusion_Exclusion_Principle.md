@@ -1,6 +1,7 @@
 # Inclusion exclusion princicle
 
 ## Example: 3116. Kth Smallest Amount With Single Denomination Combination
+## Example: 2927. Distribute Candies Among Children III
 
 ![img](assets/inclusion_exclusion_principle_2.png)
 
