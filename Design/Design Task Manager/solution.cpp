@@ -1,40 +1,56 @@
 class TaskManager {
-    unordered_map<int, pair<int, int>> m;
-    priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, decltype([](auto &t1, auto &t2) -> bool {
-        if(get<0>(t1) == get<0>(t2)) return get<1>(t1) < get<1>(t2);
-        return get<0>(t1) < get<0>(t2);
-    })> pq;
 public:
+// task, priority
+unordered_map<int, int> um;
+// task, priority, user
+priority_queue<
+    pair<int, int>, 
+    vector<pair<int, int>>, 
+    decltype([](auto &t1, auto &t2) -> bool {
+        if(t1.second == t2.second) return t1.first < t2.first;
+        return t1.second < t2.second;
+    })> pq;
+unordered_map<int, int> tu;
     TaskManager(vector<vector<int>>& tasks) {
         for(auto &task: tasks) {
-            int u = task[0], t = task[1], p = task[2];
+            int u = task[0];
+            int t = task[1];
+            int p = task[2];
             add(u, t, p);
         }
     }
     
     void add(int userId, int taskId, int priority) {
-        m[taskId] = {priority, userId};
-        pq.emplace(priority, taskId, userId);
+        pq.emplace(taskId, priority);
+        um[taskId] = priority;
+        tu[taskId] = userId;
     }
     
     void edit(int taskId, int newPriority) {
-        auto &[p, u] = m[taskId];
-        add(u, taskId, newPriority);
+        um[taskId] = newPriority;
+        int u = tu[taskId];
+        pq.emplace(taskId, newPriority);
     }
     
     void rmv(int taskId) {
-        m.erase(taskId);
+        um.erase(taskId);
+        tu.erase(taskId);
     }
     
     int execTop() {
         while(!pq.empty()) {
-            auto [p, t, u] = pq.top();
-            pq.pop();
-            if(m.find(t) == m.end() || m[t].first != p || m[t].second != u) continue;
-            m.erase(t);
-            return u;
+            auto [t, p] = pq.top();
+            if(um.find(t) == um.end() || um[t] != p) {
+                pq.pop();
+                continue;
+            }
+            break;
         }
-        return -1;
+        if(pq.empty()) return -1;
+        auto [t, p] = pq.top(); pq.pop();
+        int u = tu[t];
+        rmv(t);
+        return u;
     }
 };
 
