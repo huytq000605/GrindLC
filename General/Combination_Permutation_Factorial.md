@@ -8,6 +8,7 @@ To calculate these, look for #ModularInverse.md
 
 ### sum(nCk) with k in range(0, n+1)= 2^n
 ### sum(nCk) with k in range(1, n+1, 2) = 2^(n-1)
+### nCk = (n-1)Ck + (n-1)C(k-1)
 
 ## Permutations
 ### nPk
