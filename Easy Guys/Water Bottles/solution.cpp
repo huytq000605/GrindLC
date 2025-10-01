@@ -5,9 +5,9 @@ public:
         int empty = 0;
         while(bottles) {
             result += bottles;
-            empty += bottles;
-            bottles = empty / exchange;
-            empty %= exchange;
+            int nempty = (bottles + empty) % exchange;
+            bottles = (bottles + empty) / exchange;
+            empty = nempty;
         }
         return result;
     }
