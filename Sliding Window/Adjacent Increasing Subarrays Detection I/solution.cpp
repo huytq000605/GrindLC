@@ -1,17 +1,14 @@
 class Solution {
 public:
     bool hasIncreasingSubarrays(vector<int>& nums, int k) {
-        if(k==1) return true;
-        int cnt{1};
-        int pa{nums[0]}, pb{nums[k]};
-        for(int a{1}; a < nums.size() - k; ++a) {
-            if(nums[a] <= pa || nums[a+k] <= pb) {
-                cnt = 0;
+        for(int i = 0, c = 0; i + k < nums.size(); ++i) {
+            int j = i + k;
+            if(i == 0 || (nums[i] > nums[i-1] && nums[j] > nums[j-1])) {
+                ++c;
+            } else {
+                c = 1;
             }
-            ++cnt;
-            if(cnt == k) return true;
-            pa = nums[a];
-            pb = nums[a+k];
+            if(c == k) return true;
         }
         return false;
     }
