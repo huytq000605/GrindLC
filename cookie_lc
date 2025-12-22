@@ -1,0 +1,16 @@
+[
+  {
+    "name": "LEETCODE_SESSION", 
+    "value": "", 
+    "path": "/", 
+    "domain": ".leetcode.com",
+    "secure": true
+  },
+  {
+    "name": "csrftoken", 
+    "value": "", 
+    "path": "/", 
+    "domain": ".leetcode.com", 
+    "secure": true
+  }
+]
