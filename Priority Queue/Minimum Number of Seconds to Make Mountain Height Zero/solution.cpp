@@ -1,6 +1,9 @@
 class Solution {
 public:
     long long minNumberOfSeconds(int mountainHeight, vector<int>& workerTimes) {
+        // wt1 * x < wt2 * y
+        // compare wt1 * (x+x+1) and wt2 * (y+y+1)
+        // => ask wt1 * x to work.
         priority_queue<
             tuple<long long, int, int>,
             vector<tuple<long long, int, int>>,
@@ -18,6 +21,8 @@ public:
             t += static_cast<long long>(wt) * (x+1);
             pq.emplace(t, wt, x+1);
         }
+
+          
         return result;
     }
 };
