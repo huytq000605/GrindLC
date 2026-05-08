@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> maxValue(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> pref_max(n), suff_min(n);
+        pref_max[0] = nums[0];
+        suff_min[n-1] = nums[n-1];
+        for(int i = 1; i < n; ++i) pref_max[i] = max(pref_max[i-1], nums[i]);
+        for(int i = n-2; i >= 0; --i) suff_min[i] = min(suff_min[i+1], nums[i]);
+        vector<int> result(n);
+        result[n-1] = pref_max.back();
+        for(int i = n-2; i >= 0; --i) {
+            if(pref_max[i] > suff_min[i+1]) {
+                result[i] = result[i+1];
+            } else {
+                result[i] = pref_max[i];
+            }
+        }
+        return result;
+    }
+};
