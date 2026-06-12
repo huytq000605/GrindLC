@@ -1,78 +1,79 @@
-# Problems similar to "Reverse Pairs"
+# Array Divide and Conquer (Problems Similar to "Reverse Pairs")
 
 ## Idea
-It looks like a host of solutions are out there (BST-based, BIT-based, Merge-sort-based). Here I'd like to focus on the general principles behind these solutions and its possible application to a number of similar problems.
 
-The fundamental idea is very simple: break down the array and solve for the subproblems.
+Many array problems have several known solutions (BST-based, BIT-based, Merge-sort-based). Here the focus is on the **general principles** behind these solutions and how they apply to a family of similar problems.
 
-A breakdown of an array naturally reminds us of subarrays. To smoothen our following discussion, let's assume the input array is nums, with a total of n elements. Let nums[i, j] denote the subarray starting from index i to index j (both inclusive), T(i, j) as the same problem applied to this subarray (for example, for Reverse Pairs, T(i, j) will represent the total number of important reverse pairs for subarray nums[i, j]).
+The fundamental idea is simple: **break the array down and solve the subproblems.**
 
-With the definition above, it's straightforward to identify our original problem as T(0, n - 1). Now the key point is how to construct solutions to the original problem from its subproblems. This is essentially equivalent to building recurrence relations for T(i, j). Since if we can find solutions to T(i, j) from its subproblems, we surely can build solutions to larger subarrays until eventually the whole array is spanned.
+Breaking an array down naturally points us to **subarrays**. To set up notation, assume the input array is `nums` with `n` elements. Let `nums[i, j]` denote the subarray from index `i` to index `j` (both inclusive), and let `T(i, j)` be the same problem applied to that subarray. (For example, for Reverse Pairs, `T(i, j)` is the total number of important reverse pairs in `nums[i, j]`.)
 
-While there may be many ways for establishing recurrence relations for T(i, j), here I will only introduce the following two common ones:
+With this definition, the original problem is just `T(0, n - 1)`. The key question is how to construct the solution of the original problem from its subproblems — i.e., how to build **recurrence relations** for `T(i, j)`. Once we can solve `T(i, j)` from its subproblems, we can keep building up to larger subarrays until the whole array is spanned.
 
-1. T(i, j) = T(i, j - 1) + C, i.e., elements will be processed sequentially and C denotes the subproblem for processing the last element of subarray nums[i, j]. We will call this sequential recurrence relation.
- 
-2. T(i, j) = T(i, m) + T(m + 1, j) + C where m = (i+j)/2, i.e., subarray nums[i, j] will be further partitioned into two parts and C denotes the subproblem for combining the two parts. We will call this partition recurrence relation.
+There are many possible recurrence relations; here we use the two most common ones:
 
-For either case, the nature of the subproblem C will depend on the problem under consideration, and it will determine the overall time complexity of the original problem. So usually it's crucial to find efficient algorithm for solving this subproblem in order to have better time performance. Also pay attention to possibilities of overlapping subproblems, in which case a dynamic programming (DP) approach would be preferred.
+1. **Sequential recurrence relation:** `T(i, j) = T(i, j - 1) + C`. Elements are processed one at a time, and `C` is the subproblem of processing the last element of `nums[i, j]`.
 
-Next, I will apply these two recurrence relations to this problem "Reverse Pairs" and list some solutions for your reference.
+2. **Partition recurrence relation:** `T(i, j) = T(i, m) + T(m + 1, j) + C` where `m = (i + j) / 2`. The subarray `nums[i, j]` is split into two halves, and `C` is the subproblem of combining the two parts.
 
+In both cases, the nature of subproblem `C` depends on the specific problem, and it determines the overall time complexity. So finding an **efficient algorithm for `C`** is usually crucial for good performance. Also watch for **overlapping subproblems**, in which case a dynamic programming (DP) approach is preferred.
 
-## Sequential recurrence relation
+Next we apply these two recurrence relations to "Reverse Pairs" and list some reference solutions.
 
-Again we assume the input array is nums with n elements and T(i, j) denotes the total number of important reverse pairs for subarray nums[i, j]. For sequential recurrence relation, we can set i = 0, i.e., the subarray always starts from the beginning. Therefore we end up with:
+## Sequential Recurrence Relation
 
+Assume the input array is `nums` with `n` elements and `T(i, j)` is the number of important reverse pairs in `nums[i, j]`. For the sequential recurrence relation we can set `i = 0`, so the subarray always starts from the beginning:
+
+```
 T(0, j) = T(0, j - 1) + C
+```
 
-where the subproblem C now becomes "find the number of important reverse pairs with the first element of the pair coming from subarray nums[0, j - 1] while the second element of the pair being nums[j]".
+Here subproblem `C` becomes: *find the number of important reverse pairs whose first element comes from `nums[0, j - 1]` and whose second element is `nums[j]`.*
 
-Note that for a pair (p, q) to be an important reverse pair, it has to satisfy the following two conditions:
+For a pair `(p, q)` to be an **important reverse pair**, it must satisfy two conditions:
 
-1. p < q: the first element must come before the second element;
-2. nums[p] > 2 * nums[q]: the first element has to be greater than twice of the second element.
+1. `p < q` — the first element comes before the second;
+2. `nums[p] > 2 * nums[q]` — the first element is greater than twice the second.
 
-For subproblem C, the first condition is met automatically; so we only need to consider the second condition, which is equivalent to searching for all elements within subarray nums[0, j - 1] that are greater than twice of nums[j].
+For subproblem `C`, the first condition holds automatically, so we only need the second one: search `nums[0, j - 1]` for all elements greater than `2 * nums[j]`.
 
-The straightforward way of searching would be a linear scan of the subarray, which runs at the order of O(j). From the sequential recurrence relation, this leads to the naive O(n^2) solution.
+The straightforward approach is a **linear scan** of the subarray, which runs in `O(j)`. Combined with the sequential recurrence relation, this gives the naive `O(n^2)` solution.
 
-To improve the searching efficiency, a key observation is that the order of elements in the subarray does not matter, since we are only interested in the total number of important reverse pairs. This suggests we may sort those elements and do a binary search instead of a plain linear scan.
+To speed up the search, the key observation is that the **order of elements does not matter** — we only want the count of important reverse pairs. So we can sort those elements and use **binary search** instead of a linear scan.
 
-If the searching space (formed by elements over which the search will be done) is "static" (it does not vary from run to run), placing the elements into an array would be perfect for us to do the binary search. However, this is not the case here. After the j-th element is processed, we need to add it to the searching space so that it becomes searchable for later elements, which renders the searching space expanding as more and more elements are processed.
+If the search space (the set of elements we search over) were *static* (unchanging from run to run), storing the elements in an array would be perfect for binary search. But that is not the case here: after processing the `j`-th element, we must add it to the search space so later elements can see it, which makes the search space **expand** as more elements are processed.
 
-Therefore we'd like to strike a balance between searching and insertion operations. This is where data structures like binary search tree (BST) or binary indexed tree (BIT) prevail, which offers relatively fast performance for both operations.
+We therefore want a balance between **search** and **insertion**. This is where structures like a **binary search tree (BST)** or **binary indexed tree (BIT)** shine, offering relatively fast performance on both operations.
 
-Note: Worst case of BST is O(n^2), guarantee O(nlogn) by using self-balanced BST
+> Note: A plain BST has worst-case `O(n^2)`. Use a **self-balanced BST** to guarantee `O(n log n)`.
 
-## Partition recurrence relation
+## Partition Recurrence Relation
 
+```
 T(0, n - 1) = T(0, m) + T(m + 1, n - 1) + C
+```
 
-where the subproblem C now reads "find the number of important reverse pairs with the first element of the pair coming from the left subarray nums[0, m] while the second element of the pair coming from the right subarray nums[m + 1, n - 1]".
+Here subproblem `C` reads: *find the number of important reverse pairs whose first element comes from the left subarray `nums[0, m]` and whose second element comes from the right subarray `nums[m + 1, n - 1]`.*
 
-Again for this subproblem, the first of the two aforementioned conditions is met automatically. As for the second condition, we have as usual this plain linear scan algorithm, applied for each element in the left (or right) subarray. This, to no surprise, leads to the O(n^2) naive solution.
+Again the first of the two conditions holds automatically. For the second condition, the plain linear scan (applied for each element in the left or right subarray) once more leads to the naive `O(n^2)` solution.
 
-Fortunately the observation holds true here that the order of elements in the left or right subarray does not matter, which prompts sorting of elements in both subarrays. With both subarrays sorted, the number of important reverse pairs can be found in linear time by employing the so-called two-pointer technique: one pointing to elements in the left subarray while the other to those in the right subarray and both pointers will go only in one direction due to the ordering of the elements.
+Fortunately the same observation holds: the order of elements within the left or right subarray does not matter, so we can **sort** both subarrays. With both subarrays sorted, the number of important reverse pairs can be found in **linear time** using the **two-pointer technique** — one pointer over the left subarray, one over the right, each moving in a single direction thanks to the ordering.
 
-The last question is which algorithm is best here to sort the subarrays. Since we need to partition the array into halves anyway, it is most natural to adapt it into a Merge-sort. Another point in favor of Merge-sort is that the searching process above can be embedded seamlessly into its merging stage.
+The last question is which sorting algorithm to use. Since we partition the array into halves anyway, it is most natural to adapt this into a **Merge-sort**. A further advantage: the search above can be embedded **seamlessly into the merge step**.
 
 ## Summary
 
-Many problems involving arrays can be solved by breaking down the problem into subproblems applied on subarrays and then link the solution to the original problem with those of the subproblems, to which we have sequential recurrence relation and partition recurrence relation. For either case, it's crucial to identify the subproblem C and find efficient algorithm for approaching it.
+Many array problems can be solved by breaking the problem into **subproblems on subarrays** and linking the original solution to the subproblem solutions, via either the **sequential** or the **partition** recurrence relation. In both cases, it is crucial to identify subproblem `C` and find an efficient algorithm for it.
 
-If the subproblem C involves searching on "dynamic searching space", try to consider data structures that support relatively fast operations on both searching and updating (such as self-balanced BST, BIT, Segment tree, ...).
+- If `C` involves **searching on a dynamic search space**, consider data structures with fast search and update on both ends (self-balanced BST, BIT, Segment tree, ...).
+- If `C` of the **partition** recurrence involves **sorting**, Merge-sort is a good choice. The code is more elegant when the subproblem solution can be embedded into the merge process.
+- If the subproblems `T(i, j)` **overlap**, cache the intermediate results for future lookup (DP).
 
-If the subproblem C of partition recurrence relation involves sorting, Merge-sort would be a nice sorting algorithm to use. Also, the code could be made more elegant if the solution to the subproblem can be embedded into the merging process.
+## Related LeetCode Problems
 
-If there are overlapping among the subproblems T(i, j), it's preferable to cache the intermediate results for future lookup.
+- **315. Count of Smaller Numbers After Self**
+- **327. Count of Range Sum**
 
-Lastly let me name a few leetcode problems that fall into the patterns described above and thus can be solved with similar ideas.
+**LeetCode 315:** With the sequential recurrence relation (`j` fixed), `C` is "find the number of already-visited elements smaller than the current element" — searching on a dynamic search space. With the partition recurrence relation, `C` is "for each element in the left half, find the number of elements in the right half smaller than it", which can be embedded into the merge process by noting that these are exactly the elements swapped to its left during merging.
 
-315. Count of Smaller Numbers After Self
-327. Count of Range Sum
-
-For leetcode 315, applying the sequential recurrence relation (with j fixed), the subproblem C reads: find the number of elements out of visited ones that are smaller than current element, which involves searching on "dynamic searching space"; applying the partition recurrence relation, we have a subproblem C: for each element in the left half, find the number of elements in the right half that are smaller than it, which can be embedded into the merging process by noting that these elements are exactly those swapped to its left during the merging process.
-
-For leetcode 327, applying the sequential recurrence relation (with j fixed) on the pre-sum array, the subproblem C reads: find the number of elements out of visited ones that are within the given range, which again involves searching on "dynamic searching space"; applying the partition recurrence relation, we have a subproblem C: for each element in the left half, find the number of elements in the right half that are within the given range, which can be embedded into the merging process using the two-pointer technique.
-
+**LeetCode 327:** With the sequential recurrence relation (`j` fixed) on the **prefix-sum array**, `C` is "find the number of already-visited elements within the given range" — again searching on a dynamic search space. With the partition recurrence relation, `C` is "for each element in the left half, find the number of elements in the right half within the given range", which can be embedded into the merge process using the two-pointer technique.

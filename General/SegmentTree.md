@@ -1,10 +1,23 @@
-Have both array implementation and tree implementation in DS & Algo
-Build Tree takes O(nlogn)
-Used for range query efficently in O(logn)
-Can stored many values in property to solve problem
+# Segment Tree
 
-Template:
-``` python
+**Idea:** A segment tree supports efficient range queries (sum, max, etc.) in `O(log n)`. Each node stores aggregated values for a segment, so a query touches only `O(log n)` nodes instead of scanning the whole range.
+
+## Notes
+- There are two common implementations in DS & Algo: an **array** implementation and a **tree** (pointer/node) implementation.
+- Building the tree with the recursive `build` is `O(n)`; building by inserting/updating the `n` elements one at a time is `O(n log n)`.
+- Each node can store **multiple values** in its properties (e.g. sum and sum of squares, or prefix/suffix/max sums) to solve richer problems.
+
+## Template: Range Add with Lazy Propagation (sum and sum of squares)
+
+This variant supports range updates (add `val` to a range) using lazy propagation, while maintaining both the sum and the sum of squares of each segment.
+
+The key algebra for updating the sum of squares when adding `x` to every element:
+
+- `(a+1)**2 = a**2 + 2*a + 1` (considering `gap = 2`)
+- `(a+1)**2 + (b+1)**2 = a**2 + b**2 + 2*(a+b) + 2`
+- `(a+x)**2 + (b+x)**2 = a**2 + b**2 + 2*x*(a + b) + 2 * x**2`
+
+```python
 MOD = 10**9 + 7
 
 class SegmentTree:
@@ -51,8 +64,11 @@ class SegmentTree:
         self.sum_sq[i] = (self.sum_sq[i*2+1] + self.sum_sq[i*2+2]) % MOD
 ```
 
+## Template: Maximum Subarray Sum (prefix / suffix / total / max)
 
-``` cpp
+Each node stores four values so segments merge into the maximum subarray sum: `total_sum`, `prefix_sum`, `suffix_sum`, and `max_sum`. The merge combines a left child's suffix with a right child's prefix to span the boundary.
+
+```cpp
 class SegmentTree {
 struct Node {
     long long total_sum, prefix_sum, suffix_sum, max_sum;
@@ -116,3 +132,7 @@ public:
     }
 };
 ```
+
+## Complexity
+- **Time:** `O(log n)` per query/update; `O(n)` to build with `build` (recursive bottom-up over `n` leaves).
+- **Space:** `O(n)` for the tree array (sized `4*n`).

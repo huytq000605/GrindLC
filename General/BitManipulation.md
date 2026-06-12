@@ -1,19 +1,26 @@
-# Bit manipulation
+# Bit Manipulation
 
-### Position count from right to left
+**Idea:** A cheat sheet of common bit tricks. Bit positions are counted from **right to left** (the least significant bit is position 0).
 
-### Set bit at position: **mask = mask | (1 << position)**
+## Single-bit operations
 
-### Unset bit at position: **mask = mask & ~(1 << position)**
+- **Set bit at position:** `mask = mask | (1 << position)`
+- **Unset bit at position:** `mask = mask & ~(1 << position)`
 
-### Set n bit: **mask = mask | (1 << (n * position))**
+## Group / n-bit operations
 
-### Unset n bit: **mask = mask & ~(1 << (n * position))**
+- **Set the n-th group:** `mask = mask | (1 << (n * position))`
+- **Unset the n-th group:** `mask = mask & ~(1 << (n * position))`
 
-### A | B = |A| + |B| - A & B
+## Identity
 
-### Get most left bit (Most Significant Bit):
-``` typescript
+`A | B = |A| + |B| - A & B`
+
+(The size of the union equals the sum of sizes minus the intersection.)
+
+## Get the most significant bit (left-most set bit)
+
+```typescript
 for(let i = 31; i >= 0; i--) {
   if(mask & (1 << i) !== 0) {
     return i
@@ -21,9 +28,9 @@ for(let i = 31; i >= 0; i--) {
 }
 ```
 
+## Get the least significant bit (right-most set bit)
 
-### Get most right bit (Least Significant Bit):
-``` typescript
+```typescript
 for(let i = 0; i < 32; i++) {
   if(mask & (1 << i) !== 0) {
     return i
@@ -31,14 +38,17 @@ for(let i = 0; i < 32; i++) {
 }
 ```
 
-### Unset the right most 1 bit:
-``` python
-mask &= (mask - 1)
+## Unset the right-most 1 bit
 
+```python
+mask &= (mask - 1)
 ```
 
-### Get all subset of mask (finding all mask that have all set bit in given mask):
-``` python
+## Enumerate all subsets of a mask
+
+Find every mask whose set bits are all contained in the given mask.
+
+```python
 givenMask
 subMask = givenMask
 result = []

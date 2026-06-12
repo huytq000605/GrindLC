@@ -1,10 +1,14 @@
-# Manacher
+# Manacher's Algorithm
 
-## m[i] = number of non-empty palindrome centered at i
+**Idea:** Compute, for every center `i`, the radius of the longest palindrome centered there in linear time. The key trick is reusing already-computed radii: when `i` lies inside the current rightmost palindrome `[l, r]`, its mirror `l + (r - i)` gives a free lower bound on `m[i]`, so we only ever expand past what we've already proven.
+
+Here `m[i]` is the number of non-empty palindromes centered at `i` (equivalently, the palindrome radius at `i`).
+
+This version handles **odd-length** palindromes only. To also cover even-length palindromes, run it on the string with separator characters inserted between every position.
 
 ## Example: 3327. Check if DFS Strings Are Palindromes
 
-``` cpp
+```cpp
 vector<int> manacher_odd(const string &s) {
     int n = s.size();
     vector<int> m(n, 0);
@@ -23,5 +27,9 @@ vector<int> manacher_odd(const string &s) {
     }
     return m;
 }
-
 ```
+
+## Complexity
+
+- **Time:** `O(n)` — each position is expanded past at most once amortized.
+- **Space:** `O(n)` for the radius array `m`.

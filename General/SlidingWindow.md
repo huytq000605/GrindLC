@@ -1,37 +1,37 @@
-# Sliding Window
+# Sliding Window & Subarray Patterns
 
-## Approach
+Three related patterns for problems over subarrays/substrings.
 
-Keep maintaining the maximum and the minimum value in a running sliding window
+## Pattern 1: Running Min/Max in a Sliding Window
 
-We wanna use a monotonous deque
+**Idea:** Maintain the maximum and minimum value of the current sliding window using a **monotonic deque**, so each can be queried in O(1) amortized as the window slides.
 
-## Example 
+### Examples
 In Sliding Window:
-- Maximum Sliding Window, 
+- Maximum Sliding Window
 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
 
-# Calculate Subarray based on min/max in that range
+## Pattern 2: Subarray Value Based on Min/Max in a Range
 
-## Approach
-Use prefix sum
+**Idea:** Use a **prefix sum** for range sums, plus a **monotonic stack** to locate boundaries for each element.
 
-Use monotonous stack to:
-Find next nearest greater/smaller element
-Find prev nearest greater/smaller element
+Use the monotonic stack to find, for each element:
+- the next nearest greater/smaller element, and
+- the previous nearest greater/smaller element.
 
-Calculate for each element
+Then compute the contribution for each element.
 
-## Example
+### Examples
 In Stack/Queue:
 - Maximum Subarray Min-Product
 - Largest Rectangle in Histogram
 
-# Find how many subarray having exactly X elements and at least Y elements
+## Pattern 3: Count Subarrays With Exactly X Elements and At Least Y Elements
 
-## Approach
-- Write a function to calculate how many subarrays having at least X elements and Y elements
-- Now to find exact elements using f(x) - f(x+1)
+**Idea:** "Exactly X" is hard to count directly, so count "at least" and subtract. When a problem also requires a second condition (at least Y elements of another property), fold that condition into the same helper.
 
-## Example:
-- Count of Substrings Containing Every Vowel and K Consonants II
+- Write a helper `f` that counts how many subarrays have **at least** X elements **and** at least Y elements (of the properties in question).
+- The number of subarrays with **exactly** X (while still satisfying the at-least-Y condition) is then `f(x) - f(x+1)`.
+
+### Examples
+- Count of Substrings Containing Every Vowel and K Consonants II (every vowel **at least** once = the Y dimension, **exactly** k consonants = the X dimension)

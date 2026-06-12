@@ -1,11 +1,30 @@
-# Modular Inverse
+# Modular Inverse (Modular Division)
 
-(a / b) mod p = ((a mod p) * (b^(-1) mod p)) mod p
+**Idea:** You can't divide directly under a modulus, so replace division by `b` with multiplication by `b`'s **modular inverse** — the value `b^(-1)` such that `b * b^(-1) ≡ 1 (mod p)`.
 
-b^(-1) mod p is modular inverse of b mod p
-For p=prime, b^(-1) mod p = b^(p-2) mod p
+$$(a / b) \bmod p = ((a \bmod p) \cdot (b^{-1} \bmod p)) \bmod p$$
 
-To calculate it in python, use pow(b, p-2, p)
-Otherwise, need to implement pow with module by:
-a^b = (a*a)^(b/2) if b is even
-else a^(b-1)*a
+Here `b^(-1) mod p` is the modular inverse of `b` mod `p`.
+
+## Computing the inverse (prime modulus)
+
+When `p` is **prime**, Fermat's Little Theorem gives:
+
+$$b^{-1} \bmod p = b^{p-2} \bmod p$$
+
+In Python, this is a single call:
+
+```python
+pow(b, p-2, p)
+```
+
+## Fast exponentiation (when there's no built-in)
+
+Otherwise, implement modular exponentiation (fast power) using:
+
+- `a^b = (a*a)^(b/2)` if `b` is even
+- else `a^(b-1) * a`
+
+## Notes
+
+- The `b^(p-2)` formula requires `p` to be prime (it follows from Fermat's Little Theorem).

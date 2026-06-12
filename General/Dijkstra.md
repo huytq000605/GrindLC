@@ -1,13 +1,12 @@
-# For a problem that have a graph having 2 conditions
+# Dijkstra with Two Constraints (Minimize Cost Under a Time Limit)
 
-Traversal to final node with minimum cost and not having time that > maxTime
+**Idea:** For a graph problem with two conditions — reach the destination with **minimum cost** while keeping total time `<= maxTime` — run Dijkstra ordered by cost, and treat **time** as the "distance" you relax on.
 
-So we still use a priority queue (heap) sorted by cost
-   
-But we will use a time as distance from source, we update the "distance" when newTime < time[v]
+## How it works
 
-Because we sorted the heap by cost so we will ensure that for each node we traverse through, it has minimum cost
+- Use a priority queue (heap) **sorted by cost**.
+- Track `time[v]` as the distance from the source. Update it (relax) only when `newTime < time[v]`.
+- Because the heap is ordered by cost, the **first** time we pop any node it is reached with minimum cost.
+- To respect the time limit, only push a neighbor into the heap when `newTime < maxTime`. This handles the case where the cheapest path would violate `maxTime` — we simply never explore those states.
 
-And if the minimum cost path doesn't meet the maxTime condition, we only add node in heap if newTime < maxTime
-
-Then we are sure when we meet the destination node, it has minimum cost and satisfied time
+So when we pop the destination node, it is guaranteed to have **minimum cost** while also satisfying the **time** condition.

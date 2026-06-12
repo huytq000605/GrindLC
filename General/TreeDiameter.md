@@ -1,49 +1,43 @@
-# Tree Diameter
-## To find maximum distance between any 2 nodes in in a graph
-- Keep track global variable diameter
-- Do post order traversal, each dfs call returns the longest path from parent to child.
-- During DFS call
-    - Keep track of the longest path from node to a child, called it longest_path, init to be 0
-    - During the loop through each child
-        - dfs(v, u) = path
-        - diamater = max(diamater, longest_path + path)
-        - longest_path = max(longest_path, path)
-    - Return longest_path + 1
-- Return diamater
+# Tree / Graph Diameter
 
-## Relation between minimum height of the trees (We can choose the root):
-- Diameter is d, so the shorest tree would be (d+1)//2
-- If we want to find the tree, need to choose the center node in diameter path as the root. If we choose another node, it shows that it doesn't balance out the path to all nodes so max(path) > (d+1)//2
+**Idea:** The **diameter** is the maximum distance between any two nodes. There are two classic ways to compute it: a single DFS that combines the two longest child paths at each node, or two passes of DFS/BFS (find the farthest node from anywhere, then the farthest node from *that* node).
 
+## DFS Combining Two Longest Child Paths
 
+Find the maximum distance between any two nodes in a tree with one post-order traversal.
 
-# Graph Diameter
+- Keep a global variable `diameter`.
+- Do a post-order traversal; each DFS call returns the longest path from the node down to a child.
+- During a DFS call:
+    - Keep `longest_path` = the longest path from this node to a child, initialized to `0`.
+    - Loop through each child `v` (with parent `u`):
+        - `dfs(v, u) = path`
+        - `diameter = max(diameter, longest_path + path)`
+        - `longest_path = max(longest_path, path)`
+    - Return `longest_path + 1`.
+- Return `diameter`.
 
-## To find maximum distance between any 2 nodes in in a graph
+## Two-Pass DFS / BFS
 
-- **DFS way**
+Find the maximum distance between any two nodes by walking the tree twice.
 
-We have a global variable furthest = [fursthestNode, fursthestLength]
+**DFS way**
 
-Choose a random node to be startingPoint
+- Keep a global variable `furthest = [furthestNode, furthestLength]`.
+- Choose a random node as `startingPoint`.
+- Define `dfs(node, parent, length)` that traverses the tree and updates `furthest` whenever `length > furthest[1]`.
+- Run `dfs(startingPoint, -1, 0)`.
+- After this DFS we have the farthest node from the start. Set the new `startingPoint` to that node, then run `dfs(newStartingPoint, -1, 0)` again.
+- After the second DFS, `furthest` distance is the diameter of the tree.
 
-First, we define a function call dfs(node, parent, length) which dfs through the tree and modify furthest if length > furthest[1]
+**BFS way**
 
-Run dfs(startingPoint, -1, 0)
+- Each queue entry is `[node, distance]`.
+- Start BFS from a random node — the first BFS finds the first farthest node.
+- Run BFS a second time from the node we found.
+- The farthest distance from this new starting point is the diameter of the tree.
 
-After dfs, we got furthest node from starting point, we assign new startingPoint = this furthest node. Then we find furthest node from new startingPoint by dfs(newStartingPoint, -1, 0)
+## Relation to Minimum Tree Height (We Can Choose the Root)
 
-After seconf dfs, the furthest distance is diameter of the tree
-
-
-- **BFS Way**
-  
-Each node in the queue will be [node, distance]
-
-Random start BFS
-
-First time BFS => find first furthest node
-
-BFS 2nd time from the node we've found
-
-=> Found furthest node from new starting point, and their distance will be diameter of the tree
+- If the diameter is `d`, the minimum possible height is `(d + 1) // 2`.
+- To achieve it, choose the **center node** of the diameter path as the root. Any other choice fails to balance the paths to all nodes, so `max(path) > (d + 1) // 2`.

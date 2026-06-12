@@ -1,4 +1,11 @@
-To build a binary heap with array contains node
-Find a parent: (index- 1) / 2
-Find left child: index * 2 + 1
-Find right child: index * 2 + 1
+# Binary Heap (Array Representation)
+
+To build a binary heap with array contains node.
+
+## Index Formulas
+
+For a node at `index`:
+
+- **Parent:** `(index - 1) / 2`
+- **Left child:** `index * 2 + 1`
+- **Right child:** `index * 2 + 1`

@@ -1,10 +1,20 @@
 # Morris Traversal
 
-## If we want to traverse a tree by inorder or preorder without a stack or recursion, only O(1) space, we need to use Morris Traversal
-## Morris Traversal mutates the tree on the way, so if we cannot do write operation, then we cannot do Morris Traversal
+**Idea:** Traverse a binary tree inorder or preorder in **O(1) space** — no stack, no recursion. To find the way back up after descending left, we temporarily rewire each node's inorder predecessor to point at the current node (a "threaded" link), then undo it once used.
+
+> Morris Traversal **mutates the tree** while it runs. If write operations aren't allowed, you cannot use Morris Traversal.
+
+## How it works
+
+For each `current` node:
+- **No left child:** visit it (logic differs slightly between inorder/preorder), then move right.
+- **Has a left child:** find the `predecessor` — the rightmost node of the left subtree.
+  - If the predecessor's `right` is `None`, set the thread (`predecessor.right = current`) and descend left.
+  - If the predecessor's `right` already points back here, the left subtree is done — restore/advance and move right.
 
 ## Inorder
-``` python
+
+```python
 def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
     current = root
     result = []
@@ -28,7 +38,8 @@ def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
 ```
 
 ## Preorder
-``` python
+
+```python
 def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
     current = root
     result = []
@@ -49,3 +60,8 @@ def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
                 current = current.right
     return result
 ```
+
+## Complexity
+
+- **Time:** O(n) — each edge is traversed at most twice (once to set the thread, once to follow it).
+- **Space:** O(1) — only the threaded pointers are reused; no stack or recursion.
