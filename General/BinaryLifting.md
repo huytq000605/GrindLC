@@ -49,3 +49,13 @@ class TreeAncestor:
 - After we get the table, how to use it?
   - Obviously, kkk can be composed by some powers of 2 (that is, the binary representation of kkk).
   - Therefore, by enumerating the binary representation of kkk, the profit of kkk steps can be obtained by summing the profit of 2^i steps.
+
+## Number of Ways to Assign Edge Weights II (LC 3559)
+
+- For a path with `L` edges, where each edge is weighted 1 or 2, the cost is odd iff an **odd number** of edges carry weight 1 (weight-2 edges never change parity). The number of odd-sized subsets of `L` edges is `2^(L-1)`, so every query reduces to finding `L` = the number of edges on the path between `u` and `v` (and the answer is `0` when `u == v`).
+- On a tree, that path length is the **distance** `dist(u, v) = depth[u] + depth[v] - 2*depth[LCA(u, v)]`. Binary lifting gives the LCA — and hence the distance — in `O(log n)` per query. It is the same "father's father is the second-order father" jump table as above, but here we *climb toward the LCA* instead of jumping a fixed `k`.
+- How the LCA climb uses the table (`ps[u][i]` = the `2^i`-th ancestor of `u`):
+  1. Lift the deeper node up by `depth[v] - depth[u]`, using the binary representation of the gap (each set bit `i` jumps `2^i`).
+  2. If the two nodes still differ, lift both together from the largest power down, jumping only when `ps[u][i] != ps[v][i]`; the LCA is then one step above.
+  3. Accumulate the edges crossed along the way into `s` (the distance); the answer for the query is `2^(s-1)`.
+- Full solution: `Tree & Binary Tree/*Number of Ways to Assign Edge Weights II/solution.py`.
