@@ -1,26 +1,27 @@
 # Interval Scheduling (Single-Interval Scheduling Maximization)
 
-- When we n intervals, we want to maximize the number of the intervals and minize the total length of intervals.
-- Then we have algorithm (from Wikipedia):
-```
-Several algorithms, that may look promising at first sight, actually do not find the optimal solution:
+**Idea:** Given `n` intervals, select the largest set of mutually non-overlapping intervals (maximize the number of intervals while minimizing the total length of intervals). The greedy rule **earliest deadline first** is optimal: repeatedly take the interval that finishes earliest, then discard everything it overlaps.
 
-Selecting the intervals that start earliest is not an optimal solution, because if the earliest interval happens to be very long, accepting it would make us reject many other shorter requests.
-Selecting the shortest intervals or selecting intervals with the fewest conflicts is also not optimal.
-The following greedy algorithm, called Earliest deadline first scheduling, does find the optimal solution for unweighted single-interval scheduling:
+## Why earliest-finish wins
 
-Select the interval, x, with the earliest finishing time.
-Remove x, and all intervals intersecting x, from the set of candidate intervals.
-Repeat until the set of candidate intervals is empty.
-Whenever we select an interval at step 1, we may have to remove many intervals in step 2. However, all these intervals necessarily cross the finishing time of x, and thus they all cross each other (see figure). Hence, at most 1 of these intervals can be in the optimal solution. Hence, for every interval in the optimal solution, there is an interval in the greedy solution. This proves that the greedy algorithm indeed finds an optimal solution.
+Several intuitive strategies are **not** optimal:
 
-A more formal explanation is given by a Charging argument.
+- **Earliest start time** — a very long early interval can block many shorter ones.
+- **Shortest interval** or **fewest conflicts** — also not optimal.
 
-The greedy algorithm can be executed in time O(n log n), where n is the number of tasks, using a preprocessing step in which the tasks are sorted by their finishing times.
-```
+The greedy algorithm (from Wikipedia):
 
-- Can implement it as following:
-``` python
+1. Select the interval `x` with the **earliest finishing time**.
+2. Remove `x` and all intervals intersecting `x` from the candidate set.
+3. Repeat until the candidate set is empty.
+
+When we pick an interval in step 1, step 2 may remove many intervals. But all of those necessarily cross the finishing time of `x`, so they all cross each other — meaning **at most one** of them can be in the optimal solution. Hence for every interval in the optimal solution there is a corresponding interval in the greedy solution, which proves the greedy choice is optimal. (A more formal version is given by a charging argument.)
+
+The algorithm runs in `O(n log n)` thanks to the preprocessing step that sorts tasks by finishing time.
+
+## Implementation
+
+```python
 # intervals = [(a, b), (c, d), ...]
 # Assume each interval start with > 0
 intervals.sort(key = lambda: (interval[1], intervals[0]))

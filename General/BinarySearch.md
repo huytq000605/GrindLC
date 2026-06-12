@@ -1,28 +1,38 @@
-# Noted for myself
+# Binary Search (Notes for Myself)
 
-Signal for a problem about binary search tree is that you can get the range minimum to maximum of answer, find a value that fit condition for an sorted array
+**Idea:** A binary-search signal is when you can bound the answer to a range `[min, max]` and you need to find a value that satisfies some condition over a sorted/monotonic space. You repeatedly probe the midpoint and shrink the range toward the value that fits.
 
-So when you try do BST, compare the current value you are using to condition, the ">" and "<" is easy to put in, but the "=" is a little tricky
+## Handling the Comparison (`<`, `>`, `=`)
 
-Like when question ask you for a minimum index in an arr (SORTED BY ASC) that arr[index] < 5, if arr[current] >= 5 YOU MUST SET THE NEXT LOOP IS max = current - 1 BECAUSE current doesnt fit in condition
+When comparing the current value to the condition, the `>` and `<` cases are easy to place; the `=` case is the tricky one.
 
+Example: the question asks for the **minimum index** in an array (sorted ascending) such that `arr[index] < 5`. If `arr[current] >= 5`, you MUST set the next loop bound to `max = current - 1`, because `current` does not fit the condition.
 
-**IMPORTANT**
-```
-As a rule of thumb, use m = l + (r-l)/ 2 with l = m + 1 and r = m, and use m = l + (r-l+1)/2 with l = m and r = m - 1. This can prevent m from stucking at r (or l) after the updating step.
-```
+## Choosing the Midpoint Formula (avoiding infinite loops)
 
-Example: When the problem asks you for finding min for condition, if the value is fit for the condition, you can keep decrease/increase the max/min to get the real min answer
+As a rule of thumb:
 
-Example with Find the smallest divisor given a threshold: 
-    If sum <= threshold then can keep decrease the max value to find a more smaller divisior that fit the condition
-    If sum > threshold then we are sure that the current value we are using is wrong, then just let min = mid + 1
+- Use `m = l + (r-l)/2` with `l = m + 1` and `r = m`.
+- Use `m = l + (r-l+1)/2` with `l = m` and `r = m - 1`.
 
+This prevents `m` from getting stuck at `r` (or `l`) after the update step.
 
-THE FINAL ANSWER SHOULD BE WHEN MIN = MAX 
+## Searching for a Minimum That Satisfies a Condition
 
-# Precision Binary Search
-```
+When the problem asks for the minimum value satisfying a condition: if the current value fits, keep decreasing `max` (or increasing `min`) to narrow down to the real answer.
+
+Example — **Find the Smallest Divisor Given a Threshold**:
+
+- If `sum <= threshold`, you can keep decreasing `max` to look for an even smaller divisor that still fits the condition.
+- If `sum > threshold`, the current value is definitely wrong, so set `min = mid + 1`.
+
+The final answer is found when `min == max`.
+
+## Precision Binary Search
+
+When searching over a continuous (floating-point) space, loop until the interval is smaller than a tolerance `eps`:
+
+```cpp
 double lo = initial_lo; // Set initial lower bound
 double hi = initial_hi; // Set initial upper bound
 double eps = 1e-5;      // Tolerance level

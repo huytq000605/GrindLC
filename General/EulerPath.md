@@ -1,20 +1,21 @@
-# Euler Path
+# Euler Path (Eulerian Trail / Hierholzer's Algorithm)
 
-In graph theory, an Eulerian trail (or Eulerian path) is a trail in a finite graph that visits every edge exactly once (allowing for revisiting vertices). Similarly, an Eulerian circuit or Eulerian cycle is an Eulerian trail that starts and ends on the same vertex
+**Idea:** An **Eulerian trail** (or Eulerian path) is a trail in a finite graph that visits **every edge exactly once** (revisiting vertices is allowed). An **Eulerian circuit** (or Eulerian cycle) is an Eulerian trail that starts and ends on the same vertex.
 
-## Some Properties of Eulerian Path
+## Properties
 
-- in[i] and out[i] to denote the in and out degree of a node i.
-- Existence:
-  - A graph has an Eulerian Path if and only if 1 or 2
-  1. we have out[i] == in[i] for each node i, out[i] % 2 == 0.
-  2. we have out[i] == in[i] for all nodes i, out[i] % 2 == 0 except exactly two nodes x and y (% 2 == 1), with out[x] = in[x] + 1, out[y] = in[y] - 1.
+Let `in[i]` and `out[i]` denote the in-degree and out-degree of node `i`.
+
+A graph has an Eulerian Path if and only if one of the following holds:
+
+1. `out[i] == in[i]` for every node `i`, and `out[i] % 2 == 0`.
+2. `out[i] == in[i]` for all nodes `i` with `out[i] % 2 == 0`, **except** exactly two nodes `x` and `y` where `out[i] % 2 == 1`, with `out[x] == in[x] + 1` and `out[y] == in[y] - 1`.
 
 ## Algorithm
 
-- find the starting point of an Eulerian Path.
-  - if 1 we have out[i] == in[i] for all i, we can start at an arbitrary node.
-- perform postorder DFS on the graph, as we "walk" through an edge, we erase (or mark it visited) the walked edge.
-- we may reach the same node many times, but we have to pass each edge exactly once.
-- I use stack in my code for erasing edges.
+1. **Find the starting point** of the Eulerian Path.
+   - In case 1 (where `out[i] == in[i]` for all `i`), you can start at an arbitrary node.
+2. Perform a **postorder DFS** on the graph. As you "walk" through an edge, **erase** it (or mark it visited) so it is never reused.
+3. You may reach the same node many times, but each edge must be passed exactly once.
 
+> In my code I use a stack to erase edges.

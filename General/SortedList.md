@@ -1,10 +1,21 @@
-# SortedList
+# SortedList (sortedcontainers Internals)
 
-## How SortedList from sortedcontainers in Python work
+## Idea
 
-- It maintains `_lists` and `_maxes` with default `load_factor` = 1000
-- When we add an element into SortedList
-``` python
+`SortedList` from `sortedcontainers` is **not** a balanced BST or a skip list. Internally it keeps a list of sub-lists (`_lists`) plus a list of each sub-list's maximum (`_maxes`), with a default `load_factor` of `1000`. Each sub-list stays sorted, and `_maxes` lets you binary-search to the right sub-list quickly. When a sub-list grows too large it is split in two, which keeps every sub-list bounded in size and keeps operations fast.
+
+## Add an element
+
+To add a value:
+
+1. Binary-search `_maxes` (`bisect_right`) to find which sub-list the value belongs in.
+2. If the value is past the last sub-list's max, append it to the final sub-list and update that max.
+3. Otherwise `insort` it into the chosen sub-list (sorted insertion).
+4. Call `_expand(pos)` to split the sub-list if it has grown too big.
+
+If the structure is empty, start a fresh sub-list.
+
+```python
  def add(self, value):
         _lists = self._lists
         _maxes = self._maxes
@@ -26,8 +37,18 @@
 
         self._len += 1
 ```
-- When we have a list have more than 2 * `load_factor` element, it splits out that list into 2 lists (in `_expand` method):
-``` python
+
+## Split a full sub-list (`_expand`)
+
+When a sub-list grows beyond `2 * load_factor` elements, it is split into two:
+
+- The second half (`_lists_pos[_load:]`) is sliced off into a new sub-list `half`, leaving the first half in place.
+- `_maxes` is updated for the original sub-list and a new entry is inserted for `half`.
+- The positional `_index` cache is invalidated (`del _index[:]`) since the layout changed.
+
+If no split is needed, the cached `_index` (if present) is incremented up the tree instead of being rebuilt.
+
+```python
 
     def _expand(self, pos):
         _load = self._load

@@ -1,16 +1,28 @@
 # Binary Lifting
 
-## Query KthAncestor for any node in a tree (1483 LC)
+**Idea:** Precompute, for every node, where you land after jumping `2^i` steps. Any jump of `k` steps then decomposes into the binary representation of `k`, so each query runs in `O(log n)` instead of walking the path one step at a time. Binary lifting fits problems where "the father's father is the second-order father" — i.e. repeated jumps along a chain where each node has exactly one successor.
 
-- Build parents for all node => O(kn) space
-- Each time go find, O(kn) time
-  
-- The best way to do this is using Binary Lifting:
-1. We choose max step to go (assume we have  max nodes = 5*10^4) => Max step = 15 (Each node has max 15 parents)
-2. For each step, we find 2^i parent of each node
-3. For every query, we do it in O(logn) time
+## Build the jump table
 
-``` python
+Maintain a table `dp` where `dp[u][i]` = the node reached after jumping `2^i` steps from `u`. Build it level by level, since jumping `2^i` steps equals jumping `2^(i-1)` then another `2^(i-1)`:
+
+- Position: `pos[u][i] = pos[pos[u][i-1]][i-1]`
+- Profit (if the problem accumulates a value): `profit[u][i] = profit[u][i-1] + profit[pos[u][i-1]][i-1]` (adjust to whatever "profit" means in the problem).
+
+## Query the K-th ancestor (LC 1483)
+
+Naive approaches:
+
+- Build parents for all nodes => `O(kn)` space.
+- Each lookup walks up step by step => `O(kn)` time.
+
+Binary lifting does better:
+
+1. Choose the max step. With up to `5 * 10^4` nodes, `max step = 15` (each node tracks up to 15 levels of ancestors).
+2. For each step `i`, compute the `2^i`-th parent of every node.
+3. Answer each query in `O(log n)` time.
+
+```python
 class TreeAncestor:
     def __init__(self, n: int, A: List[int]):
         self.step = 15
@@ -37,15 +49,19 @@ class TreeAncestor:
         return node
 ```
 
-##  Maximize Value of Function in a Ball Passing Game (LC 2836)
-- Because each node has and only has one father, so this problem is actually the continuous jumping on the only path. Immediately thinks of the binary lifting.
-- Binary lifting is suitable for problems like "father's father is the second-order father".
-- For this problem, jump 2 steps equals to jump 1 step then jump 1 step; jump 4 steps means jump 2 steps then jumps 2 steps...
-- The most commonly used implementation for the binary lifting is to maintain a jump table.
-  - In the table dp, dp[u][i] means the jump 2^i step from u 
-  - This table can be calculated level-by-level: jumps 2^i times equal to jumps 2^(i-1) and jumps 2^(i-1)
-  - For position: pos[u][i]= pos[pos[u][i-1][i-1]
-  - For profit: profit[u][i]= profit[u][i-1] + profit[pos[u][i-1]][i-1] (It may be changed by the meaning of profit).
-- After we get the table, how to use it?
-  - Obviously, kkk can be composed by some powers of 2 (that is, the binary representation of kkk).
-  - Therefore, by enumerating the binary representation of kkk, the profit of kkk steps can be obtained by summing the profit of 2^i steps.
+## Apply to Maximize Value of Function in a Ball Passing Game (LC 2836)
+
+Each node has exactly one father, so the problem is really continuous jumping along a single path — a textbook fit for binary lifting.
+
+- Jumping 2 steps = jump 1 then jump 1; jumping 4 steps = jump 2 then jump 2; and so on.
+- Build the jump table as described above, tracking both position and accumulated profit.
+
+Using the table:
+
+- `k` can be composed from powers of 2 (its binary representation).
+- So by enumerating the set bits of `k`, the profit over `k` steps is the sum of the profits of the corresponding `2^i` steps.
+
+## Complexity
+
+- **Time:** `O(n log n)` to build the table; `O(log n)` per query.
+- **Space:** `O(n log n)` for the table.

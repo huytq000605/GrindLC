@@ -1,18 +1,10 @@
-# Digit Dynamic Programming
+# Digit DP (Digit Dynamic Programming)
 
-## Typical problem will ask finding how many numbers with some conditions are there between [low, high]
+**Idea:** The typical problem asks how many numbers satisfying some condition lie in a range `[low, high]`. We cannot simply backtrack over every number because `low` and `high` can be up to `10^18` or even larger. Instead, build a function that counts the valid numbers `<= some value`, processing the value one digit at a time and carrying a small set of states. The answer for `[low, high]` is then `count(high) - count(low - 1)`.
 
-We cannot just simply backtrack the number because low and high can be up to 10^18 or even more
+## States: `dp(i, mx, tight, leading_zero)`
 
-Idea: Have a function which find all the valid numbers below than a value and have some states
-
-## func dp(i, mx, tight, leading_zero)
-### i start from 0
-### mx is the maximum value
-### tight indicates that all the previous degits still equal to mx
-### leading_zero means that at this position, is that all the previous digits are 0 
-
-
-
-
-
+- `i` — current digit position, starting from `0`.
+- `mx` — the maximum value (the upper bound we are counting under).
+- `tight` — whether all previous digits still equal the corresponding digits of `mx`. While `tight` is set, the current digit cannot exceed `mx`'s digit at this position.
+- `leading_zero` — whether all previous digits are still `0` (i.e. the number has not "started" yet).
