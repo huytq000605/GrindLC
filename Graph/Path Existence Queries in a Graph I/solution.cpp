@@ -33,7 +33,7 @@ public:
             }
         }
         vector<bool> result;
-        result.reserve(n);
+        result.reserve(queries.size());
         for(auto &q: queries) {
             int u = q[0], v = q[1];
             result.push_back(uf.find(u) == uf.find(v));
