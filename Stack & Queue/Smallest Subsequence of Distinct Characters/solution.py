@@ -1,15 +1,14 @@
 class Solution:
     def smallestSubsequence(self, s: str) -> str:
-        freq = Counter()
-        for l in s:
-            freq[l] += 1
-        result = []
-        seen = set()
-        for l in s:
-            freq[l] -= 1
-            while len(result) > 0 and l not in seen and result[-1] > l and freq[result[-1]] > 0:
-                seen.remove(result.pop())
-            if l not in seen:
-                result.append(l)
-                seen.add(l)
-        return "".join(result)
+        last = dict()
+        for i in range(len(s)):
+            last[s[i]] = i
+        result = ""
+        for i in range(len(s)):
+            c = s[i]
+            while result and c not in result and c < result[-1] and last[result[-1]] > i:
+                result = result[:-1]
+            if c not in result:
+                result += c
+            
+        return result        
