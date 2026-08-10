@@ -1,14 +1,14 @@
+dp = [False for _ in range(10**5 + 1)]
+for i in range(10**5+1):
+    k = 1
+    while k*k <= i:
+        s = k*k
+        if s > i: break
+        if not dp[i-s]:
+            dp[i] = True
+            break
+        k += 1
+
 class Solution:
     def winnerSquareGame(self, n: int) -> bool:
-        @cache
-        def dfs(target):
-            if target == 0:
-                return False
-            i = 1
-            while i * i <= target:
-                if not dfs(target - i * i):
-                    return True
-                i += 1
-            return False
-        
-        return dfs(n)
+        return dp[n]
