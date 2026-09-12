@@ -4,6 +4,24 @@ class Solution:
         for i, (u, v, w) in enumerate(intervals):
             if (u, v, w) not in idxs:
                 idxs[(u, v, w)] = i
+        intervals = sorted(idxs.keys(), key = lambda x: x[1])
+        n = len(intervals)
+        dp = [(0, []) for _ in range(n+1)]
+        for _ in range(4):
+            ndp = [(0, []) for _ in range(n+1)]
+            for i in range(n):
+                u, v, w = intervals[i]
+                j = bisect_left(intervals, u, key = lambda x: x[1])
+                ndp[i+1] = min(ndp[i], (dp[j][0]-w, sorted(dp[j][1] + [idxs[(u, v, w)]])))
+            dp = ndp
+        return dp[-1][1]
+""" Top down
+class Solution:
+    def maximumWeight(self, intervals: List[List[int]]) -> List[int]:
+        idxs = dict()
+        for i, (u, v, w) in enumerate(intervals):
+            if (u, v, w) not in idxs:
+                idxs[(u, v, w)] = i
         intervals = sorted(idxs.keys())
         n = len(intervals)
         @cache
@@ -16,3 +34,5 @@ class Solution:
             return min(pick, skip)
 
         return dfs(0, 4)[1]
+        
+"""
