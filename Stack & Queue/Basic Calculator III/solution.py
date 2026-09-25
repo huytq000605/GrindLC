@@ -1,39 +1,46 @@
 class Solution:
     def calculate(self, s: str) -> int:
         n = len(s)
-        def handle_sign(sign, stack, cur):
+        ops = []
+        stack = []
+        i = 0
+        def ope():
+            sign = ops.pop()
+            r, l = stack.pop(), stack.pop()
             if sign == "+":
-                stack.append(cur)
+                stack.append(l+r)
             elif sign == "-":
-                stack.append(-cur)
+                stack.append(l-r)
             elif sign == "*":
-                stack.append(stack.pop() * cur)
+                stack.append(l*r)
             elif sign == "/":
-                negative = stack[-1] * cur < 0
-                stack.append(abs(stack.pop()) // abs(cur))
+                negative = l * r < 0
+                stack.append(abs(l) // abs(r))
                 if negative: stack[-1] = -stack[-1]
-
-
-        def dfs(i):
-            stack = []
-            cur = 0
-            sign = "+"
-            while i < n:
-                c = s[i]
-                if c.isdigit():
-                    cur = cur * 10 + int(c)
-                elif c in "+-*/":
-                    handle_sign(sign, stack, cur)
-                    sign = c
-                    cur = 0
-                elif c == "(":
-                    end_idx, num = dfs(i+1)
-                    cur = num
-                    i = end_idx
-                elif c == ")":
-                    handle_sign(sign, stack, cur)
-                    return i, sum(stack)
-                i += 1
-            handle_sign(sign, stack, cur)
-            return sum(stack)
-        return dfs(0)
+            
+        while i < n:
+            ch = s[i]
+            if ch in "+-*/":
+                while ops and \
+                    not (ops[-1] in "()" or (ops[-1] in "+-" and ch in "*/")):
+                    ope()
+                ops.append(ch)
+            elif ch == "(":
+                ops.append("(")
+            elif ch == ")":
+                while ops and ops[-1] != "(":
+                    ope()
+                ops.pop()
+                if ops and ops[-1] == "-":
+                    stack[-1] = -stack[-1]
+                    ops[-1] = "+"
+            else:
+                num = int(s[i])
+                while i+1 < n and s[i+1].isdigit():
+                    i += 1
+                    num = num * 10 + int(s[i])
+                stack.append(num)
+            i += 1
+        while ops:
+            ope()
+        return stack[-1]
