@@ -1,5 +1,7 @@
 # Stack
 
+> For expression problems (operands + operators with precedence + brackets:
+> Basic Calculator I/II/III, Brace Expansion II) see [StackAndOps.md](StackAndOps.md).
 
 ## DFS in "Brace" questions
 
