@@ -1,33 +1,31 @@
-from collections import deque
-
 class Solution:
-    def removeInvalidParentheses(self, s: str) -> List[str]:
-        def isValid(s):
+    def removeInvalidParentheses(self, s: str) -> list[str]:
+        result = set()
+        def to_remove(s: str) -> bool:
             stack = 0
-            for l in s:
-                if l == "(":
-                    stack += 1
-                elif l == ")":
-                    if stack == 0: return False
-                    else: stack -= 1
-            return stack == 0
-        
-        queue = deque([s])
-        nextLevel = deque()
-        result = []
-        seen = set()
-        while(queue):
-            st = queue.popleft()
-            if(isValid(st)):
-                result.append(st)
-            if len(result) == 0:      
-                for i in range(len(st)):
-                    if st[i] in "()":
-                        newSt = st[0:i] + st[i + 1:]
-                        if newSt in seen: continue
-                        seen.add(newSt)
-                        nextLevel.append(newSt)
-            if len(result) == 0 and len(queue) == 0:
-                queue, nextLevel = nextLevel, queue
-                seen.clear()
-        return result
+            result = 0
+            for c in s:
+                if c == '(': stack += 1
+                elif c == ')':
+                    stack -= 1
+                    if stack < 0:
+                        stack = 0
+                        result += 1
+            return result + stack
+
+        target = to_remove(s)
+        if target == 0: return [s]
+        q = set([s])
+        removed = 0
+        while removed < target:
+            nq = set()
+            end = False
+            for s in q:
+                for i in range(len(s)):
+                    if s[i] in "()":
+                        ns = s[:i] + s[i+1:]
+                        if removed + 1 + to_remove(ns) == target:
+                            nq.add(ns)
+            removed += 1
+            q = nq
+        return list(q)
